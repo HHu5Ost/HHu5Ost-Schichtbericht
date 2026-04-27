@@ -610,6 +610,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-schlitzwand" style="display:none"></label>
     <button class="h-add-btn" data-key="schlitzwand" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-schlitzwand" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'schlitzwand')"></label>
 </div>
 
 <!-- STEIFENLAGE -->
@@ -719,6 +723,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-aushub" style="display:none"></label>
     <button class="h-add-btn" data-key="aushub" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-aushub" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'aushub')"></label>
 </div>
 
 <!-- UWBS -->
@@ -768,6 +776,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-uwbs" style="display:none"></label>
     <button class="h-add-btn" data-key="uwbs" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-uwbs" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'uwbs')"></label>
 </div>
 
 <!-- VERFÜLLEN -->
@@ -791,6 +803,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-verfuellen" style="display:none"></label>
     <button class="h-add-btn" data-key="verfuellen" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-verfuellen" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'verfuellen')"></label>
 </div>
 
 <!-- WIEDERAUSHUB -->
@@ -814,6 +830,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-wiederaushub" style="display:none"></label>
     <button class="h-add-btn" data-key="wiederaushub" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-wiederaushub" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'wiederaushub')"></label>
 </div>
 
 <!-- ROHBAU -->
@@ -1159,6 +1179,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-rohbau" style="display:none"></label>
     <button class="h-add-btn" data-key="rohbau" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-rohbau" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'rohbau')"></label>
 </div>
 
 
@@ -1200,6 +1224,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-mikropfahl" style="display:none"></label>
     <button class="h-add-btn" data-key="mikropfahl" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-mikropfahl" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'mikropfahl')"></label>
 </div>
 
 <!-- SONSTIGES -->
@@ -1223,6 +1251,10 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-sonstiges" style="display:none"></label>
     <button class="h-add-btn" data-key="sonstiges" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
+
+  <div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px;background:var(--blau);color:var(--weiss)">Fotodokumentation</div>
+  <div id="fotoContainer-sonstiges" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px"></div>
+  <label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px dashed rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:var(--r);cursor:pointer;margin-bottom:10px">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" multiple onchange="addFotoDoku(this,'sonstiges')"></label>
 </div>
 
 
@@ -3061,6 +3093,46 @@ setTimeout(initCollapsible, 100);
 
 
 // ── FOTO UPLOAD (Abnahmen) ────────────────────────────────────
+
+// ── FOTODOKUMENTATION pro Gewerk ─────────────────────────────
+const fotoDokuData = {};
+
+function addFotoDoku(input, gw){
+  if(!input.files || !input.files.length) return;
+  const container = document.getElementById('fotoContainer-' + gw);
+  if(!container) return;
+  if(!fotoDokuData[gw]) fotoDokuData[gw] = [];
+  [...input.files].forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e){
+      fotoDokuData[gw].push(e.target.result);
+      const wrap = document.createElement('div');
+      wrap.className = 'foto-preview';
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      const del = document.createElement('button');
+      del.className = 'foto-del';
+      del.innerHTML = '✕';
+      del.onclick = () => {
+        const idx = fotoDokuData[gw].indexOf(e.target.result);
+        if(idx > -1) fotoDokuData[gw].splice(idx,1);
+        wrap.remove();
+      };
+      const dl = document.createElement('a');
+      dl.className = 'foto-dl';
+      dl.innerHTML = '⬇';
+      dl.href = e.target.result;
+      dl.download = 'Foto_' + gw + '_' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-') + '.jpg';
+      wrap.appendChild(img);
+      wrap.appendChild(del);
+      wrap.appendChild(dl);
+      container.appendChild(wrap);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
 function addFoto(input){
   if(!input.files || !input.files[0]) return;
   const file = input.files[0];
@@ -3247,27 +3319,34 @@ function savePdfOffline(blob, filename){
 
 function printFotos(containerEl, titleLabel, doc, y, M, W, BG1, BLUE, np, pdfStr){
   if(!containerEl) return y;
-  const imgs = [...containerEl.querySelectorAll('.foto-preview img')].filter(el=>el.src && !el.src.startsWith('data:image/svg'));
+  // Nur direkte Fotos — keine aus Abnahme-Blöcken (die werden separat gedruckt)
+  const isTopLevel = containerEl.classList.contains('gw-section') || containerEl.classList.contains('abnahme-block');
+  const selector = isTopLevel && !containerEl.classList.contains('abnahme-block')
+    ? '.foto-area:not(.abnahme-block .foto-area) .foto-preview img'
+    : '.foto-preview img';
+  const imgs = [...containerEl.querySelectorAll(selector)].filter(el=>el.src && !el.src.startsWith('data:image/svg'));
   if(!imgs.length) return y;
   y=np(y,10);
   doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,5,'F');
   doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...BLUE);
   doc.text(pdfStr('FOTOS'+(titleLabel?' – '+titleLabel:'')+':'),M+4,y+3.5);
   doc.setTextColor(0,0,0); y+=5+2;
-  const fW=(W-2*M-3)/2;
-  const fHH=fW*0.65;
+  const cols=4;
+  const gap=2;
+  const fW=(W-2*M-(cols-1)*gap)/cols;
+  const fHH=fW*0.75;
   let col=0;
   imgs.forEach(img=>{
     if(!img.src||img.src.startsWith('data:image/svg')) return;
     try{
-      const x2=M+col*(fW+3);
+      const x2=M+col*(fW+gap);
       y=np(y,fHH+2);
       doc.addImage(img.src,'JPEG',x2,y,fW,fHH,'','FAST');
       col++;
-      if(col>=2){ col=0; y+=fHH+3; }
+      if(col>=cols){ col=0; y+=fHH+gap; }
     }catch(e){}
   });
-  if(col>0) y+=fHH+3;
+  if(col>0) y+=fHH+gap;
   return y+2;
 }
 
@@ -3954,9 +4033,31 @@ function exportPDF(){
       doc.text(bLines,M+4,y+7);
       y+=bH+2;
     }
-    // Fotos der Gewerk-Section drucken
+    // Fotodokumentation drucken
     const fotoSection = document.getElementById('gws-'+gw);
-    if(fotoSection) y=printFotos(fotoSection, conf.label, doc, y, M, W, BG1, BLUE, np, pdfStr);
+    const fotoContainer = document.getElementById('fotoContainer-'+gw);
+    if(fotoContainer && fotoContainer.querySelectorAll('img').length){
+      y=np(y,10);
+      doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,5,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...BLUE);
+      doc.text('FOTODOKUMENTATION:',M+4,y+3.5); doc.setTextColor(0,0,0); y+=5+2;
+      const fdImgs=[...fotoContainer.querySelectorAll('img')];
+      const cols=4,gap=2;
+      const fW=(W-2*M-(cols-1)*gap)/cols;
+      const fHH=fW*0.75;
+      let col=0;
+      fdImgs.forEach(img=>{
+        if(!img.src) return;
+        try{
+          const x2=M+col*(fW+gap);
+          y=np(y,fHH+2);
+          doc.addImage(img.src,'JPEG',x2,y,fW,fHH,'','FAST');
+          col++;
+          if(col>=cols){ col=0; y+=fHH+gap; }
+        }catch(e){}
+      });
+      if(col>0) y+=fHH+gap+2;
+    }
 
     // Fotos der Abnahme-Blöcke drucken
     fotoSection && fotoSection.querySelectorAll('.abnahme-block').forEach(abn=>{
