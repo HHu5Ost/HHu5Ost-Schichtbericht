@@ -1798,7 +1798,7 @@ async function fetchWetter(){
         lat = pos.coords.latitude; lon = pos.coords.longitude;
       } catch(e){}
     }
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_mean&timezone=Europe/Berlin`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_min,temperature_2m_max&timezone=Europe/Berlin`;
     const res = await fetch(url);
     const data = await res.json();
     const temp = Math.round(data.current.temperature_2m);
@@ -1812,9 +1812,10 @@ async function fetchWetter(){
     else if(code<=82) wetter='Regen';
     else if(code<=86) wetter='Schnee/Frost';
     else if(code<=99) wetter='Hagel';
-    const dailyMean = data.daily && data.daily.temperature_2m_mean ? Math.round(data.daily.temperature_2m_mean[0]) : temp;
+    const tMin = data.daily && data.daily.temperature_2m_min ? Math.round(data.daily.temperature_2m_min[0]) : temp;
+    const tMax = data.daily && data.daily.temperature_2m_max ? Math.round(data.daily.temperature_2m_max[0]) : temp;
     document.getElementById('fWetter').value = wetter;
-    document.getElementById('fTemp').value = dailyMean + ' °C';
+    document.getElementById('fTemp').value = `${tMin} / ${tMax} °C`;
     if(status) status.textContent = `✓ jetzt ${temp}°C`;
     if(btn){ btn.textContent='✓ Auto'; setTimeout(()=>{ btn.textContent='⛅ Auto'; btn.disabled=false; },3000); }
   } catch(e){
