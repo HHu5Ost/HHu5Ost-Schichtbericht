@@ -273,9 +273,10 @@ main{max-width:880px;margin:0 auto;padding:14px}
 <style>
 #pw-overlay{position:fixed;inset:0;background:#0d1b2e;display:flex;align-items:center;justify-content:center;z-index:99999}
 #pw-box{background:#1a2c45;border:1px solid rgba(245,166,35,.4);border-radius:10px;padding:32px 28px;width:300px;text-align:center}
-#pw-box h2{font-family:'Barlow Condensed',sans-serif;color:#F5A623;font-size:1.4rem;letter-spacing:2px;margin-bottom:6px}
+#pw-box h2{font-family:'Barlow Condensed',sans-serif;color:#F5A623;font-size:1.2rem;letter-spacing:1px;margin-bottom:16px}
 #pw-box p{color:#8899aa;font-size:.8rem;margin-bottom:20px}
-#pw-input{width:100%;background:#0d1b2e;border:1.5px solid rgba(245,166,35,.5);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:1.2rem;letter-spacing:6px;padding:10px;text-align:center;outline:none;margin-bottom:12px}
+#pw-name,#pw-input{width:100%;background:#0d1b2e;border:1.5px solid rgba(245,166,35,.5);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:1.1rem;padding:10px;text-align:center;outline:none;margin-bottom:10px}
+#pw-input{letter-spacing:3px}
 #pw-btn{width:100%;background:#F5A623;border:none;border-radius:6px;color:#1C3A6E;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:2px;padding:11px;cursor:pointer}
 #pw-err{color:#e74c3c;font-size:.8rem;margin-top:8px;display:none}
 </style>
@@ -283,19 +284,28 @@ main{max-width:880px;margin:0 auto;padding:14px}
 <body>
 <div id="pw-overlay">
   <div id="pw-box">
-    <h2>U5 OST</h2>
-    <p>Schichtbericht BÜ – Bitte PIN eingeben</p>
-    <input type="password" id="pw-input" placeholder="" maxlength="8" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <h2>Schichtbericht U5 Ost</h2>
+    <input type="text" id="pw-name" placeholder="Name" maxlength="40" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" >
+    <input type="password" id="pw-input" placeholder="Passwort" maxlength="20" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="pw-btn" onclick="checkPW()">ZUGANG</button>
-    <div id="pw-err">Falscher PIN – bitte erneut versuchen.</div>
+    <div id="pw-err">Falscher Name oder PIN – bitte erneut versuchen.</div>
   </div>
 </div>
 <script>
+const USERS = [
+  {name:'Fabian Richter', pin:'1247'},
+];
 function checkPW(){
+  const n = (document.getElementById('pw-name').value||'').trim();
   const v = document.getElementById('pw-input').value;
-  if(v === '1247'){
+  const user = USERS.find(u => u.name.toLowerCase()===n.toLowerCase() && u.pin===v);
+  if(user){
     document.getElementById('pw-overlay').style.display='none';
     sessionStorage.setItem('u5auth','1');
+    sessionStorage.setItem('u5name', user.name);
+    // Name in BÜ-Feld eintragen
+    const bl = document.getElementById('fBauleiter');
+    if(bl && !bl.value) bl.value = user.name;
   } else {
     document.getElementById('pw-err').style.display='block';
     document.getElementById('pw-input').value='';
@@ -303,6 +313,7 @@ function checkPW(){
   }
 }
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPW(); });
+document.getElementById('pw-name').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('pw-input').focus(); });
 if(sessionStorage.getItem('u5auth')==='1') document.getElementById('pw-overlay').style.display='none';
 </script>
 <script>
