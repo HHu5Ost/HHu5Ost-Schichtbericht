@@ -285,7 +285,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
   <div id="pw-box">
     <h2>U5 OST</h2>
     <p>Schichtbericht BÜ – Bitte PIN eingeben</p>
-    <input type="password" id="pw-input" placeholder="" maxlength="8" inputmode="numeric">
+    <input type="password" id="pw-input" placeholder="" maxlength="8" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <button id="pw-btn" onclick="checkPW()">ZUGANG</button>
     <div id="pw-err">Falscher PIN – bitte erneut versuchen.</div>
   </div>
@@ -304,6 +304,11 @@ function checkPW(){
 }
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPW(); });
 if(sessionStorage.getItem('u5auth')==='1') document.getElementById('pw-overlay').style.display='none';
+</script>
+<script>
+// iOS scroll-to-top fix
+window.addEventListener('load', () => { setTimeout(() => window.scrollTo(0, 0), 100); });
+window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 0), 100); });
 </script>
 
 
