@@ -285,7 +285,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
   <div id="pw-box">
     <h2>U5 OST</h2>
     <p>Schichtbericht BÜ – Bitte PIN eingeben</p>
-    <input type="password" id="pw-input" placeholder="••••" maxlength="8" inputmode="numeric">
+    <input type="password" id="pw-input" placeholder="" maxlength="8" inputmode="numeric">
     <button id="pw-btn" onclick="checkPW()">ZUGANG</button>
     <div id="pw-err">Falscher PIN – bitte erneut versuchen.</div>
   </div>
@@ -293,7 +293,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
 <script>
 function checkPW(){
   const v = document.getElementById('pw-input').value;
-  if(v === '2003'){
+  if(v === '1247'){
     document.getElementById('pw-overlay').style.display='none';
     sessionStorage.setItem('u5auth','1');
   } else {
@@ -366,7 +366,7 @@ if(sessionStorage.getItem('u5auth')==='1') document.getElementById('pw-overlay')
       <option value="Nebel">Nebel</option>
     </select><button id="btnWetter" style="background:none;border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--hell);font-size:.7rem;padding:0 8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;white-space:nowrap;min-height:40px">⛅ Auto</button></div>
   </div>
-  <div class="fi"><label>Temperatur (Tagesschnitt) <span id="wetterStatus" style="font-size:.6rem;color:var(--hell)"></span></label>
+  <div class="fi"><label>Temperatur Min - Max <span id="wetterStatus" style="font-size:.6rem;color:var(--hell)"></span></label>
     <input type="text" id="fTemp" placeholder="z.B. 12 °C">
   </div>
 
@@ -1815,7 +1815,7 @@ async function fetchWetter(){
     const tMin = data.daily && data.daily.temperature_2m_min ? Math.round(data.daily.temperature_2m_min[0]) : temp;
     const tMax = data.daily && data.daily.temperature_2m_max ? Math.round(data.daily.temperature_2m_max[0]) : temp;
     document.getElementById('fWetter').value = wetter;
-    document.getElementById('fTemp').value = `${tMin} / ${tMax} °C`;
+    document.getElementById('fTemp').value = `${tMin} - ${tMax} °C`;
     if(status) status.textContent = `✓ jetzt ${temp}°C`;
     if(btn){ btn.textContent='✓ Auto'; setTimeout(()=>{ btn.textContent='⛅ Auto'; btn.disabled=false; },3000); }
   } catch(e){
