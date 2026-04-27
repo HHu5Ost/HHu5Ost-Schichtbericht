@@ -210,12 +210,12 @@ main{max-width:880px;margin:0 auto;padding:14px}
 /* ── OFFLINE BANNER ──────────────────────────── */
 
 /* ── SHARE MODAL ─────────────────────────────── */
-#shareModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center}
+#shareModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:599;align-items:center;justify-content:center;overscroll-behavior:contain}
 #shareModal.open{display:flex}
-.share-box{background:var(--blau2);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:20px;max-width:340px;width:90%;text-align:center}
+.share-box{background:var(--blau2);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:24px;max-width:340px;width:90%;text-align:center;position:relative;z-index:600;-webkit-overflow-scrolling:touch}
 .share-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:14px}
 .share-btns{display:flex;flex-direction:column;gap:8px}
-.share-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--r);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;transition:background .15s}
+.share-btn{display:flex;align-items:center;gap:10px;padding:14px;border-radius:var(--r);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;transition:background .15s;touch-action:manipulation;-webkit-tap-highlight-color:rgba(245,166,35,.3);position:relative;z-index:600;justify-content:center;width:100%}
 .share-btn-download{background:var(--gelb);color:var(--blau2)}
 .share-btn-share{background:#e8edf5;color:var(--weiss);border:1px solid rgba(255,255,255,.1)}
 .share-btn-close{background:none;color:var(--hell);border:1px solid rgba(255,255,255,.1);margin-top:4px}
@@ -3212,23 +3212,14 @@ document.getElementById('btnOneDrive').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('btnShare').addEventListener('click', async () => {
-  if(!_pdfBlob) return;
-  const file = new File([_pdfBlob], _pdfFilename, {type:'application/pdf'});
-  if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
-    try{ await navigator.share({title:'U5 Ost Schichtbericht', files:[file]}); }
-    catch(e){ if(e.name !== 'AbortError') triggerDownload(); }
-  } else {
-    triggerDownload();
-  }
-});
-
 document.getElementById('btnDownload').addEventListener('click', () => {
+  document.body.style.overflow = '';
   triggerDownload();
   document.getElementById('shareModal').classList.remove('open');
 });
 
 document.getElementById('btnShareClose').addEventListener('click', () => {
+  document.body.style.overflow = '';
   document.getElementById('shareModal').classList.remove('open');
   document.getElementById('shareStatus').textContent = '';
   document.getElementById('shareSaved').style.display = 'none';
@@ -3252,6 +3243,32 @@ function savePdfOffline(blob, filename){
         .put({blob, filename, date: new Date().toISOString()}, 'latest');
     };
   } catch(e){ console.warn('IndexedDB save failed:', e); }
+}
+
+function printFotos(containerEl, titleLabel, doc, y, M, W, BG1, BLUE, np, pdfStr){
+  if(!containerEl) return y;
+  const imgs = [...containerEl.querySelectorAll('.foto-preview img')].filter(el=>el.src && !el.src.startsWith('data:image/svg'));
+  if(!imgs.length) return y;
+  y=np(y,10);
+  doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,5,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...BLUE);
+  doc.text(pdfStr('FOTOS'+(titleLabel?' – '+titleLabel:'')+':'),M+4,y+3.5);
+  doc.setTextColor(0,0,0); y+=5+2;
+  const fW=(W-2*M-3)/2;
+  const fHH=fW*0.65;
+  let col=0;
+  imgs.forEach(img=>{
+    if(!img.src||img.src.startsWith('data:image/svg')) return;
+    try{
+      const x2=M+col*(fW+3);
+      y=np(y,fHH+2);
+      doc.addImage(img.src,'JPEG',x2,y,fW,fHH,'','FAST');
+      col++;
+      if(col>=2){ col=0; y+=fHH+3; }
+    }catch(e){}
+  });
+  if(col>0) y+=fHH+3;
+  return y+2;
 }
 
 function exportPDF(){
@@ -3939,12 +3956,12 @@ function exportPDF(){
     }
     // Fotos der Gewerk-Section drucken
     const fotoSection = document.getElementById('gws-'+gw);
-    if(fotoSection) printFotos(fotoSection, conf.label);
+    if(fotoSection) y=printFotos(fotoSection, conf.label, doc, y, M, W, BG1, BLUE, np, pdfStr);
 
     // Fotos der Abnahme-Blöcke drucken
     fotoSection && fotoSection.querySelectorAll('.abnahme-block').forEach(abn=>{
       const abnTitle = abn.querySelector('.abnahme-title')?.textContent.trim()||'';
-      printFotos(abn, abnTitle);
+      y=printFotos(abn, abnTitle, doc, y, M, W, BG1, BLUE, np, pdfStr);
     });
 
     // Hinweise pro Gewerk drucken
@@ -4033,7 +4050,7 @@ function exportPDF(){
   _pdfFilename = `U5_Ost_Schichtbericht_${bs}_${datum}.pdf`;
   _pdfBlob = doc.output('blob');
   document.getElementById('shareSaved').style.display = 'none';
-  document.getElementById('shareModal').classList.add('open');
+  document.getElementById('shareModal').classList.add('open'); document.body.style.overflow='hidden';
   }catch(err){alert('PDF Fehler: '+err.message); console.error(err);}
 }
 </script>
