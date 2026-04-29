@@ -10,23 +10,23 @@
 <style>
 :root {
   --blau:    #1C3A6E;
-  --blau2:   #152d58;
+  --blau2:   #f0f4f8;
   --blau3:   #1C3A6E;
-  --grau1:   #3a3f50;
-  --grau2:   #1a3560;
-  --grau3:   #3a5a8a;
-  --hell:    #9aa5b8;
-  --weiss:   #e8edf5;
+  --grau1:   #e2e8f0;
+  --grau2:   #e8eef5;
+  --grau3:   #cbd5e1;
+  --hell:    #475569;
+  --weiss:   #1a2744;
   --gelb:    #F5A623;
   --gelb2:   #d98f1a;
-  --gruen:   #2e9e50;
-  --gruen_bg:#1a3d28;
-  --rot:     #cc3030;
-  --rot_bg:  #3d1a1a;
+  --gruen:   #1a7a3a;
+  --gruen_bg:#dcfce7;
+  --rot:     #cc2020;
+  --rot_bg:  #fee2e2;
   --r: 3px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#0e1825;color:var(--weiss);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px}
+body{background:#f5f7fa;color:#000000;font-weight:600;font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px}
 
 /* ── HEADER ── */
 .hdr{background:var(--blau);border-bottom:3px solid var(--gelb);display:flex;align-items:stretch;position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.6)}
@@ -34,14 +34,14 @@ body{background:#0e1825;color:var(--weiss);font-family:'Barlow',sans-serif;min-h
 .hdr-logo img{height:44px;width:auto;display:block}
 .hdr-div{width:1px;background:rgba(245,166,35,.5);margin:8px 0}
 .hdr-mid{flex:1;display:flex;align-items:center;gap:14px;padding:0 14px;flex-wrap:wrap}
-.hdr-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;color:var(--weiss)}
-.hdr-sub{font-size:.7rem;color:var(--hell);font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.8px}
-.hdr-date{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:var(--hell);letter-spacing:.5px}
-.hdr-date b{color:var(--weiss)}
+.hdr-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;color:#ffffff!important}
+.hdr-sub{font-size:.7rem;color:#ffffff!important;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.8px}
+.hdr-date{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;color:#ffffff!important;letter-spacing:.5px}
+.hdr-date b{color:#ffffff!important}
 .pbar-wrap{flex:1;min-width:100px;max-width:170px}
 .pbar-bg{background:var(--blau2);height:5px;border-radius:3px;overflow:hidden}
 .pbar-fill{height:100%;background:var(--gelb);border-radius:3px;transition:width .4s}
-.pbar-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.67rem;color:var(--hell);text-align:right;margin-top:2px}
+.pbar-lbl{font-family:'Barlow Condensed',sans-serif;font-size:.67rem;color:#ffffff!important;text-align:right;margin-top:2px}
 .hdr-pdf{background:var(--gelb);color:var(--blau2);border:none;height:34px;padding:0 14px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border-radius:var(--r);transition:background .15s;white-space:nowrap}
 .hdr-pdf:active{background:var(--gelb2)}
 
@@ -49,9 +49,9 @@ body{background:#0e1825;color:var(--weiss);font-family:'Barlow',sans-serif;min-h
 main{max-width:880px;margin:0 auto;padding:14px}
 
 /* ── PROJEKT-FELDER ── */
-.pinfo{background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-left:4px solid var(--gelb);padding:12px 14px;border-radius:var(--r);display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;align-items:start}
+.pinfo{background:#ffffff;border:1px solid #d1d9e6;border-left:4px solid var(--gelb);padding:12px 14px;border-radius:var(--r);display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;align-items:start}
 .fi label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--gelb);margin-bottom:3px}
-.fi input,.fi select{background:var(--blau2);color:var(--weiss);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:8px 10px;width:100%;outline:none;min-height:40px;-webkit-appearance:none;transition:border-color .2s}
+.fi input,.fi select{background:#ffffff;color:#0a0f1e;border:1px solid #c8d4e8;border-radius:var(--r);font-family:'Barlow',sans-serif;font-size:.9rem;padding:8px 10px;width:100%;outline:none;min-height:40px;-webkit-appearance:none;transition:border-color .2s}
 .fi input:focus,.fi select:focus{border-color:var(--gelb)}
 
 /* ── STAT PILLS ── */
@@ -137,7 +137,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
 .abnahme-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 @media(max-width:500px){.abnahme-fields{grid-template-columns:1fr}}
 .abn-fi label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:var(--hell);margin-bottom:3px}
-.abn-fi input,.abn-fi select,.abn-fi textarea{background:var(--grau1);color:var(--weiss);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:7px 9px;width:100%;outline:none;-webkit-appearance:none}
+.abn-fi input,.abn-fi select,.abn-fi textarea{background:#ffffff;color:#0a0f1e;border:1px solid #c8d4e8;border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:7px 9px;width:100%;outline:none;-webkit-appearance:none}
 .abn-fi textarea{min-height:48px;resize:none;line-height:1.5}
 .abn-fi input:focus,.abn-fi select:focus,.abn-fi textarea:focus{border-color:var(--gelb)}
 .abnahme-status{display:flex;gap:6px;margin-bottom:8px}
@@ -212,7 +212,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
 /* ── SHARE MODAL ─────────────────────────────── */
 #shareModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:599;align-items:center;justify-content:center;overscroll-behavior:contain}
 #shareModal.open{display:flex}
-.share-box{background:var(--blau2);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:24px;max-width:340px;width:90%;text-align:center;position:relative;z-index:600;-webkit-overflow-scrolling:touch}
+.share-box{background:#ffffff;border:1px solid #d1d9e6;border-radius:var(--r);padding:24px;max-width:340px;width:90%;text-align:center;position:relative;z-index:600;-webkit-overflow-scrolling:touch}
 .share-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:14px}
 .share-btns{display:flex;flex-direction:column;gap:8px}
 .share-btn{display:flex;align-items:center;gap:10px;padding:14px;border-radius:var(--r);border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;transition:background .15s;touch-action:manipulation;-webkit-tap-highlight-color:rgba(245,166,35,.3);position:relative;z-index:600;justify-content:center;width:100%}
@@ -271,14 +271,14 @@ main{max-width:880px;margin:0 auto;padding:14px}
 </style>
 
 <style>
-#pw-overlay{position:fixed;inset:0;background:#0d1b2e;display:flex;align-items:center;justify-content:center;z-index:99999}
-#pw-box{background:#1a2c45;border:1px solid rgba(245,166,35,.4);border-radius:10px;padding:32px 28px;width:300px;text-align:center}
-#pw-box h2{font-family:'Barlow Condensed',sans-serif;color:#F5A623;font-size:1.2rem;letter-spacing:1px;margin-bottom:16px}
-#pw-box p{color:#8899aa;font-size:.8rem;margin-bottom:20px}
-#pw-name,#pw-input{width:100%;background:#0d1b2e;border:1.5px solid rgba(245,166,35,.5);border-radius:6px;color:#fff;font-family:'Barlow',sans-serif;font-size:1.1rem;padding:10px;text-align:center;outline:none;margin-bottom:10px}
+#pw-overlay{position:fixed;inset:0;background:#f0f4f8;display:flex;align-items:center;justify-content:center;z-index:99999}
+#pw-box{background:#ffffff;border:2px solid #F5A623;border-radius:10px;padding:32px 28px;width:300px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.12)}
+#pw-box h2{font-family:'Barlow Condensed',sans-serif;color:#1C3A6E;font-size:1.2rem;letter-spacing:1px;margin-bottom:16px;font-weight:800}
+#pw-box p{color:#334155;font-size:.8rem;margin-bottom:20px;font-weight:600}
+#pw-name,#pw-input{width:100%;background:#f8fafc;border:1.5px solid #b0bdd4;border-radius:6px;color:#000000;font-family:'Barlow',sans-serif;font-size:1.1rem;font-weight:700;padding:10px;text-align:center;outline:none;margin-bottom:10px}
 #pw-input{letter-spacing:3px}
 #pw-btn{width:100%;background:#F5A623;border:none;border-radius:6px;color:#1C3A6E;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:2px;padding:11px;cursor:pointer}
-#pw-err{color:#e74c3c;font-size:.8rem;margin-top:8px;display:none}
+#pw-err{color:#cc2020;font-size:.8rem;margin-top:8px;display:none;font-weight:700}
 </style>
 </head>
 <body>
@@ -390,7 +390,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
 </div>
 
 <!-- TERMINE & TÄTIGKEITEN PLATZHALTER -->
-<div id="baufeld-termine-box" style="background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:10px 14px;margin-bottom:14px">
+<div id="baufeld-termine-box" style="background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:10px 14px;margin-bottom:14px">
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
     <span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px">📅 Anstehende Termine &amp; Tätigkeiten – <span id="baufeld-termine-name"></span></span>
   </div>
@@ -407,55 +407,6 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
 
 <!-- ══════════════════════════════════════
      GEWERK-AUSWAHL
-══════════════════════════════════════ -->
-<div class="sec" style="margin-top:22px"><span class="sec-lbl no-collapse">⚙️ Aktive Bauaktivitäten</span><span class="sec-line"></span></div>
-<p style="font-size:.78rem;color:var(--hell);margin-bottom:10px">Bauaktivitäten auswählen.</p>
-<div class="gewerk-grid" id="gewerkGrid">
-  <div class="gw-btn" data-gw="schlitzwand">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAzMiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjI0Ij4KICA8IS0tIEF1ZmjDpG5ndW5nIG9iZW4gLS0+CiAgPHJlY3QgeD0iMTAiIHk9IjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjMiIHJ4PSIxIiBmaWxsPSIjYWFhIi8+CiAgPCEtLSBPYmVydGVpbCBLw7ZycGVyIC0tPgogIDxyZWN0IHg9IjciIHk9IjMiIHdpZHRoPSIxMCIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iIzg4OCIvPgogIDwhLS0gTGlua2UgZ2VsYmUgU2VpdGVucGxhdHRlIC0tPgogIDxyZWN0IHg9IjQiIHk9IjUiIHdpZHRoPSI0IiBoZWlnaHQ9IjEyIiByeD0iMSIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gUmVjaHRlIGdlbGJlIFNlaXRlbnBsYXR0ZSAtLT4KICA8cmVjdCB4PSIxNiIgeT0iNSIgd2lkdGg9IjQiIGhlaWdodD0iMTIiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBNaXR0bGVyZXIgUmFobWVuL0vDtnJwZXIgLS0+CiAgPHJlY3QgeD0iOCIgeT0iNiIgd2lkdGg9IjgiIGhlaWdodD0iMTAiIHJ4PSIwLjUiIGZpbGw9IiM2NjYiLz4KICA8IS0tIElubmVyZSDDlmZmbnVuZyAtLT4KICA8cmVjdCB4PSIxMCIgeT0iNyIgd2lkdGg9IjQiIGhlaWdodD0iNyIgcng9IjAuMyIgZmlsbD0iIzMzMyIvPgogIDwhLS0gVmVyYmluZHVuZ3NzdMO8Y2sgLS0+CiAgPHJlY3QgeD0iNyIgeT0iMTciIHdpZHRoPSIxMCIgaGVpZ2h0PSIzIiByeD0iMC41IiBmaWxsPSIjNzc3Ii8+CiAgPCEtLSBHcmVpZmVyIGxpbmtzIC0tPgogIDxwYXRoIGQ9Ik03IDIwIFE0IDIzIDMgMjggTDcgMjcgTDkgMjBaIiBmaWxsPSIjNjY2Ii8+CiAgPCEtLSBHcmVpZmVyIHJlY2h0cyAtLT4KICA8cGF0aCBkPSJNMTcgMjAgUTIwIDIzIDIxIDI4IEwxNyAyNyBMMTUgMjBaIiBmaWxsPSIjNjY2Ii8+CiAgPCEtLSBaw6RobmUgbGlua3MgLS0+CiAgPHBhdGggZD0iTTMgMjggTDQgMzIgTTUgMjguNSBMNS41IDMyIE02LjUgMjggTDYuOCAzMiIgc3Ryb2tlPSIjNTU1IiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBaw6RobmUgcmVjaHRzIC0tPgogIDxwYXRoIGQ9Ik0yMSAyOCBMMjAgMzIgTTE5IDI4LjUgTDE4LjUgMzIgTTE3LjUgMjggTDE3LjIgMzIiIHN0cm9rZT0iIzU1NSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:18px;height:24px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Schlitzwand</span><span class="gw-sub">Leitwandbau · Schlitzen · Bewehrung · Betonage</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="aushub">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCAyOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjIyIj4KICA8IS0tIEtldHRlIC0tPgogIDxyZWN0IHg9IjE0IiB5PSIxOSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjNDQ0Ii8+CiAgPHJlY3QgeD0iMTUiIHk9IjIwIiB3aWR0aD0iMjIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM1NTUiLz4KICA8Y2lyY2xlIGN4PSIxNyIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIyNyIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz4KICA8IS0tIE9iZXJ3YWdlbiAtLT4KICA8cmVjdCB4PSIxNSIgeT0iMTMiIHdpZHRoPSIyMiIgaGVpZ2h0PSI3IiByeD0iMiIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gRsO8aHJlcmhhdXMgLS0+CiAgPHJlY3QgeD0iMjciIHk9IjkiIHdpZHRoPSI5IiBoZWlnaHQ9IjciIHJ4PSIxLjUiIGZpbGw9IiNGNUE2MjMiLz4KICA8cmVjdCB4PSIyOCIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiMxYTNhNWMiIG9wYWNpdHk9IjAuODUiLz4KICA8IS0tIEF1c2xlZ2VyIGRpYWdvbmFsIGxpbmtzLW9iZW4gLS0+CiAgPGxpbmUgeDE9IjIxIiB5MT0iMTMiIHgyPSI3IiB5Mj0iMyIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjIyIiB5MT0iMTQiIHgyPSI4IiB5Mj0iNCIgc3Ryb2tlPSIjRjVBNjIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU3RpZWwgbmFjaCB1bnRlbi1saW5rcyAtLT4KICA8bGluZSB4MT0iNyIgeTE9IjMiIHgyPSIyIiB5Mj0iMTMiIHN0cm9rZT0iI2NjODgwMCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjQiIHgyPSIzIiB5Mj0iMTQiIHN0cm9rZT0iI0Y1QTYyMyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU2NoYXVmZWwgLS0+CiAgPHBhdGggZD0iTS0xIDEyIFEtNCAxNSAtMiAxOSBRMCAyMSA1IDE5IEw0IDEyWiIgZmlsbD0iIzg4OCIvPgogIDxwYXRoIGQ9Ik0tMSAxOSBMLTIgMjIgTTIgMjAgTDIgMjMgTTQgMTkgTDUgMjIiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:36px;height:22px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Aushub</span><span class="gw-sub">Trockenaushub · Nassaushub · Steifenlage</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="mikropfahl">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAzMiIgd2lkdGg9IjIwIiBoZWlnaHQ9IjI4Ij4KICA8IS0tIEZhaHJ6ZXVnIEvDtnJwZXIgLS0+CiAgPHJlY3QgeD0iMSIgeT0iMTciIHdpZHRoPSIxNiIgaGVpZ2h0PSI5IiByeD0iMiIgZmlsbD0iIzFhMzU2MCIvPgogIDwhLS0gR2VsYmUgU3RyZWlmZW4gLS0+CiAgPHJlY3QgeD0iMSIgeT0iMTciIHdpZHRoPSIzIiBoZWlnaHQ9IjkiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBSw6RkZXIgLS0+CiAgPGNpcmNsZSBjeD0iNCIgY3k9IjI2IiByPSIyIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iMTMiIGN5PSIyNiIgcj0iMiIgZmlsbD0iIzMzMyIvPgogIDwhLS0gTWFzdCB2ZXJ0aWthbCAtLT4KICA8cmVjdCB4PSIxNiIgeT0iMiIgd2lkdGg9IjMiIGhlaWdodD0iMjYiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBCb2hyZ2VzdMOkbmdlIC0tPgogIDxyZWN0IHg9IjE3IiB5PSIyNiIgd2lkdGg9IjEuNSIgaGVpZ2h0PSI2IiBmaWxsPSIjODg4Ii8+CiAgPCEtLSBBbnRyaWVic2tvcGYgb2JlbiAtLT4KICA8cmVjdCB4PSIxMyIgeT0iNSIgd2lkdGg9IjkiIGhlaWdodD0iNiIgcng9IjEuNSIgZmlsbD0iI0Y1QTYyMyIvPgogIDxjaXJjbGUgY3g9IjE3IiBjeT0iNSIgcj0iMi41IiBmaWxsPSIjRjVBNjIzIiBzdHJva2U9IiNjYzg4MDAiIHN0cm9rZS13aWR0aD0iMC44Ii8+CiAgPCEtLSBBdXNsZWdlciB6dW0gTWFzdCAtLT4KICA8bGluZSB4MT0iOCIgeTE9IjE3IiB4Mj0iMTYiIHkyPSI4IiBzdHJva2U9IiNGNUE2MjMiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8IS0tIEh5ZHJhdWxpa3p5bGluZGVyIC0tPgogIDxsaW5lIHgxPSIxMCIgeTE9IjE3IiB4Mj0iMTYiIHkyPSIxMiIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:20px;height:28px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Mikropfähle</span><span class="gw-sub">Bohren · Verpressen · Spannen</span></div>
-    <div class="gw-tick"></div>
-  </div>
-    <div class="gw-btn" data-gw="uwbs">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAyMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIwIj4KICA8IS0tIFdhc3NlciAtLT4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjgiIGhlaWdodD0iMTMiIHJ4PSIxIiBmaWxsPSIjMWE0YTdhIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPCEtLSBXZWxsZW4gLS0+CiAgPHBhdGggZD0iTTAgMyBRMy41IDEgNyAzIFExMC41IDUgMTQgMyBRMTcuNSAxIDIxIDMgUTI0LjUgNSAyOCAzIiBzdHJva2U9IiM0YTlhY2MiIHN0cm9rZS13aWR0aD0iMS4yIiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjgiLz4KICA8cGF0aCBkPSJNMCA2IFEzLjUgNCA3IDYgUTEwLjUgOCAxNCA2IFExNy41IDQgMjEgNiBRMjQuNSA4IDI4IDYiIHN0cm9rZT0iIzRhOWFjYyIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjYiLz4KICA8cGF0aCBkPSJNMCA5IFEzLjUgNyA3IDkgUTEwLjUgMTEgMTQgOSBRMTcuNSA3IDIxIDkgUTI0LjUgMTEgMjggOSIgc3Ryb2tlPSIjNmFiNGUwIiBzdHJva2Utd2lkdGg9IjAuOCIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC41Ii8+CiAgPCEtLSBTb2hsZSAoQmV0b25zb2hsZSkgLS0+CiAgPHJlY3QgeD0iMCIgeT0iMTMiIHdpZHRoPSIyOCIgaGVpZ2h0PSI2IiByeD0iMCIgZmlsbD0iIzg4OCIvPgogIDwhLS0gU29obGUgU3RydWt0dXIvVGV4dHVyIC0tPgogIDxsaW5lIHgxPSIwIiB5MT0iMTUiIHgyPSIyOCIgeTI9IjE1IiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjUiLz4KICA8bGluZSB4MT0iMCIgeTE9IjE3IiB4Mj0iMjgiIHkyPSIxNyIgc3Ryb2tlPSIjOTk5IiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC41Ii8+CiAgPCEtLSBCb2RlbiBkYXJ1bnRlciAtLT4KICA8cmVjdCB4PSIwIiB5PSIxOSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjMiIHJ4PSIwIiBmaWxsPSIjNWE0MDIwIi8+Cjwvc3ZnPg==" style="width:26px;height:20px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">UWBS</span><span class="gw-sub">Betonage</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="verfuellen">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNCAyMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIj4KICA8IS0tIEJvZGVuIC0tPgogIDxyZWN0IHg9IjAiIHk9IjE4IiB3aWR0aD0iMzQiIGhlaWdodD0iNCIgZmlsbD0iIzhCNjkxNCIvPgoKICA8IS0tIEbDvGhyZXJoYXVzIGxpbmtzIC0tPgogIDxyZWN0IHg9IjEiIHk9IjEwIiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMS41IiBmaWxsPSIjODg4Ii8+CiAgPHJlY3QgeD0iMiIgeT0iMTEiIHdpZHRoPSI1IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiNhYWRjZmYiIG9wYWNpdHk9IjAuODUiLz4KCiAgPCEtLSBDaGFzc2lzIC0tPgogIDxyZWN0IHg9IjEiIHk9IjE1IiB3aWR0aD0iMjIiIGhlaWdodD0iMyIgcng9IjEiIGZpbGw9IiM2NjYiLz4KCiAgPCEtLSBNdWxkZSBnZWtpcHB0IG5hY2ggcmVjaHRzIC0tPgogIDxwYXRoIGQ9Ik05IDUgTDIzIDggTDIyIDE1IEw5IDE1WiIgZmlsbD0iIzc3NyIvPgogIDxwYXRoIGQ9Ik05IDUgTDIzIDggTDIzIDYgTDkgM1oiIGZpbGw9IiM4ODgiLz4KICA8IS0tIE11bGRlIFJhbmQgcmVjaHRzIG9mZmVuIC0tPgogIDxsaW5lIHgxPSIyMyIgeTE9IjYiIHgyPSIyMiIgeTI9IjE1IiBzdHJva2U9IiM1NTUiIHN0cm9rZS13aWR0aD0iMSIvPgoKICA8IS0tIEVyZGUgZsOkbGx0IHJlY2h0cyByYXVzIC0tPgogIDxwYXRoIGQ9Ik0yMiAxMCBRMjQgOCAyNSAxMSBRMjcgOCAyOCAxMiBRMjkgOSAzMCAxMyBRMzEgMTEgMzIgMTQgTDMyIDE4IEwyMSAxOCBMMjIgMTVaIiBmaWxsPSIjOUI3QTFBIi8+CgogIDwhLS0gUsOkZGVyIC0tPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxOSIgcj0iMi4yIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxOSIgcj0iMi4yIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iNSIgY3k9IjE5IiByPSIxIiBmaWxsPSIjNTU1Ii8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxOSIgcj0iMSIgZmlsbD0iIzU1NSIvPgo8L3N2Zz4=" style="width:32px;height:20px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Verfüllen</span><span class="gw-sub">Verfüllung</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="wiederaushub">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCAyOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjIyIj4KICA8IS0tIEtldHRlIC0tPgogIDxyZWN0IHg9IjE0IiB5PSIxOSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjNDQ0Ii8+CiAgPHJlY3QgeD0iMTUiIHk9IjIwIiB3aWR0aD0iMjIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM1NTUiLz4KICA8Y2lyY2xlIGN4PSIxNyIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIyNyIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz4KICA8IS0tIE9iZXJ3YWdlbiAtLT4KICA8cmVjdCB4PSIxNSIgeT0iMTMiIHdpZHRoPSIyMiIgaGVpZ2h0PSI3IiByeD0iMiIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gRsO8aHJlcmhhdXMgLS0+CiAgPHJlY3QgeD0iMjciIHk9IjkiIHdpZHRoPSI5IiBoZWlnaHQ9IjciIHJ4PSIxLjUiIGZpbGw9IiNGNUE2MjMiLz4KICA8cmVjdCB4PSIyOCIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiMxYTNhNWMiIG9wYWNpdHk9IjAuODUiLz4KICA8IS0tIEF1c2xlZ2VyIGRpYWdvbmFsIGxpbmtzLW9iZW4gLS0+CiAgPGxpbmUgeDE9IjIxIiB5MT0iMTMiIHgyPSI3IiB5Mj0iMyIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjIyIiB5MT0iMTQiIHgyPSI4IiB5Mj0iNCIgc3Ryb2tlPSIjRjVBNjIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU3RpZWwgbmFjaCB1bnRlbi1saW5rcyAtLT4KICA8bGluZSB4MT0iNyIgeTE9IjMiIHgyPSIyIiB5Mj0iMTMiIHN0cm9rZT0iI2NjODgwMCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjQiIHgyPSIzIiB5Mj0iMTQiIHN0cm9rZT0iI0Y1QTYyMyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU2NoYXVmZWwgLS0+CiAgPHBhdGggZD0iTS0xIDEyIFEtNCAxNSAtMiAxOSBRMCAyMSA1IDE5IEw0IDEyWiIgZmlsbD0iIzg4OCIvPgogIDxwYXRoIGQ9Ik0tMSAxOSBMLTIgMjIgTTIgMjAgTDIgMjMgTTQgMTkgTDUgMjIiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:36px;height:22px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Wiederaushub</span><span class="gw-sub">Aushub</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="rohbau">
-    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAyMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIwIj4KICA8IS0tIEJvZGVuIGF1w59lbiAtLT4KICA8cmVjdCB4PSIwIiB5PSIxOCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjQiIGZpbGw9IiM1YTQwMjAiLz4KICAKICA8IS0tIFRyb2cgQXXDn2Vud2FuZCAtLT4KICA8cmVjdCB4PSIxIiB5PSIyIiB3aWR0aD0iMjYiIGhlaWdodD0iMTYiIHJ4PSIwIiBmaWxsPSIjODg4Ii8+CiAgCiAgPCEtLSBUcm9nIElubmVucmF1bSAoZHVua2VsKSAtLT4KICA8cmVjdCB4PSI0IiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIGZpbGw9IiMxYTI1MzUiLz4KICAKICA8IS0tIFNvaGxlIGlubmVuIChoZWxsZXIgQmV0b24pIC0tPgogIDxyZWN0IHg9IjQiIHk9IjE1IiB3aWR0aD0iMjAiIGhlaWdodD0iMyIgZmlsbD0iIzk5OSIvPgogIAogIDwhLS0gTGlua2UgV2FuZCBCZXRvbnN0cnVrdHVyIC0tPgogIDxyZWN0IHg9IjEiIHk9IjIiIHdpZHRoPSIzIiBoZWlnaHQ9IjE2IiBmaWxsPSIjOTk5Ii8+CiAgPCEtLSBSZWNodGUgV2FuZCAtLT4KICA8cmVjdCB4PSIyNCIgeT0iMiIgd2lkdGg9IjMiIGhlaWdodD0iMTYiIGZpbGw9IiM5OTkiLz4KICA8IS0tIERlY2tlIC0tPgogIDxyZWN0IHg9IjEiIHk9IjIiIHdpZHRoPSIyNiIgaGVpZ2h0PSIzIiBmaWxsPSIjYWFhIi8+CiAgCiAgPCEtLSBGdWdlbi9MaW5pZW4gZsO8ciBCZXRvbnNlZ21lbnRlIC0tPgogIDxsaW5lIHgxPSI0IiB5MT0iMiIgeDI9IjQiIHkyPSIxOCIgc3Ryb2tlPSIjNzc3IiBzdHJva2Utd2lkdGg9IjAuNSIvPgogIDxsaW5lIHgxPSIyNCIgeTE9IjIiIHgyPSIyNCIgeTI9IjE4IiBzdHJva2U9IiM3NzciIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgPGxpbmUgeDE9IjEiIHkxPSI1IiB4Mj0iMjciIHkyPSI1IiBzdHJva2U9IiM3NzciIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgPGxpbmUgeDE9IjEiIHkxPSIxNSIgeDI9IjI3IiB5Mj0iMTUiIHN0cm9rZT0iIzc3NyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICAKICA8IS0tIFBlcnNwZWt0aXYtVGllZmUgaGludGVuIC0tPgogIDxsaW5lIHgxPSI0IiB5MT0iMiIgeDI9IjciIHkyPSI0IiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMC44Ii8+CiAgPGxpbmUgeDE9IjI0IiB5MT0iMiIgeDI9IjIxIiB5Mj0iNCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjAuOCIvPgogIDxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMSIgZmlsbD0iIzE1MWYyZSIgb3BhY2l0eT0iMC42Ii8+Cjwvc3ZnPg==" style="width:26px;height:20px;vertical-align:middle"></span>
-    <div class="gw-info"><span class="gw-name">Rohbau</span><span class="gw-sub">Sohle · Wand · Decke</span></div>
-    <div class="gw-tick"></div>
-  </div>
-  <div class="gw-btn" data-gw="sonstiges">
-    <span class="gw-icon">📋</span>
-    <div class="gw-info"><span class="gw-name">Sonstiges</span></div>
-    <div class="gw-tick"></div>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════
-     ARBEITSSICHERHEIT (täglich, immer)
 ══════════════════════════════════════ -->
 <div class="sec"><span class="sec-lbl">🔒 Arbeitssicherheit</span><span class="sec-line"></span></div>
 <div class="cl" id="cl-sicherheit">
@@ -513,6 +464,55 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     </div>
   </div>
 </div>
+<div class="sec" style="margin-top:22px"><span class="sec-lbl no-collapse">⚙️ Aktive Bauaktivitäten</span><span class="sec-line"></span></div>
+<p style="font-size:.78rem;color:var(--hell);margin-bottom:10px">Bauaktivitäten auswählen.</p>
+<div class="gewerk-grid" id="gewerkGrid">
+  <div class="gw-btn" data-gw="schlitzwand">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAzMiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjI0Ij4KICA8IS0tIEF1ZmjDpG5ndW5nIG9iZW4gLS0+CiAgPHJlY3QgeD0iMTAiIHk9IjAiIHdpZHRoPSI0IiBoZWlnaHQ9IjMiIHJ4PSIxIiBmaWxsPSIjYWFhIi8+CiAgPCEtLSBPYmVydGVpbCBLw7ZycGVyIC0tPgogIDxyZWN0IHg9IjciIHk9IjMiIHdpZHRoPSIxMCIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iIzg4OCIvPgogIDwhLS0gTGlua2UgZ2VsYmUgU2VpdGVucGxhdHRlIC0tPgogIDxyZWN0IHg9IjQiIHk9IjUiIHdpZHRoPSI0IiBoZWlnaHQ9IjEyIiByeD0iMSIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gUmVjaHRlIGdlbGJlIFNlaXRlbnBsYXR0ZSAtLT4KICA8cmVjdCB4PSIxNiIgeT0iNSIgd2lkdGg9IjQiIGhlaWdodD0iMTIiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBNaXR0bGVyZXIgUmFobWVuL0vDtnJwZXIgLS0+CiAgPHJlY3QgeD0iOCIgeT0iNiIgd2lkdGg9IjgiIGhlaWdodD0iMTAiIHJ4PSIwLjUiIGZpbGw9IiM2NjYiLz4KICA8IS0tIElubmVyZSDDlmZmbnVuZyAtLT4KICA8cmVjdCB4PSIxMCIgeT0iNyIgd2lkdGg9IjQiIGhlaWdodD0iNyIgcng9IjAuMyIgZmlsbD0iIzMzMyIvPgogIDwhLS0gVmVyYmluZHVuZ3NzdMO8Y2sgLS0+CiAgPHJlY3QgeD0iNyIgeT0iMTciIHdpZHRoPSIxMCIgaGVpZ2h0PSIzIiByeD0iMC41IiBmaWxsPSIjNzc3Ii8+CiAgPCEtLSBHcmVpZmVyIGxpbmtzIC0tPgogIDxwYXRoIGQ9Ik03IDIwIFE0IDIzIDMgMjggTDcgMjcgTDkgMjBaIiBmaWxsPSIjNjY2Ii8+CiAgPCEtLSBHcmVpZmVyIHJlY2h0cyAtLT4KICA8cGF0aCBkPSJNMTcgMjAgUTIwIDIzIDIxIDI4IEwxNyAyNyBMMTUgMjBaIiBmaWxsPSIjNjY2Ii8+CiAgPCEtLSBaw6RobmUgbGlua3MgLS0+CiAgPHBhdGggZD0iTTMgMjggTDQgMzIgTTUgMjguNSBMNS41IDMyIE02LjUgMjggTDYuOCAzMiIgc3Ryb2tlPSIjNTU1IiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBaw6RobmUgcmVjaHRzIC0tPgogIDxwYXRoIGQ9Ik0yMSAyOCBMMjAgMzIgTTE5IDI4LjUgTDE4LjUgMzIgTTE3LjUgMjggTDE3LjIgMzIiIHN0cm9rZT0iIzU1NSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:18px;height:24px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Schlitzwand</span><span class="gw-sub">Leitwandbau · Schlitzen · Bewehrung · Betonage</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="aushub">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCAyOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjIyIj4KICA8IS0tIEtldHRlIC0tPgogIDxyZWN0IHg9IjE0IiB5PSIxOSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjNDQ0Ii8+CiAgPHJlY3QgeD0iMTUiIHk9IjIwIiB3aWR0aD0iMjIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM1NTUiLz4KICA8Y2lyY2xlIGN4PSIxNyIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIyNyIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz4KICA8IS0tIE9iZXJ3YWdlbiAtLT4KICA8cmVjdCB4PSIxNSIgeT0iMTMiIHdpZHRoPSIyMiIgaGVpZ2h0PSI3IiByeD0iMiIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gRsO8aHJlcmhhdXMgLS0+CiAgPHJlY3QgeD0iMjciIHk9IjkiIHdpZHRoPSI5IiBoZWlnaHQ9IjciIHJ4PSIxLjUiIGZpbGw9IiNGNUE2MjMiLz4KICA8cmVjdCB4PSIyOCIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiMxYTNhNWMiIG9wYWNpdHk9IjAuODUiLz4KICA8IS0tIEF1c2xlZ2VyIGRpYWdvbmFsIGxpbmtzLW9iZW4gLS0+CiAgPGxpbmUgeDE9IjIxIiB5MT0iMTMiIHgyPSI3IiB5Mj0iMyIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjIyIiB5MT0iMTQiIHgyPSI4IiB5Mj0iNCIgc3Ryb2tlPSIjRjVBNjIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU3RpZWwgbmFjaCB1bnRlbi1saW5rcyAtLT4KICA8bGluZSB4MT0iNyIgeTE9IjMiIHgyPSIyIiB5Mj0iMTMiIHN0cm9rZT0iI2NjODgwMCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjQiIHgyPSIzIiB5Mj0iMTQiIHN0cm9rZT0iI0Y1QTYyMyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU2NoYXVmZWwgLS0+CiAgPHBhdGggZD0iTS0xIDEyIFEtNCAxNSAtMiAxOSBRMCAyMSA1IDE5IEw0IDEyWiIgZmlsbD0iIzg4OCIvPgogIDxwYXRoIGQ9Ik0tMSAxOSBMLTIgMjIgTTIgMjAgTDIgMjMgTTQgMTkgTDUgMjIiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:36px;height:22px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Aushub</span><span class="gw-sub">Trockenaushub · Nassaushub · Steifenlage</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="mikropfahl">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAzMiIgd2lkdGg9IjIwIiBoZWlnaHQ9IjI4Ij4KICA8IS0tIEZhaHJ6ZXVnIEvDtnJwZXIgLS0+CiAgPHJlY3QgeD0iMSIgeT0iMTciIHdpZHRoPSIxNiIgaGVpZ2h0PSI5IiByeD0iMiIgZmlsbD0iIzFhMzU2MCIvPgogIDwhLS0gR2VsYmUgU3RyZWlmZW4gLS0+CiAgPHJlY3QgeD0iMSIgeT0iMTciIHdpZHRoPSIzIiBoZWlnaHQ9IjkiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBSw6RkZXIgLS0+CiAgPGNpcmNsZSBjeD0iNCIgY3k9IjI2IiByPSIyIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iMTMiIGN5PSIyNiIgcj0iMiIgZmlsbD0iIzMzMyIvPgogIDwhLS0gTWFzdCB2ZXJ0aWthbCAtLT4KICA8cmVjdCB4PSIxNiIgeT0iMiIgd2lkdGg9IjMiIGhlaWdodD0iMjYiIHJ4PSIxIiBmaWxsPSIjRjVBNjIzIi8+CiAgPCEtLSBCb2hyZ2VzdMOkbmdlIC0tPgogIDxyZWN0IHg9IjE3IiB5PSIyNiIgd2lkdGg9IjEuNSIgaGVpZ2h0PSI2IiBmaWxsPSIjODg4Ii8+CiAgPCEtLSBBbnRyaWVic2tvcGYgb2JlbiAtLT4KICA8cmVjdCB4PSIxMyIgeT0iNSIgd2lkdGg9IjkiIGhlaWdodD0iNiIgcng9IjEuNSIgZmlsbD0iI0Y1QTYyMyIvPgogIDxjaXJjbGUgY3g9IjE3IiBjeT0iNSIgcj0iMi41IiBmaWxsPSIjRjVBNjIzIiBzdHJva2U9IiNjYzg4MDAiIHN0cm9rZS13aWR0aD0iMC44Ii8+CiAgPCEtLSBBdXNsZWdlciB6dW0gTWFzdCAtLT4KICA8bGluZSB4MT0iOCIgeTE9IjE3IiB4Mj0iMTYiIHkyPSI4IiBzdHJva2U9IiNGNUE2MjMiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8IS0tIEh5ZHJhdWxpa3p5bGluZGVyIC0tPgogIDxsaW5lIHgxPSIxMCIgeTE9IjE3IiB4Mj0iMTYiIHkyPSIxMiIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:20px;height:28px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Mikropfähle</span><span class="gw-sub">Bohren · Verpressen · Spannen</span></div>
+    <div class="gw-tick"></div>
+  </div>
+    <div class="gw-btn" data-gw="uwbs">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAyMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIwIj4KICA8IS0tIFdhc3NlciAtLT4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMjgiIGhlaWdodD0iMTMiIHJ4PSIxIiBmaWxsPSIjMWE0YTdhIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPCEtLSBXZWxsZW4gLS0+CiAgPHBhdGggZD0iTTAgMyBRMy41IDEgNyAzIFExMC41IDUgMTQgMyBRMTcuNSAxIDIxIDMgUTI0LjUgNSAyOCAzIiBzdHJva2U9IiM0YTlhY2MiIHN0cm9rZS13aWR0aD0iMS4yIiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjgiLz4KICA8cGF0aCBkPSJNMCA2IFEzLjUgNCA3IDYgUTEwLjUgOCAxNCA2IFExNy41IDQgMjEgNiBRMjQuNSA4IDI4IDYiIHN0cm9rZT0iIzRhOWFjYyIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBvcGFjaXR5PSIwLjYiLz4KICA8cGF0aCBkPSJNMCA5IFEzLjUgNyA3IDkgUTEwLjUgMTEgMTQgOSBRMTcuNSA3IDIxIDkgUTI0LjUgMTEgMjggOSIgc3Ryb2tlPSIjNmFiNGUwIiBzdHJva2Utd2lkdGg9IjAuOCIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iMC41Ii8+CiAgPCEtLSBTb2hsZSAoQmV0b25zb2hsZSkgLS0+CiAgPHJlY3QgeD0iMCIgeT0iMTMiIHdpZHRoPSIyOCIgaGVpZ2h0PSI2IiByeD0iMCIgZmlsbD0iIzg4OCIvPgogIDwhLS0gU29obGUgU3RydWt0dXIvVGV4dHVyIC0tPgogIDxsaW5lIHgxPSIwIiB5MT0iMTUiIHgyPSIyOCIgeTI9IjE1IiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjUiLz4KICA8bGluZSB4MT0iMCIgeTE9IjE3IiB4Mj0iMjgiIHkyPSIxNyIgc3Ryb2tlPSIjOTk5IiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC41Ii8+CiAgPCEtLSBCb2RlbiBkYXJ1bnRlciAtLT4KICA8cmVjdCB4PSIwIiB5PSIxOSIgd2lkdGg9IjI4IiBoZWlnaHQ9IjMiIHJ4PSIwIiBmaWxsPSIjNWE0MDIwIi8+Cjwvc3ZnPg==" style="width:26px;height:20px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">UWBS</span><span class="gw-sub">Betonage</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="verfuellen">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNCAyMiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIj4KICA8IS0tIEJvZGVuIC0tPgogIDxyZWN0IHg9IjAiIHk9IjE4IiB3aWR0aD0iMzQiIGhlaWdodD0iNCIgZmlsbD0iIzhCNjkxNCIvPgoKICA8IS0tIEbDvGhyZXJoYXVzIGxpbmtzIC0tPgogIDxyZWN0IHg9IjEiIHk9IjEwIiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiByeD0iMS41IiBmaWxsPSIjODg4Ii8+CiAgPHJlY3QgeD0iMiIgeT0iMTEiIHdpZHRoPSI1IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiNhYWRjZmYiIG9wYWNpdHk9IjAuODUiLz4KCiAgPCEtLSBDaGFzc2lzIC0tPgogIDxyZWN0IHg9IjEiIHk9IjE1IiB3aWR0aD0iMjIiIGhlaWdodD0iMyIgcng9IjEiIGZpbGw9IiM2NjYiLz4KCiAgPCEtLSBNdWxkZSBnZWtpcHB0IG5hY2ggcmVjaHRzIC0tPgogIDxwYXRoIGQ9Ik05IDUgTDIzIDggTDIyIDE1IEw5IDE1WiIgZmlsbD0iIzc3NyIvPgogIDxwYXRoIGQ9Ik05IDUgTDIzIDggTDIzIDYgTDkgM1oiIGZpbGw9IiM4ODgiLz4KICA8IS0tIE11bGRlIFJhbmQgcmVjaHRzIG9mZmVuIC0tPgogIDxsaW5lIHgxPSIyMyIgeTE9IjYiIHgyPSIyMiIgeTI9IjE1IiBzdHJva2U9IiM1NTUiIHN0cm9rZS13aWR0aD0iMSIvPgoKICA8IS0tIEVyZGUgZsOkbGx0IHJlY2h0cyByYXVzIC0tPgogIDxwYXRoIGQ9Ik0yMiAxMCBRMjQgOCAyNSAxMSBRMjcgOCAyOCAxMiBRMjkgOSAzMCAxMyBRMzEgMTEgMzIgMTQgTDMyIDE4IEwyMSAxOCBMMjIgMTVaIiBmaWxsPSIjOUI3QTFBIi8+CgogIDwhLS0gUsOkZGVyIC0tPgogIDxjaXJjbGUgY3g9IjUiIGN5PSIxOSIgcj0iMi4yIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxOSIgcj0iMi4yIiBmaWxsPSIjMzMzIi8+CiAgPGNpcmNsZSBjeD0iNSIgY3k9IjE5IiByPSIxIiBmaWxsPSIjNTU1Ii8+CiAgPGNpcmNsZSBjeD0iMTYiIGN5PSIxOSIgcj0iMSIgZmlsbD0iIzU1NSIvPgo8L3N2Zz4=" style="width:32px;height:20px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Verfüllen</span><span class="gw-sub">Verfüllung</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="wiederaushub">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MCAyOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjIyIj4KICA8IS0tIEtldHRlIC0tPgogIDxyZWN0IHg9IjE0IiB5PSIxOSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIHJ4PSIzIiBmaWxsPSIjNDQ0Ii8+CiAgPHJlY3QgeD0iMTUiIHk9IjIwIiB3aWR0aD0iMjIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM1NTUiLz4KICA8Y2lyY2xlIGN4PSIxNyIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjIyIiByPSIyLjUiIGZpbGw9IiMzMzMiLz4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIyNyIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz48Y2lyY2xlIGN4PSIzMiIgY3k9IjIyIiByPSIxLjgiIGZpbGw9IiMzMzMiLz4KICA8IS0tIE9iZXJ3YWdlbiAtLT4KICA8cmVjdCB4PSIxNSIgeT0iMTMiIHdpZHRoPSIyMiIgaGVpZ2h0PSI3IiByeD0iMiIgZmlsbD0iI0Y1QTYyMyIvPgogIDwhLS0gRsO8aHJlcmhhdXMgLS0+CiAgPHJlY3QgeD0iMjciIHk9IjkiIHdpZHRoPSI5IiBoZWlnaHQ9IjciIHJ4PSIxLjUiIGZpbGw9IiNGNUE2MjMiLz4KICA8cmVjdCB4PSIyOCIgeT0iMTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjQiIHJ4PSIwLjgiIGZpbGw9IiMxYTNhNWMiIG9wYWNpdHk9IjAuODUiLz4KICA8IS0tIEF1c2xlZ2VyIGRpYWdvbmFsIGxpbmtzLW9iZW4gLS0+CiAgPGxpbmUgeDE9IjIxIiB5MT0iMTMiIHgyPSI3IiB5Mj0iMyIgc3Ryb2tlPSIjY2M4ODAwIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGxpbmUgeDE9IjIyIiB5MT0iMTQiIHgyPSI4IiB5Mj0iNCIgc3Ryb2tlPSIjRjVBNjIzIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU3RpZWwgbmFjaCB1bnRlbi1saW5rcyAtLT4KICA8bGluZSB4MT0iNyIgeTE9IjMiIHgyPSIyIiB5Mj0iMTMiIHN0cm9rZT0iI2NjODgwMCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8bGluZSB4MT0iOCIgeTE9IjQiIHgyPSIzIiB5Mj0iMTQiIHN0cm9rZT0iI0Y1QTYyMyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gU2NoYXVmZWwgLS0+CiAgPHBhdGggZD0iTS0xIDEyIFEtNCAxNSAtMiAxOSBRMCAyMSA1IDE5IEw0IDEyWiIgZmlsbD0iIzg4OCIvPgogIDxwYXRoIGQ9Ik0tMSAxOSBMLTIgMjIgTTIgMjAgTDIgMjMgTTQgMTkgTDUgMjIiIHN0cm9rZT0iIzY2NiIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4=" style="width:36px;height:22px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Wiederaushub</span><span class="gw-sub">Aushub</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="rohbau">
+    <span class="gw-icon"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyOCAyMiIgd2lkdGg9IjI2IiBoZWlnaHQ9IjIwIj4KICA8IS0tIEJvZGVuIGF1w59lbiAtLT4KICA8cmVjdCB4PSIwIiB5PSIxOCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjQiIGZpbGw9IiM1YTQwMjAiLz4KICAKICA8IS0tIFRyb2cgQXXDn2Vud2FuZCAtLT4KICA8cmVjdCB4PSIxIiB5PSIyIiB3aWR0aD0iMjYiIGhlaWdodD0iMTYiIHJ4PSIwIiBmaWxsPSIjODg4Ii8+CiAgCiAgPCEtLSBUcm9nIElubmVucmF1bSAoZHVua2VsKSAtLT4KICA8cmVjdCB4PSI0IiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMTMiIGZpbGw9IiMxYTI1MzUiLz4KICAKICA8IS0tIFNvaGxlIGlubmVuIChoZWxsZXIgQmV0b24pIC0tPgogIDxyZWN0IHg9IjQiIHk9IjE1IiB3aWR0aD0iMjAiIGhlaWdodD0iMyIgZmlsbD0iIzk5OSIvPgogIAogIDwhLS0gTGlua2UgV2FuZCBCZXRvbnN0cnVrdHVyIC0tPgogIDxyZWN0IHg9IjEiIHk9IjIiIHdpZHRoPSIzIiBoZWlnaHQ9IjE2IiBmaWxsPSIjOTk5Ii8+CiAgPCEtLSBSZWNodGUgV2FuZCAtLT4KICA8cmVjdCB4PSIyNCIgeT0iMiIgd2lkdGg9IjMiIGhlaWdodD0iMTYiIGZpbGw9IiM5OTkiLz4KICA8IS0tIERlY2tlIC0tPgogIDxyZWN0IHg9IjEiIHk9IjIiIHdpZHRoPSIyNiIgaGVpZ2h0PSIzIiBmaWxsPSIjYWFhIi8+CiAgCiAgPCEtLSBGdWdlbi9MaW5pZW4gZsO8ciBCZXRvbnNlZ21lbnRlIC0tPgogIDxsaW5lIHgxPSI0IiB5MT0iMiIgeDI9IjQiIHkyPSIxOCIgc3Ryb2tlPSIjNzc3IiBzdHJva2Utd2lkdGg9IjAuNSIvPgogIDxsaW5lIHgxPSIyNCIgeTE9IjIiIHgyPSIyNCIgeTI9IjE4IiBzdHJva2U9IiM3NzciIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgPGxpbmUgeDE9IjEiIHkxPSI1IiB4Mj0iMjciIHkyPSI1IiBzdHJva2U9IiM3NzciIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgPGxpbmUgeDE9IjEiIHkxPSIxNSIgeDI9IjI3IiB5Mj0iMTUiIHN0cm9rZT0iIzc3NyIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICAKICA8IS0tIFBlcnNwZWt0aXYtVGllZmUgaGludGVuIC0tPgogIDxsaW5lIHgxPSI0IiB5MT0iMiIgeDI9IjciIHkyPSI0IiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMC44Ii8+CiAgPGxpbmUgeDE9IjI0IiB5MT0iMiIgeDI9IjIxIiB5Mj0iNCIgc3Ryb2tlPSIjNjY2IiBzdHJva2Utd2lkdGg9IjAuOCIvPgogIDxyZWN0IHg9IjciIHk9IjQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMSIgZmlsbD0iIzE1MWYyZSIgb3BhY2l0eT0iMC42Ii8+Cjwvc3ZnPg==" style="width:26px;height:20px;vertical-align:middle"></span>
+    <div class="gw-info"><span class="gw-name">Rohbau</span><span class="gw-sub">Sohle · Wand · Decke</span></div>
+    <div class="gw-tick"></div>
+  </div>
+  <div class="gw-btn" data-gw="sonstiges">
+    <span class="gw-icon">📋</span>
+    <div class="gw-info"><span class="gw-name">Sonstiges</span></div>
+    <div class="gw-tick"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     ARBEITSSICHERHEIT (täglich, immer)
+══════════════════════════════════════ -->
 
 
 <!-- ══════════════════════════════════════
@@ -526,11 +526,11 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   <div class="cl">
     <div class="cl-sub cl-sub-major" data-grpid="schlitzwand-leitwand" style="display:none">Leitwandbau</div>
     <div id="phase-sep-schlitzwand-leitwand" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Leitwandbau</span><hr class="phase-sep-line"></div>
-    <div id="hint-schlitzwand-leitwand" data-grpid="schlitzwand-leitwand" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-schlitzwand-leitwand" data-grpid="schlitzwand-leitwand" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-schlitzwand-leitwand" data-grpid="schlitzwand-leitwand"></div>
     <div class="cl-sub cl-sub-major" data-grpid="schlitzwand-aushub" style="display:none">Schlitzen</div>
     <div id="phase-sep-schlitzwand-aushub" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Schlitzen</span><hr class="phase-sep-line"></div>
-    <div id="hint-schlitzwand-aushub" data-grpid="schlitzwand-aushub" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-schlitzwand-aushub" data-grpid="schlitzwand-aushub" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-schlitzwand-aushub" data-grpid="schlitzwand-aushub"></div>
     <div class="cl-sub cl-sub-major" data-grpid="schlitzwand-bewehrung" style="display:none">Bewehrung</div>
     <div id="zfs-sw-bew-gate" data-grpid="schlitzwand-bewehrung" style="display:none;background:var(--blau2);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:12px 14px;margin-bottom:6px">
@@ -541,14 +541,13 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       </div>
     </div>
     <div id="phase-sep-schlitzwand-bewehrung" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Bewehrung</span><hr class="phase-sep-line"></div>
-    <div id="hint-schlitzwand-bewehrung" data-grpid="schlitzwand-bewehrung" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-schlitzwand-bewehrung" data-grpid="schlitzwand-bewehrung" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-schlitzwand-bewehrung" data-grpid="schlitzwand-bewehrung" style="display:none"></div>
   </div>
   <div class="abnahme-block" id="abn-schlitzwand-bew" data-grpid="schlitzwand-bewehrung" style="display:none">
     <div class="abnahme-title">Abnahme Bewehrung</div>
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Lamelle / Bezeichnung</label><input type="text" placeholder="z.B. L-07"></div>
-      <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
       <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
       <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
     </div>
@@ -571,14 +570,13 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       </div>
     </div>
     <div id="phase-sep-schl-freigabe" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonierfreigabe</span><hr class="phase-sep-line"></div>
-    <div id="hint-schlitzwand-beton-freigabe" data-grpid="schlitzwand-beton-freigabe" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-schlitzwand-beton-freigabe" data-grpid="schlitzwand-beton-freigabe" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-schlitzwand-beton-freigabe" data-grpid="schlitzwand-beton-freigabe" style="display:none"></div>
   </div>
   <div class="abnahme-block" id="abn-schlitzwand-beton" data-grpid="schlitzwand-beton">
     <div class="abnahme-title">Betonierfreigabe Schlitzwand</div>
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Lamelle / Bezeichnung</label><input type="text" placeholder="z.B. L-07"></div>
-      <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
       <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
     </div>
@@ -593,7 +591,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   </div>
   <div class="cl">
     <div id="phase-sep-schl-betonage" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonage</span><hr class="phase-sep-line"></div>
-    <div id="hint-schlitzwand-beton-betonage" data-grpid="schlitzwand-beton-betonage" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-schlitzwand-beton-betonage" data-grpid="schlitzwand-beton-betonage" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-schlitzwand-beton-betonage" data-grpid="schlitzwand-beton-betonage" style="display:none"></div>
     <div id="ci-grp-schlitzwand-beton" data-grpid="schlitzwand-beton" style="display:none"></div>
   </div>
@@ -623,11 +621,11 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   <div class="cl">
     <div class="cl-sub cl-sub-major" data-grpid="aushub-trocken" style="display:none">Trockenaushub</div>
     <div id="phase-sep-aushub-trocken" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Trockenaushub</span><hr class="phase-sep-line"></div>
-    <div id="hint-aushub-trocken" data-grpid="aushub-trocken" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-aushub-trocken" data-grpid="aushub-trocken" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-aushub-trocken" data-grpid="aushub-trocken"></div>
     <div class="cl-sub cl-sub-major" data-grpid="aushub-nass" style="display:none">Nassaushub</div>
     <div id="phase-sep-aushub-nass" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Nassaushub</span><hr class="phase-sep-line"></div>
-    <div id="hint-aushub-nass" data-grpid="aushub-nass" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-aushub-nass" data-grpid="aushub-nass" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-aushub-nass" data-grpid="aushub-nass"></div>
     <div id="flutung-block" data-grpid="aushub-nass" style="display:none;background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:12px 14px;margin-bottom:6px">
       <div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:4px">Flutungsniveau / Wasserstand stabil?</div>
@@ -664,7 +662,6 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <div class="abnahme-title">Zustandsfeststellung Bewehrung Steifenlage</div>
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Steife 3"></div>
-      <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
       <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
       <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
     </div>
@@ -686,14 +683,13 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       </div>
     </div>
     <div id="phase-sep-aush-freigabe" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonierfreigabe</span><hr class="phase-sep-line"></div>
-    <div id="hint-aushub-beton-freigabe" data-grpid="aushub-beton-freigabe" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-aushub-beton-freigabe" data-grpid="aushub-beton-freigabe" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-aushub-beton-freigabe" data-grpid="aushub-beton-freigabe" style="display:none"></div>
 
   <div class="abnahme-block" data-grpid="aushub-beton">
     <div class="abnahme-title">Betonierfreigabe Steifenlage</div>
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Steife 3"></div>
-      <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
       <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
     </div>
@@ -707,7 +703,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     </div>
   </div>
   <div id="phase-sep-aush-betonage" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonage</span><hr class="phase-sep-line"></div>
-  <div id="hint-aushub-beton-betonage" data-grpid="aushub-beton-betonage" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+  <div id="hint-aushub-beton-betonage" data-grpid="aushub-beton-betonage" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
   <div id="ci-grp-aushub-beton-betonage" data-grpid="aushub-beton-betonage" style="display:none"></div>
   <div id="ci-grp-aushub-beton" data-grpid="aushub-beton" style="display:none"></div>
 
@@ -740,17 +736,16 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     </div>
   </div>
   <div id="phase-sep-uwbs-freigabe" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonierfreigabe</span><hr class="phase-sep-line"></div>
-  <div id="hint-uwbs-beton-freigabe" data-grpid="uwbs-beton-freigabe" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+  <div id="hint-uwbs-beton-freigabe" data-grpid="uwbs-beton-freigabe" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-uwbs-beton-freigabe" style="display:none"></div>
   <div id="phase-sep-uwbs-betonage" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Betonage</span><hr class="phase-sep-line"></div>
-  <div id="hint-uwbs-beton-betonage" data-grpid="uwbs-beton-betonage" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+  <div id="hint-uwbs-beton-betonage" data-grpid="uwbs-beton-betonage" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-uwbs-beton-betonage" style="display:none"></div>
   <div id="ci-grp-uwbs-beton"></div>
   <div class="abnahme-block" data-grpid="uwbs-beton" style="display:none">
     <div class="abnahme-title">Betonierfreigabe UWBS</div>
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Dock 2"></div>
-      <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
       <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
     </div>
@@ -787,7 +782,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   <div class="sec"><span class="sec-lbl">🪨 Verfüllen</span><span class="sec-line"></span></div>
   <div class="cl">
     <div class="cl-sub cl-sub-major" data-grpid="verfuellen-main" style="display:none">Verfüllung</div>
-    <div id="hint-verfuellen" data-grpid="verfuellen-main" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-verfuellen" data-grpid="verfuellen-main" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-verfuellen-main"></div>
   </div>
 
@@ -814,7 +809,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   <div class="sec"><span class="sec-lbl">🚧 Wiederaushub</span><span class="sec-line"></span></div>
   <div class="cl">
     <div class="cl-sub cl-sub-major" data-grpid="wiederaushub-main" style="display:none">Aushub</div>
-    <div id="hint-wiederaushub" data-grpid="wiederaushub-main" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-wiederaushub" data-grpid="wiederaushub-main" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-wiederaushub-main"></div>
   </div>
 
@@ -873,8 +868,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Abnahme Bewehrung – Sohle</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -903,8 +897,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Betonierfreigabe – Sohle</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -919,7 +912,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       
       
       <div id="rb-sohle-lbl-sichtbeton" style="display:none;font-size:.72rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--hell);margin:8px 0 4px">Hinweise für Sichtbeton</div>
-      <div id="rb-sohle-sichtbeton-info" style="display:none;margin-top:10px;background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
+      <div id="rb-sohle-sichtbeton-info" style="display:none;margin-top:10px;background:#fff8ec;border:1px solid #f5d080;border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--gelb);margin-bottom:5px">Schalung &amp; Vorbereitung</div>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px">
@@ -979,8 +972,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Abnahme Bewehrung – Wand</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -1009,8 +1001,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Betonierfreigabe – Wand</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -1025,7 +1016,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       
       
       <div id="rb-wand-lbl-sichtbeton" style="display:none;font-size:.72rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--hell);margin:8px 0 4px">Hinweise für Sichtbeton</div>
-      <div id="rb-wand-sichtbeton-info" style="display:none;margin-top:10px;background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
+      <div id="rb-wand-sichtbeton-info" style="display:none;margin-top:10px;background:#fff8ec;border:1px solid #f5d080;border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--gelb);margin-bottom:5px">Schalung &amp; Vorbereitung</div>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px">
@@ -1085,8 +1076,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Abnahme Bewehrung – Decke</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -1114,7 +1104,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       
       
       <div id="rb-decke-lbl-sichtbeton" style="display:none;font-size:.72rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--hell);margin:8px 0 4px">Hinweise für Sichtbeton</div>
-      <div id="rb-decke-sichtbeton-info" style="display:none;margin-top:10px;background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
+      <div id="rb-decke-sichtbeton-info" style="display:none;margin-top:10px;background:#fff8ec;border:1px solid #f5d080;border-left:3px solid var(--gelb);border-radius:var(--r);padding:12px 14px;flex-direction:column;gap:10px">
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--gelb);margin-bottom:5px">Schalung &amp; Vorbereitung</div>
           <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px">
@@ -1151,8 +1141,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
         <div class="abnahme-title">Betonierfreigabe – Decke</div>
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
-          <div class="abn-fi"><label>Abgenommen durch (BÜ)</label><input type="text" placeholder="Name"></div>
-          <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
+              <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
           <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
         </div>
         <div class="foto-area">
@@ -1199,17 +1188,17 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   <div class="cl">
     <div class="cl-sub cl-sub-major" data-grpid="mikropfahl-bohren" style="display:none">Bohren</div>
     <div id="phase-sep-mikropfahl-bohren" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Bohren</span><hr class="phase-sep-line"></div>
-    <div id="hint-mikropfahl-bohren" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-mikropfahl-bohren" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-mikropfahl-bohren" data-grpid="mikropfahl-bohren" style="display:none"></div>
 
     <div class="cl-sub cl-sub-major" data-grpid="mikropfahl-verpressen" style="display:none">Verpressen</div>
     <div id="phase-sep-mikropfahl-verpressen" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Verpressen</span><hr class="phase-sep-line"></div>
-    <div id="hint-mikropfahl-verpressen" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-mikropfahl-verpressen" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-mikropfahl-verpressen" data-grpid="mikropfahl-verpressen" style="display:none"></div>
 
     <div class="cl-sub cl-sub-major" data-grpid="mikropfahl-spannen" style="display:none">Spannen</div>
     <div id="phase-sep-mikropfahl-spannen" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Spannen</span><hr class="phase-sep-line"></div>
-    <div id="hint-mikropfahl-spannen" style="display:none;background:rgba(245,166,35,.06);border:1px dashed rgba(245,166,35,.35);border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
+    <div id="hint-mikropfahl-spannen" style="display:none;background:#fffbf0;border:1px dashed #f5c842;border-radius:3px;padding:8px 12px;margin-bottom:6px;font-size:.75rem;color:var(--hell);font-family:'Barlow',sans-serif;line-height:1.5"><span style="color:var(--gelb);font-family:'Barlow Condensed',sans-serif;font-size:.62rem;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px">💡 Hinweise aus Konzepten</span>Wird aus SharePoint geladen.</div>
     <div id="ci-grp-mikropfahl-spannen" data-grpid="mikropfahl-spannen" style="display:none"></div>
   </div>
 
@@ -3693,6 +3682,14 @@ function exportPDF(){
           y=np(y,10); y=subBar(btCap+' - Betonierfreigabe',y,true);
           const abnEl=document.getElementById('abn-rb-'+bt+'-beton');
           if(abnEl){
+            const bueName = document.getElementById('fBauleiter')?.value.trim()||'';
+            if(bueName){
+              y=np(y,7); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,7,'F');
+              doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(...BLUE);
+              doc.text('Abgenommen durch (BÜ):',M+4,y+4.8);
+              doc.setFont('helvetica','normal'); doc.setTextColor(40,55,90);
+              doc.text(pdfStr(bueName),M+45,y+4.8); doc.setTextColor(0,0,0); y+=7;
+            }
             abnEl.querySelectorAll('.abn-fi').forEach(fi=>{
               const lbl=fi.querySelector('label')?.textContent||'';
               const el=fi.querySelector('input,select,textarea');
