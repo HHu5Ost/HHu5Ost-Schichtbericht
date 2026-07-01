@@ -8,6 +8,7 @@
 <script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── HELL-MODUS (Standard) ── */
 :root {
   --blau:    #1C3A6E;
   --blau2:   #f0f4f8;
@@ -24,9 +25,63 @@
   --rot:     #cc2020;
   --rot_bg:  #fee2e2;
   --r: 3px;
+  --body-bg: #f5f7fa;
+  --body-color: #000000;
+  --sec-bg:  #ffffff;
+  --sec-border: #c8d4e8;
+  --input-bg: #ffffff;
+  --input-color: #0a0f1e;
+  --card-bg: #f8fafc;
+}
+/* ── DUNKEL-MODUS ── */
+body.dark {
+  --blau:    #1C3A6E;
+  --blau2:   #152d58;
+  --blau3:   #1C3A6E;
+  --grau1:   #152d58;
+  --grau2:   #1a3464;
+  --grau3:   #1C3A6E;
+  --hell:    #9aa5b8;
+  --weiss:   #e8edf5;
+  --gelb:    #F5A623;
+  --gelb2:   #d98f1a;
+  --gruen:   #1a7a3a;
+  --gruen_bg:#0a2e15;
+  --rot:     #cc2020;
+  --rot_bg:  #2e0a0a;
+  --body-bg: #0e1825;
+  --body-color: #e8edf5;
+  --sec-bg:  #152d58;
+  --sec-border: rgba(255,255,255,.1);
+  --input-bg: #152d58;
+  --input-color: #e8edf5;
+  --card-bg: #152d58;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#f5f7fa;color:#000000;font-weight:600;font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px}
+body{background:var(--body-bg);color:var(--body-color);font-weight:600;font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px;transition:background .3s,color .3s}
+
+/* ── DARK MODE OVERRIDES ── */
+body.dark .cl, body.dark .pinfo, body.dark .wetter-grid, body.dark .sonstiges-item,
+body.dark .bereich-card, body.dark #bereichFormCard, body.dark .abnahme-block {
+  background: var(--blau2) !important;
+  border-color: rgba(255,255,255,.1) !important;
+  color: var(--weiss) !important;
+}
+body.dark input, body.dark textarea, body.dark select {
+  background: var(--grau1) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: var(--weiss) !important;
+}
+body.dark .sec { background: transparent; }
+body.dark .sub-sel-btn { background: var(--blau2); color: var(--hell); border-color: rgba(255,255,255,.15); }
+body.dark .sub-sel-btn.on { background: rgba(245,166,35,.15); color: var(--gelb); border-color: var(--gelb); }
+body.dark .bereich-card-header { background: var(--blau) !important; color: var(--weiss) !important; }
+body.dark .sonstiges-item { background: var(--blau2) !important; border-color: rgba(255,255,255,.1) !important; }
+body.dark .sonstiges-text { color: var(--weiss) !important; }
+body.dark .sonstiges-empty { color: var(--hell) !important; }
+body.dark label { color: var(--hell); }
+body.dark .cl-sub { color: var(--hell); }
+body.dark li { color: var(--weiss); }
 
 /* ── HEADER ── */
 .hdr{background:var(--blau);border-bottom:3px solid var(--gelb);display:flex;align-items:stretch;position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,.6)}
@@ -197,6 +252,7 @@ main{max-width:880px;margin:0 auto;padding:14px}
   }
   .cl-sub-major.no-collapse::before{content:'';flex:1;border-top:1.5px dashed rgba(245,166,35,0.4);min-width:20px;}
   .cl-sub-major.no-collapse::after{content:'';flex:1;border-top:1.5px dashed rgba(245,166,35,0.4);min-width:20px;opacity:1!important;transform:none!important;}
+  .abschluss-doku-lbl::before,.abschluss-doku-lbl::after{display:none!important;}
 }
 
 /* ── FOTO UPLOAD ─────────────────────────────── */
@@ -357,6 +413,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <button class="hdr-pdf" id="btnReset" style="background:#ffffff;color:#cc2020;border:1px solid #cc2020;margin-right:6px" title="Alles leeren">🗑</button>
     <button class="hdr-pdf" id="btnSave" style="background:#ffffff;color:#1C3A6E;border:1px solid #1C3A6E;margin-right:6px" title="Speichern">💾 <span id="autosaveIndicator" style="font-size:.6rem;opacity:.6"></span></button>
     <button class="hdr-pdf" id="btnLoad" style="background:#ffffff;color:#1C3A6E;border:1px solid #1C3A6E;margin-right:6px" title="Berichte laden">📂 Berichte</button>
+    <button onclick="toggleDarkMode()" id="btnDark" style="background:none;border:1px solid rgba(255,255,255,.3);color:#fff;height:34px;padding:0 10px;border-radius:3px;cursor:pointer;font-size:.85rem;margin-right:6px" title="Hell/Dunkel">🌙</button>
     <button class="hdr-pdf" id="btnPDF" style="background:#ffffff;color:#1C3A6E;border:1px solid #F5A623">🖨 PDF</button>
   </div>
 </header>
@@ -382,7 +439,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
   </div>
   <div class="fi"><label>Datum</label><input type="date" id="fDatum"></div>
   <div class="fi"><label>Bauüberwacher</label><input type="text" id="fBauleiter" placeholder="Name Bauüberwacher"></div>
-  <div class="fi"><label>Polier / AN-Vertreter</label><input type="text" id="fPolier" placeholder="Name"></div>
+  
   <div class="fi"><label>Witterung</label>
     <div style="display:flex;gap:6px"><select id="fWetter" style="flex:1">
       <option value="Sonnig">Sonnig / trocken</option>
@@ -397,7 +454,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <input type="text" id="fTemp" placeholder="z.B. 12 °C">
   </div>
 
-  <div class="fi" style="grid-column:span 3"><label>Aktive Bauaktivitäten</label><div id="fGewerkeDisplay" style="background:var(--blau2);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--hell);font-family:'Barlow',sans-serif;font-size:.85rem;padding:8px 10px;min-height:38px;line-height:1.5">– keine ausgewählt –</div></div>
+
 </div>
 
 <!-- TERMINE & TÄTIGKEITEN PLATZHALTER -->
@@ -434,8 +491,13 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       <button id="arb-nein-btn" onclick="setVerstoss('arb','nein')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button>
       <button id="arb-ja-btn" onclick="setVerstoss('arb','ja')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja – Abweichung</button>
     </div>
+    <label style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:.72rem;color:var(--hell);opacity:0.7;margin:4px 0 2px;padding:2px 6px;border:1px solid rgba(255,255,255,.15);border-radius:3px;width:fit-content"><span>📷</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'arb')">Foto</label>
+    <div id="arb-foto-preview-always" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px"></div>
     <div id="arb-details" style="display:none">
       <textarea id="arb-text" placeholder="Was wurde festgestellt …" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
+
+      <label class="foto-btn" style="margin-bottom:8px;display:inline-flex"><span>📷 Foto hinzufügen</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'arb')"></label>
+      <div id="arb-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
       <div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div>
       <div style="display:flex;gap:8px">
         <button id="arb-polier-ja" onclick="setPolier('arb','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>
@@ -462,8 +524,13 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       <button id="sau-nein-btn" onclick="setVerstoss('sau','nein')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button>
       <button id="sau-ja-btn" onclick="setVerstoss('sau','ja')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja – Abweichung</button>
     </div>
+    <label style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:.72rem;color:var(--hell);opacity:0.7;margin:4px 0 2px;padding:2px 6px;border:1px solid rgba(255,255,255,.15);border-radius:3px;width:fit-content"><span>📷</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'sau')">Foto</label>
+    <div id="sau-foto-preview-always" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px"></div>
     <div id="sau-details" style="display:none">
       <textarea id="sau-text" placeholder="Was wurde festgestellt …" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
+
+      <label class="foto-btn" style="margin-bottom:8px;display:inline-flex"><span>📷 Foto hinzufügen</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'sau')"></label>
+      <div id="sau-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
       <div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div>
       <div style="display:flex;gap:8px">
         <button id="sau-polier-ja" onclick="setPolier('sau','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>
@@ -527,7 +594,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
 <!-- ABSCHLUSS -->
 <div class="sec" style="margin-top:22px"><span class="sec-lbl no-collapse">📋 Abschluss</span><span class="sec-line"></span></div>
 <div class="cl">
-  <div class="cl-sub cl-sub-major no-collapse">Dokumentation</div>
+  <div class="cl-sub cl-sub-major no-collapse abschluss-doku-lbl">Dokumentation</div>
   <div id="ci-grp-abschluss-doku"></div>
 </div>
 
@@ -539,12 +606,6 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <button class="sig-clear" onclick="clearSig('sig1')">✕ Löschen</button>
     <canvas class="sig-canvas" id="sig1" width="320" height="60"></canvas>
     <div style="font-size:.65rem;color:var(--hell);margin-top:4px" id="sigDate1"></div>
-  </div>
-  <div class="sig-field">
-    <div class="sig-label">Bauleiter AN (Kenntnisnahme)</div>
-    <button class="sig-clear" onclick="clearSig('sig2')">✕ Löschen</button>
-    <canvas class="sig-canvas" id="sig2" width="320" height="60"></canvas>
-    <div style="font-size:.65rem;color:var(--hell);margin-top:4px" id="sigDate2"></div>
   </div>
 </div>
 
@@ -636,6 +697,16 @@ const CHECKS = {
 
   // UWBS
   // GEWI-Pfähle (Mikropfähle unter UWBS)
+  'uwbs-taucher': [
+    {id:'ta_1', text:'Tauchereinsatz geplant und genehmigt (Taucherplan vorhanden)', prio:'krit'},
+    {id:'ta_2', text:'Tauchtiefe dokumentiert (gemäß Baugruben-/Sohltiefe)', prio:'krit'},
+    {id:'ta_3', text:'Effektive Grundzeit und Dekompressionszeiten eingehalten (DGUV)', prio:'krit'},
+    {id:'ta_4', text:'Sicherheitstaucher / Standby-Taucher anwesend', prio:'krit'},
+    {id:'ta_5', text:'Kommunikation Taucher ↔ Oberfläche sichergestellt', prio:'krit'},
+    {id:'ta_6', text:'Baugrubensohle auf Schlammfreiheit geprüft und dokumentiert', prio:'krit'},
+    {id:'ta_7', text:'Aufmaß OK Pfahl / Ankerplatten durch Taucher durchgeführt', prio:'krit'},
+    {id:'ta_8', text:'Taucherprotokoll vollständig ausgefüllt und unterschrieben', prio:'krit'},
+  ],
   'uwbs-gewi-bohren': [
     {id:'gw_b1', text:'Bohransatzpunkt eingemessen (GNSS-Empfänger / Vermesser)', prio:'krit'},
     {id:'gw_b2', text:'Bohrverfahren: Überlagerungsbohrverfahren mit Doppelkopf', prio:'krit'},
@@ -999,6 +1070,23 @@ function vstossFoto(input, prefix){
 
 // ── VERSTOSS / POLIER HANDLER ─────────────────────────────────
 const vstossData = {};
+
+function toggleDarkMode(){
+  const isDark = document.body.classList.toggle('dark');
+  const btn = document.getElementById('btnDark');
+  if(btn) btn.textContent = isDark ? '☀️' : '🌙';
+  localStorage.setItem('darkMode', isDark ? '1' : '');
+}
+// Dark mode beim Laden wiederherstellen
+(function(){
+  if(localStorage.getItem('darkMode')==='1'){
+    document.body.classList.add('dark');
+    document.addEventListener('DOMContentLoaded', function(){
+      const btn = document.getElementById('btnDark');
+      if(btn) btn.textContent = '☀️';
+    });
+  }
+})();
 window.inputValues = {};
 function setVerstoss(prefix, val){
   const prev = (vstossData[prefix]||{}).verstoss;
@@ -1213,7 +1301,39 @@ function toggleAbn(btn){
   const siblings = btn.parentElement.querySelectorAll('.abn-status-btn');
   siblings.forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  // Ablehnungsgrund-Textfeld ein/ausblenden
+  const isAbgelehnt = btn.classList.contains('abgelehnt') || btn.classList.contains('abn-abl-btn');
+  let reasonDiv = btn.parentElement.querySelector('.abn-reason-box') || (btn.parentElement.nextElementSibling && btn.parentElement.nextElementSibling.classList.contains('abn-reason-box') ? btn.parentElement.nextElementSibling : null);
+  if(!reasonDiv){
+    reasonDiv = document.createElement('div');
+    reasonDiv.className = 'abn-reason-box';
+    reasonDiv.style.cssText = 'display:none;margin-top:8px';
+    const isDark = btn.closest('[style*="rgba(255,255,255,.03)"]') || btn.closest('[style*="blau2"]');
+    const bg = isDark ? 'var(--grau1)' : '#f8fafc';
+    const col = isDark ? 'var(--weiss)' : '#0a0f1e';
+    reasonDiv.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
+      + '<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:'+bg+';border:1px solid var(--rot);border-radius:var(--r);color:'+col+';font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+    btn.parentElement.insertAdjacentElement('afterend', reasonDiv);
+  }
+  reasonDiv.style.display = isAbgelehnt ? '' : 'none';
 }
+
+// Delegierter Handler für alle abn-abl-btn (auch inline-onclick)
+document.addEventListener('click', function(e){
+  const ablBtn = e.target.closest('.abn-abl-btn');
+  if(!ablBtn) return;
+  let reasonDiv = ablBtn.parentElement.nextElementSibling;
+  if(!reasonDiv || !reasonDiv.classList.contains('abn-reason-box')){
+    reasonDiv = document.createElement('div');
+    reasonDiv.className = 'abn-reason-box';
+    reasonDiv.style.cssText = 'margin-top:8px';
+    const bg = ablBtn.style.color === 'var(--weiss)' ? 'var(--grau1)' : '#f8fafc';
+    const col = bg === 'var(--grau1)' ? 'var(--weiss)' : '#0a0f1e';
+    reasonDiv.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
+      + '<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+    ablBtn.parentElement.insertAdjacentElement('afterend', reasonDiv);
+  }
+}, true);
 
 
 
@@ -1359,13 +1479,14 @@ const GW_CONFIG = {
   aushub: { subs: [
     {label:'Trockenaushub', grp:'aushub-trocken'},
     {label:'Nassaushub', grp:'aushub-nass'},
-    {label:'Steifenlage', grp:'aushub-steife', gate:'aushub-steife', freigabeGrp:'aushub-bewehrung', betonageGrp:'aushub-beton-betonage', freigabeLabel:'Bewehrung', betonageLabel:'Betonage'},
+    {label:'Steifenlage', grp:'aushub-steife', gate:'aushub-steife', freigabeGrp:'aushub-bewehrung', betonageGrp:'aushub-beton-betonage', freigabeLabel:'Bewehrung', betonageLabel:'Beton', innerFreigabeGrp:'aushub-beton-freigabe'},
   ]},
   uwbs: { subs: [
+    {label:'Taucherarbeiten',          grp:'uwbs-taucher',          uwbsTyp:'taucher'},
     {label:'GEWI-Pfähle – Bohren',     grp:'uwbs-gewi-bohren',     uwbsTyp:'gewi'},
     {label:'GEWI-Pfähle – Verpressen', grp:'uwbs-gewi-verpressen', uwbsTyp:'gewi'},
     {label:'GEWI-Pfähle – Prüfung',    grp:'uwbs-gewi-pruefung',   uwbsTyp:'gewi'},
-    {label:'Betonierfreigabe / Betonage', grp:'uwbs-beton', gate:'uwbs-beton', freigabeGrp:'uwbs-beton-freigabe', betonageGrp:'uwbs-beton-betonage', freigabeLabel:'Betonierfreigabe', betonageLabel:'Betonage', showAlways:true, uwbsTyp:'beton'},
+    {label:'Beton', grp:'uwbs-beton', gate:'uwbs-beton', freigabeGrp:'uwbs-beton-freigabe', betonageGrp:'uwbs-beton-betonage', freigabeLabel:'Betonierfreigabe', betonageLabel:'Betonage', showAlways:true, uwbsTyp:'beton'},
   ], uwbsTypSelect: true},
   verfuellen: { subs: [{label:'Verfüllung', grp:'verfuellen-main', showAlways:true}]},
   wiederaushub: { subs: [{label:'Wiederaushub', grp:'wiederaushub-main', showAlways:true}]},
@@ -1394,41 +1515,114 @@ function onBereichGewerkChange(){
 
   // Sonstiges: eigene Punkte hinzufügen
   if(cfg.custom){
+    // Lokales sonstiges-Array analog zu sonstigesItems im Hauptbereich
+    const _sonstItems = [];
     const customDiv = document.createElement('div');
     customDiv.style.cssText = 'background:#f8fafc;border:1px solid #c8d4e8;border-radius:6px;padding:12px 14px;margin-bottom:8px';
     const listDiv = document.createElement('div');
-    listDiv.className = 'sonstiges-list';
     listDiv.style.cssText = 'display:flex;flex-direction:column;gap:6px;margin-bottom:10px';
-    const emptyMsg = document.createElement('div');
-    emptyMsg.className = 'sonstiges-empty';
-    emptyMsg.style.cssText = 'color:#94a3b8;font-size:.82rem;font-style:italic';
-    emptyMsg.textContent = 'Noch keine eigenen Punkte.';
-    listDiv.appendChild(emptyMsg);
+
+    function renderSonstBereich(){
+      listDiv.innerHTML = '';
+      if(!_sonstItems.length){
+        const em = document.createElement('div');
+        em.style.cssText = 'color:#94a3b8;font-size:.82rem;font-style:italic';
+        em.textContent = 'Noch keine eigenen Punkte.';
+        em.className = 'sonstiges-empty';
+        listDiv.appendChild(em);
+        return;
+      }
+      _sonstItems.forEach(function(it, i){
+        const div = document.createElement('div');
+        div.className = 'sonstiges-item';
+        div.style.cssText = 'background:#fff;border:1px solid #e2e8f0;border-radius:4px;padding:7px 10px';
+        const topRow = document.createElement('div');
+        topRow.style.cssText = 'display:flex;align-items:center;gap:8px';
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '✕';
+        delBtn.style.cssText = 'background:none;border:none;color:#cc3030;cursor:pointer;font-size:.9rem;padding:0;margin-left:auto';
+        delBtn.onclick = function(){ _sonstItems.splice(i,1); renderSonstBereich(); };
+        topRow.innerHTML = '<span style="color:#F5A623;flex-shrink:0">▸</span><span class="sonstiges-text" style="flex:1;font-size:.88rem;color:#0a0f1e">'+it.text+'</span>';
+        topRow.appendChild(delBtn);
+        div.appendChild(topRow);
+        const fotoWrap = document.createElement('div');
+        fotoWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;align-items:center';
+        if(it.fotos && it.fotos.length){
+          it.fotos.forEach(function(src){
+            const img = document.createElement('img');
+            img.src = src; img.dataset.fotoSrc = src;
+            img.className = 'sonstiges-foto';
+            img.style.cssText = 'max-width:80px;max-height:80px;border-radius:4px;object-fit:cover;cursor:pointer';
+            img.title = 'Klicken zum Entfernen';
+            img.onclick = function(){ _sonstItems[i].fotos.splice(_sonstItems[i].fotos.indexOf(src),1); renderSonstBereich(); };
+            fotoWrap.appendChild(img);
+          });
+        }
+        // Weiteres Foto hinzufügen
+        const addFotoLbl = document.createElement('label');
+        addFotoLbl.style.cssText = 'display:inline-flex;align-items:center;cursor:pointer;border:1px dashed #c8d4e8;border-radius:4px;padding:4px 8px;color:#94a3b8;font-size:.75rem';
+        addFotoLbl.textContent = '+ 📷';
+        const addFotoInp = document.createElement('input');
+        addFotoInp.type='file'; addFotoInp.accept='image/*'; addFotoInp.multiple=true; addFotoInp.style.display='none';
+        (function(idx){ addFotoInp.onchange = function(){
+          Array.from(this.files).forEach(function(f){
+            const r=new FileReader(); r.onload=function(e){ _sonstItems[idx].fotos.push(e.target.result); renderSonstBereich(); }; r.readAsDataURL(f);
+          });
+        }; })(i);
+        addFotoLbl.appendChild(addFotoInp);
+        fotoWrap.appendChild(addFotoLbl);
+        div.appendChild(fotoWrap);
+        listDiv.appendChild(div);
+      });
+    }
+    // Expose for restore
+    inhalt._sonstItems = _sonstItems;
+    inhalt._renderSonst = renderSonstBereich;
+    renderSonstBereich();
+
     const inputRow = document.createElement('div');
     inputRow.style.cssText = 'display:flex;gap:6px;align-items:center';
     const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.placeholder = 'Eigener Punkt …';
+    inp.type = 'text'; inp.placeholder = 'Eigener Punkt …';
     inp.style.cssText = 'flex:1;background:#fff;border:1px solid #c8d4e8;border-radius:4px;color:#0a0f1e;font-size:.88rem;padding:8px 10px;outline:none;font-family:Barlow,sans-serif';
+
+    const fotoLbl = document.createElement('label');
+    fotoLbl.style.cssText = 'display:inline-flex;align-items:center;cursor:pointer;border:1px solid #c8d4e8;border-radius:4px;padding:7px 10px;color:#64748b;font-size:.85rem;white-space:nowrap;background:#fff';
+    fotoLbl.textContent = '📷';
+    const fotoInp = document.createElement('input');
+    fotoInp.type = 'file'; fotoInp.accept = 'image/*'; fotoInp.multiple = true; fotoInp.style.display = 'none';
+    let _pendingFotos = [];
+    fotoInp.onchange = function(){
+      _pendingFotos = [];
+      const files = Array.from(this.files);
+      let loaded = 0;
+      files.forEach(function(f){
+        const r = new FileReader();
+        r.onload = function(e){
+          _pendingFotos.push(e.target.result);
+          loaded++;
+          fotoLbl.textContent = '📷 ('+loaded+'/'+files.length+')';
+        };
+        r.readAsDataURL(f);
+      });
+    };
+    fotoLbl.appendChild(fotoInp);
+
     const addBtn = document.createElement('button');
     addBtn.textContent = '+ Hinzufügen';
     addBtn.style.cssText = 'background:#F5A623;color:#1C3A6E;border:none;border-radius:4px;padding:8px 14px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap';
+
     function addPunkt(){
       const val = inp.value.trim();
       if(!val) return;
-      emptyMsg.style.display = 'none';
-      const item = document.createElement('div');
-      item.className = 'sonstiges-item';
-      item.style.cssText = 'display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e2e8f0;border-radius:4px;padding:7px 10px';
-      item.innerHTML = '<span style="color:#F5A623;flex-shrink:0">▸</span>'
-        +'<span class="sonstiges-text" style="flex:1;font-size:.88rem;color:#0a0f1e">'+val+'</span>'
-        +'<button onclick="this.closest(\'.sonstiges-item\').remove();if(!document.querySelector(\'.sonstiges-item\')){document.querySelector(\'.sonstiges-empty\').style.display=\'\'}" style="background:none;border:none;color:#cc3030;cursor:pointer;font-size:.9rem;padding:0">✕</button>';
-      listDiv.appendChild(item);
-      inp.value = '';
+      _sonstItems.push({text: val, fotos: [..._pendingFotos]});
+      renderSonstBereich();
+      inp.value = ''; _pendingFotos = []; fotoLbl.textContent = '📷'; fotoInp.value = '';
     }
     addBtn.onclick = addPunkt;
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addPunkt(); } });
     inputRow.appendChild(inp);
+    inputRow.appendChild(fotoLbl);
     inputRow.appendChild(addBtn);
     customDiv.appendChild(listDiv);
     customDiv.appendChild(inputRow);
@@ -1451,47 +1645,66 @@ function onBereichGewerkChange(){
       typDiv.style.cssText = 'background:#f1f5f9;border:1px solid #c8d4e8;border-radius:6px;padding:12px 14px;margin-bottom:10px';
       typDiv.innerHTML = '<div style="font-size:.72rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:8px">Was findet heute statt?</div>'
         +'<div style="display:flex;gap:8px">'
+        +'<button id="uwbs-typ-taucher" style="flex:1;padding:10px;border-radius:6px;border:1.5px solid #1C3A6E;background:none;color:#1C3A6E;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">🤿 Taucherarbeiten</button>'
         +'<button id="uwbs-typ-gewi" style="flex:1;padding:10px;border-radius:6px;border:1.5px solid #1C3A6E;background:none;color:#1C3A6E;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">🔩 GEWI-Pfähle</button>'
-        +'<button id="uwbs-typ-beton" style="flex:1;padding:10px;border-radius:6px;border:1.5px solid #1C3A6E;background:none;color:#1C3A6E;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">🌊 Betonierfreigabe / Betonage</button>'
+        +'<button id="uwbs-typ-beton" style="flex:1;padding:10px;border-radius:6px;border:1.5px solid #1C3A6E;background:none;color:#1C3A6E;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer">🌊 Beton</button>'
         +'</div>';
       inhalt.appendChild(typDiv);
 
-      const gewiSection  = document.createElement('div'); gewiSection.id  = 'uwbs-gewi-section';  gewiSection.style.display='none';
-      const betonSection = document.createElement('div'); betonSection.id = 'uwbs-beton-section'; betonSection.style.display='none';
+      const gewiSection  = document.createElement('div'); gewiSection.id  = 'uwbs-gewi-section';    gewiSection.style.display='none';
+      const betonSection = document.createElement('div'); betonSection.id = 'uwbs-beton-section';   betonSection.style.display='none';
+      const taucherSection = document.createElement('div'); taucherSection.id = 'uwbs-taucher-section'; taucherSection.dataset.subgrp = 'uwbs-taucher'; taucherSection.style.display='none';
 
       // GEWI-Buttons
       const gewiRow = document.createElement('div'); gewiRow.className='sub-sel-grid'; gewiRow.style.marginBottom='10px';
       const gewiSubs = cfg.subs.filter(s=>s.uwbsTyp==='gewi');
       const betonSubs = cfg.subs.filter(s=>s.uwbsTyp==='beton');
 
+      function toggleTyp(typ){
+        const gb = document.getElementById('uwbs-typ-gewi');
+        const bb = document.getElementById('uwbs-typ-beton');
+        const tb = document.getElementById('uwbs-typ-taucher');
+        const sectionMap = {gewi: gewiSection, beton: betonSection, taucher: taucherSection};
+        const btnMap = {gewi: gb, beton: bb, taucher: tb};
+        const btn = btnMap[typ];
+        const section = sectionMap[typ];
+        if(!btn || !section) return;
+        const isOn = btn.dataset.on === '1';
+        if(isOn){
+          btn.dataset.on = ''; btn.style.background='none'; btn.style.borderColor='#1C3A6E';
+          section.style.display = 'none';
+        } else {
+          btn.dataset.on = '1'; btn.style.background='#F5A623'; btn.style.color='#1C3A6E'; btn.style.borderColor='#F5A623';
+          section.style.display = '';
+        }
+        // uwbsTyp: alle aktiven Typen speichern
+        const active = ['gewi','beton','taucher'].filter(t=>btnMap[t]&&btnMap[t].dataset.on==='1');
+        inhalt.dataset.uwbsTyp = active.join(',');
+        setTimeout(()=>{ if(inhalt._updateBtHw) inhalt._updateBtHw(); },50);
+      }
+      // activateTyp bleibt für Restore kompatibel
       function activateTyp(typ){
         const gb = document.getElementById('uwbs-typ-gewi');
         const bb = document.getElementById('uwbs-typ-beton');
-        if(typ==='gewi'){
-          gb.style.background='#F5A623'; gb.style.color='#1C3A6E'; gb.style.borderColor='#F5A623';
-          bb.style.background='none';    bb.style.color='#1C3A6E'; bb.style.borderColor='#1C3A6E';
-          gewiSection.style.display=''; betonSection.style.display='none';
-        } else {
-          bb.style.background='#F5A623'; bb.style.color='#1C3A6E'; bb.style.borderColor='#F5A623';
-          gb.style.background='none';    gb.style.color='#1C3A6E'; gb.style.borderColor='#1C3A6E';
-          betonSection.style.display=''; gewiSection.style.display='none';
-        }
-        // Bautätigkeit/Hinweise/Foto einblenden
+        const tb = document.getElementById('uwbs-typ-taucher');
+        const btnMap = {gewi: gb, beton: bb, taucher: tb};
+        const sectionMap = {gewi: gewiSection, beton: betonSection, taucher: taucherSection};
+        const btn = btnMap[typ]; const section = sectionMap[typ];
+        if(btn){ btn.dataset.on='1'; btn.style.background='#F5A623'; btn.style.color='#1C3A6E'; btn.style.borderColor='#F5A623'; }
+        if(section) section.style.display='';
         setTimeout(()=>{ if(inhalt._updateBtHw) inhalt._updateBtHw(); },50);
       }
-      typDiv.querySelector('#uwbs-typ-gewi').onclick  = ()=>activateTyp('gewi');
-      typDiv.querySelector('#uwbs-typ-beton').onclick = ()=>activateTyp('beton');
-      // Typ in dataset speichern für bereichHinzufuegen
-      typDiv.querySelector('#uwbs-typ-gewi').addEventListener('click', ()=>{ inhalt.dataset.uwbsTyp='gewi'; });
-      typDiv.querySelector('#uwbs-typ-beton').addEventListener('click', ()=>{ inhalt.dataset.uwbsTyp='beton'; });
+      typDiv.querySelector('#uwbs-typ-gewi').onclick  = ()=>{ toggleTyp('gewi'); };
+      typDiv.querySelector('#uwbs-typ-beton').onclick = ()=>{ toggleTyp('beton'); };
+      typDiv.querySelector('#uwbs-typ-taucher').onclick = ()=>{ toggleTyp('taucher'); };
 
       gewiSubs.forEach(sub=>{
         const btn = document.createElement('button');
-        btn.className='sub-sel-btn'; btn.textContent=sub.label;
+        btn.className='sub-sel-btn'; btn.textContent=sub.label; btn.dataset.grp=sub.grp;
         btn.onclick=function(){
           this.classList.toggle('on');
           const isOn=this.classList.contains('on');
-          if(isOn){ gewiRow.querySelectorAll('.sub-sel-btn').forEach(b2=>{ if(b2!==this){b2.classList.remove('on'); const p=gewiSection.querySelector('[data-subgrp="'+gewiSubs.find(s=>s.label===b2.textContent.trim())?.grp+'"]'); if(p) p.style.display='none';} }); }
+          // Mehrfachauswahl — andere Buttons NICHT deaktivieren
           const panel=gewiSection.querySelector('[data-subgrp="'+sub.grp+'"]');
           if(panel){ panel.style.display=isOn?'block':'none'; }
           if(inhalt._updateBtHw) inhalt._updateBtHw();
@@ -1506,35 +1719,15 @@ function onBereichGewerkChange(){
         title.innerHTML='<div style="flex:1;border-top:1.5px dashed #F5A623;opacity:.6"></div><span style="padding:0 10px;font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:1.5px;color:#F5A623">'+sub.label+'</span><div style="flex:1;border-top:1.5px dashed #F5A623;opacity:.6"></div>';
         panel.appendChild(title);
         const content=document.createElement('div'); buildCheckGroup(sub.grp, content); panel.appendChild(content);
-        // Abweichung-Block
-        const abwDiv=document.createElement('div');
-        abwDiv.style.cssText='background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:12px 14px;margin-bottom:6px';
-        abwDiv.innerHTML='<div style="font-size:.75rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:8px">Abweichung festgestellt?</div>'
-          +'<div style="display:flex;gap:8px;margin-bottom:8px">'
-          +'<button class="abw-nein-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">&#10003; Keine Abweichung</button>'
-          +'<button class="abw-ja-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">&#10007; Ja - Abweichung</button>'
-          +'</div>'
-          +'<div class="abw-details" style="display:none">'
-          +'<textarea class="abw-text" placeholder="Was wurde festgestellt ..." rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:6px"></textarea>'
-          +'<div class="foto-area" style="margin-bottom:8px"><label class="foto-btn">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
-          +'<div style="font-size:.75rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div>'
-          +'<div style="display:flex;gap:8px">'
-          +'<button class="abw-polier-ja" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>'
-          +'<button class="abw-polier-nein" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button>'
-          +'</div></div>';
-        const nBtn=abwDiv.querySelector('.abw-nein-btn'),jBtn=abwDiv.querySelector('.abw-ja-btn'),det=abwDiv.querySelector('.abw-details');
-        const pJa=abwDiv.querySelector('.abw-polier-ja'),pNein=abwDiv.querySelector('.abw-polier-nein');
-        abwDiv.dataset.abwPrefix=sub.grp;
-        function resetA(){nBtn.style.background='none';nBtn.style.color='var(--gruen)';jBtn.style.background='none';jBtn.style.color='var(--rot)';det.style.display='none';vstossData[sub.grp]=vstossData[sub.grp]||{};vstossData[sub.grp].verstoss=null;}
-        nBtn.onclick=function(){const a=nBtn.style.background==='var(--gruen)';resetA();if(!a){nBtn.style.background='var(--gruen)';nBtn.style.color='#fff';vstossData[sub.grp].verstoss='nein';}};
-        jBtn.onclick=function(){const a=jBtn.style.background==='var(--rot)';resetA();if(!a){jBtn.style.background='var(--rot)';jBtn.style.color='#fff';det.style.display='block';vstossData[sub.grp].verstoss='ja';}};
-        pJa.onclick=function(){pJa.style.background='var(--gruen)';pJa.style.color='#fff';pNein.style.background='none';pNein.style.color='var(--rot)';vstossData[sub.grp].polier='ja';};
-        pNein.onclick=function(){pNein.style.background='var(--rot)';pNein.style.color='#fff';pJa.style.background='none';pJa.style.color='var(--gruen)';vstossData[sub.grp].polier='nein';};
-        panel.appendChild(abwDiv);
+        // renderGroup already adds Abweichungsblock – no extra block needed
         gewiSection.appendChild(panel);
       });
 
       inhalt.appendChild(gewiSection);
+
+      // Taucher-Section
+      const taucherContent = document.createElement('div'); buildCheckGroup('uwbs-taucher', taucherContent); taucherSection.appendChild(taucherContent);
+      inhalt.appendChild(taucherSection);
 
       // Beton-Section (reuse existing logic via remaining subs)
       cfg._betonSubs = betonSubs;
@@ -1544,6 +1737,7 @@ function onBereichGewerkChange(){
       betonSubs.forEach(sub=>{
         const panel=document.createElement('div'); panel.dataset.subgrp=sub.grp; panel.style.marginBottom='8px';
         if(sub.gate && sub.freigabeGrp && sub.betonageGrp){
+          panel.style.display='none'; // Erst wenn Gate-Button aktiv
           const gateDiv=document.createElement('div');
           gateDiv.style.cssText='background:#f1f5f9;border:1px solid #c8d4e8;border-radius:var(--r);padding:12px 14px;margin-bottom:6px';
           gateDiv.innerHTML='<div style="display:flex;gap:8px">'
@@ -1552,18 +1746,40 @@ function onBereichGewerkChange(){
             +'</div>';
           const freigabePanel=document.createElement('div'); freigabePanel.dataset.subphase='freigabe'; freigabePanel.style.display='none';
           const fp=document.createElement('div'); buildCheckGroup(sub.freigabeGrp,fp); freigabePanel.appendChild(fp);
+          // Abnahme-Block (Freigegeben/Abgelehnt)
+          const abnFrei=document.createElement('div');
+          abnFrei.style.cssText='background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin:6px 0 10px';
+          abnFrei.innerHTML='<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--gelb);margin-bottom:10px">Betonierfreigabe UWBS</div>'
+            +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Dock 2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
+            +'</div>'
+            +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-family:\'Barlow Condensed\',sans-serif;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
+            +'<div style="display:flex;gap:8px">'
+            +'<button class="abn-fg-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p2=this.closest(\'[data-subgrp]\');if(p2)p2.dataset.abnStatus=a?\'\':  \'freigegeben\';var fp2=this.closest(\'[data-subphase]\');if(fp2)fp2.dataset.abnStatus=a?\'\':  \'freigegeben\';var rb2=this.parentElement.nextElementSibling;if(rb2&&rb2.classList&&rb2.classList.contains(\'abn-reason-box\'))rb2.style.display=\'none\';" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
+            +'<button class="abn-abl-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p2=this.closest(\'[data-subgrp]\');if(p2)p2.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp2=this.closest(\'[data-subphase]\');if(fp2)fp2.dataset.abnStatus=a?\'\':  \'abgelehnt\';var rb=this.parentElement.nextElementSibling;if(rb&&rb.classList.contains(\'abn-reason-box\'))rb.style.display=a?\'none\':\'\';" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
++'<div class="abn-reason-box" style="display:none;margin-top:8px"><div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div><textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea></div>'
+            +'</div>';
+          freigabePanel.appendChild(abnFrei);
           const betonagePanel=document.createElement('div'); betonagePanel.dataset.subphase='betonage'; betonagePanel.style.display='none';
           const bp=document.createElement('div'); buildCheckGroup(sub.betonageGrp,bp); betonagePanel.appendChild(bp);
+
           gateDiv.querySelector('.gate-freigabe-btn').onclick=function(){
             const on=this.classList.toggle('on');
-            this.style.background=on?'#1C3A6E':'none'; this.style.color=on?'#fff':'#1C3A6E';
+            this.style.background=on?'#F5A623':'none'; this.style.color=on?'#1C3A6E':'#1C3A6E'; this.style.borderColor=on?'#F5A623':'#1C3A6E';
             freigabePanel.style.display=on?'block':'none';
+            freigabePanel.dataset.active=on?'1':'';
+            panel.dataset.gateFreigabe=on?'1':'';
+            panel.style.display='block';
             if(inhalt._updateBtHw) inhalt._updateBtHw();
           };
           gateDiv.querySelector('.gate-betonage-btn').onclick=function(){
             const on=this.classList.toggle('on');
-            this.style.background=on?'#1C3A6E':'none'; this.style.color=on?'#fff':'#1C3A6E';
+            this.style.background=on?'#F5A623':'none'; this.style.color=on?'#1C3A6E':'#1C3A6E'; this.style.borderColor=on?'#F5A623':'#1C3A6E';
             betonagePanel.style.display=on?'block':'none';
+            betonagePanel.dataset.active=on?'1':'';
+            panel.dataset.gateBetonage=on?'1':'';
+            panel.style.display='block';
             if(inhalt._updateBtHw) inhalt._updateBtHw();
           };
           panel.appendChild(gateDiv); panel.appendChild(freigabePanel); panel.appendChild(betonagePanel);
@@ -1603,40 +1819,13 @@ function onBereichGewerkChange(){
         const _btnTop = _btn.getBoundingClientRect().top;
         const isOn = this.classList.contains('on');
 
-        // Alle anderen Sub-Buttons deaktivieren
-        if(isOn){
-          inhalt.querySelectorAll('.sub-sel-btn').forEach(otherBtn=>{
-            if(otherBtn === _btn) return;
-            if(!otherBtn.classList.contains('on')) return;
-            otherBtn.classList.remove('on');
-            const otherSub = cfg.subs.find(s=>s.label===otherBtn.textContent.trim());
-            if(otherSub){
-              const otherPanel = inhalt.querySelector('[data-subgrp="'+otherSub.grp+'"]');
-              if(otherPanel){
-                otherPanel.style.display='none';
-                otherPanel.querySelectorAll('input[type="text"],input[type="time"],input[type="number"],textarea').forEach(el=>el.value='');
-                otherPanel.querySelectorAll('.abw-nein-btn,.abw-ja-btn,.zfs-ja-btn,.zfs-nein-btn,.zfs2-ja,.zfs2-nein').forEach(b2=>{b2.style.background='none';b2.style.color='';});
-                otherPanel.querySelectorAll('.abw-details,[data-subphase]').forEach(el=>{el.style.display='none';delete el.dataset.active;});
-                delete otherPanel.dataset.zfs;
-              }
-            }
-          });
-        }
+        // Mehrfachauswahl erlaubt
 
         const panel = inhalt.querySelector('[data-subgrp="'+sub.grp+'"]');
         if(panel){
           const isOn = this.classList.contains('on');
           panel.style.display = isOn ? 'block' : 'none';
-          if(!isOn){
-            panel.querySelectorAll('input[type="text"],input[type="time"],textarea').forEach(el=>el.value='');
-            panel.querySelectorAll('button.on, button[style*="background"]').forEach(btn=>{
-              btn.style.background='none';
-              btn.style.color=btn.style.borderColor||'';
-            });
-            panel.querySelectorAll('[data-subphase]').forEach(el=>{ el.style.display='none'; delete el.dataset.active; });
-            panel.querySelectorAll('.vstoss-detail,[id$="-details-"]').forEach(el=>el.style.display='none');
-            delete panel.dataset.zfs;
-          }
+          // Panel nur verstecken, Inhalt bleibt
         }
         if(inhalt._updateBtHw) inhalt._updateBtHw();
         // Button an gleicher Stelle halten
@@ -1700,19 +1889,19 @@ function onBereichGewerkChange(){
             +'</div>'
             +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
             +'<div style="display:flex;gap:8px">'
-            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'freigegeben\'" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
-            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
+            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'freigegeben\';var rb2=this.parentElement.nextElementSibling;if(rb2&&rb2.classList&&rb2.classList.contains(\'abn-reason-box\'))rb2.style.display=\'none\';" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
+            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
             +'</div></div>';
           freigabePanel.appendChild(abnBew);
 
           const zja=zd.querySelector('.zfs2-ja'),znein=zd.querySelector('.zfs2-nein');
           function rz2(){zja.style.background='none';zja.style.color='var(--gruen)';znein.style.background='none';znein.style.color='var(--rot)';ib.style.display='none';abnBew.style.display='none';nh.style.display='none';delete freigabePanel.dataset.zfs;}
-          zja.onclick=function(){const a=freigabePanel.dataset.zfs==='ja';rz2();if(!a){zja.style.background='var(--gruen)';zja.style.color='#fff';ib.style.display='';abnBew.style.display='';freigabePanel.dataset.zfs='ja';}};
-          znein.onclick=function(){const a=freigabePanel.dataset.zfs==='nein';rz2();if(!a){znein.style.background='var(--rot)';znein.style.color='#fff';nh.style.display='';freigabePanel.dataset.zfs='nein';}};
+          zja.onclick=function(){const a=freigabePanel.dataset.zfs==='ja';rz2();if(!a){zja.classList.add('on');zja.style.background='var(--gruen)';zja.style.color='#fff';ib.style.display='';abnBew.style.display='';freigabePanel.dataset.zfs='ja';}};
+          znein.onclick=function(){const a=freigabePanel.dataset.zfs==='nein';rz2();if(!a){znein.classList.add('on');znein.style.background='var(--rot)';znein.style.color='#fff';nh.style.display='';freigabePanel.dataset.zfs='nein';}};
         } else {
           if(CHECKS[sub.freigabeGrp]&&CHECKS[sub.freigabeGrp].length){ const fp=document.createElement('div'); buildCheckGroup(sub.freigabeGrp,fp); freigabePanel.appendChild(fp); }
           const fa=document.createElement('div');
-          fa.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid #c8d4e8;border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:#F5A623;margin-bottom:10px">Betonierfreigabe</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #c8d4e8;color:#1C3A6E;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':  \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\'" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-fg-btn">Freigegeben</button><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':  \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-abl-btn">Abgelehnt</button></div></div>';
+          fa.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid #c8d4e8;border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:#F5A623;margin-bottom:10px">Betonierfreigabe</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #c8d4e8;color:#1C3A6E;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\'" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-fg-btn">Freigegeben</button><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-abl-btn">Abgelehnt</button></div></div>';
           freigabePanel.appendChild(fa);
         }
         panel.appendChild(freigabePanel);
@@ -1741,16 +1930,22 @@ function onBereichGewerkChange(){
             +'</div>'
             +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
             +'<div style="display:flex;gap:8px">'
-            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'freigegeben\'" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
-            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
+            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'freigegeben\';var rb2=this.parentElement.nextElementSibling;if(rb2&&rb2.classList&&rb2.classList.contains(\'abn-reason-box\'))rb2.style.display=\'none\';" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
+            +'<button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':\'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
             +'</div></div>';
           igFP.appendChild(igFAbn);
           // Betonage sub-panel
           const igBP=document.createElement('div'); igBP.style.display='none';
           if(CHECKS[sub.betonageGrp]&&CHECKS[sub.betonageGrp].length){const d=document.createElement('div');buildCheckGroup(sub.betonageGrp,d);igBP.appendChild(d);}
           const igFBtn=innerGate.querySelector('.ig-freigabe'),igBBtn=innerGate.querySelector('.ig-betonage');
-          igFBtn.onclick=function(){const on=igFP.dataset.on==='1';igFP.dataset.on=on?'':'1';igFP.style.display=on?'none':'block';igFBtn.style.background=on?'none':'#F5A623';igFBtn.style.color=on?'#1C3A6E':'#1C3A6E';igFBtn.style.borderColor=on?'#1C3A6E':'#F5A623';};
-          igBBtn.onclick=function(){const on=igBP.dataset.on==='1';igBP.dataset.on=on?'':'1';igBP.style.display=on?'none':'block';igBBtn.style.background=on?'none':'#F5A623';igBBtn.style.color=on?'#1C3A6E':'#1C3A6E';igBBtn.style.borderColor=on?'#1C3A6E':'#F5A623';};
+          igFBtn.onclick=function(){const on=igFP.dataset.on==='1';igFP.dataset.on=on?'':'1';igFBtn.classList.toggle('on',!on);igFP.style.display=on?'none':'block';igFBtn.style.background=on?'none':'#F5A623';igFBtn.style.color='#1C3A6E';igFBtn.style.borderColor=on?'#1C3A6E':'#F5A623';
+            // gate_state speichern
+            var _grp=panel.dataset.subgrp||sub.grp;var gs=panel.querySelector('#gate_state_'+_grp);if(!gs){gs=document.createElement('input');gs.type='hidden';gs.id='gate_state_'+_grp;panel.appendChild(gs);}gs.value=on?'':'freigabe';
+            scheduleAutosave();};
+          igBBtn.onclick=function(){const on=igBP.dataset.on==='1';igBP.dataset.on=on?'':'1';igBBtn.classList.toggle('on',!on);igBP.style.display=on?'none':'block';igBBtn.style.background=on?'none':'#F5A623';igBBtn.style.color='#1C3A6E';igBBtn.style.borderColor=on?'#1C3A6E':'#F5A623';
+            // gate_state speichern
+            var _grp2=panel.dataset.subgrp||sub.grp;var gs2=panel.querySelector('#gate_state_'+_grp2);if(!gs2){gs2=document.createElement('input');gs2.type='hidden';gs2.id='gate_state_'+_grp2;panel.appendChild(gs2);}gs2.value=on?'':'betonage';
+            scheduleAutosave();};
           betonagePanel.appendChild(innerGate);
           betonagePanel.appendChild(igFP);
           betonagePanel.appendChild(igBP);
@@ -1769,7 +1964,7 @@ function onBereichGewerkChange(){
           const betAbn = document.createElement('div');
           betAbn.style.cssText='background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin-top:8px';
           // betAbn wird per JS gebaut (nicht innerHTML) für zuverlässige Event-Handler
-          betAbn.innerHTML = '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--gelb);margin-bottom:10px">Betonage</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle / Bezeichnung</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button id="BET_GRP_PLACEHOLDER-nein-btn" onclick="setVerstoss(\'BET_GRP_PLACEHOLDER\',\'nein\')" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button><button id="BET_GRP_PLACEHOLDER-ja-btn" onclick="setVerstoss(\'BET_GRP_PLACEHOLDER\',\'ja\')" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja - Abweichung</button></div></div><div id="BET_GRP_PLACEHOLDER-details" class="bet-details" style="display:none;margin-top:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px"><textarea id="BET_GRP_PLACEHOLDER-text" class="bet-abw-text" placeholder="Was wurde festgestellt …" rows="2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:8px;resize:none;outline:none;margin-bottom:6px"></textarea><div style="margin-bottom:6px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer" class="abw-foto-label">📷 Abw. Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange=\"addFotoAbw(this)\"></label><div id="BET_GRP_PLACEHOLDER-abw-foto-preview" class="bet-abw-foto-previews" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px"></div></div><div style="font-size:.75rem;color:var(--hell);text-transform:uppercase;margin-bottom:4px">AN informiert?</div><div style=\"display:flex;gap:8px;margin-top:6px\"><button id=\"BET_GRP_PLACEHOLDER-polier-ja\" onclick=\"setPolier(\'BET_GRP_PLACEHOLDER\',\'ja\')\" style=\"flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-weight:700;font-size:.82rem;cursor:pointer\">Ja</button><button id=\"BET_GRP_PLACEHOLDER-polier-nein\" onclick=\"setPolier(\'BET_GRP_PLACEHOLDER\',\'nein\')\" style=\"flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-weight:700;font-size:.82rem;cursor:pointer\">Nein</button></div></div>';
+          betAbn.innerHTML = '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--gelb);margin-bottom:10px">Betonage</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle / Bezeichnung</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button id="BET_GRP_PLACEHOLDER-nein-btn" onclick="setVerstoss(\'BET_GRP_PLACEHOLDER\',\'nein\')" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button><button id="BET_GRP_PLACEHOLDER-ja-btn" onclick="setVerstoss(\'BET_GRP_PLACEHOLDER\',\'ja\')" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja - Abweichung</button></div></div>';
 
           // IDs mit echtem sub.grp setzen
           betAbn.innerHTML = betAbn.innerHTML.replace(/BET_GRP_PLACEHOLDER/g, sub.grp);
@@ -1780,30 +1975,10 @@ function onBereichGewerkChange(){
 
         const fbBtn = gateDiv.querySelector('.gate-freigabe-btn');
         const bbBtn = gateDiv.querySelector('.gate-betonage-btn');
-        fbBtn.onclick = function(){
-          const on = freigabePanel.dataset.active==='1';
-          freigabePanel.dataset.active = on ? '' : '1';
-          // Auch betonagePanel schließen
-          betonagePanel.dataset.active = '';
-          betonagePanel.style.display = 'none';
-          bbBtn.style.background = 'none'; bbBtn.style.borderColor = '#1C3A6E';
-          freigabePanel.style.display = on ? 'none' : 'block';
-          fbBtn.style.background = on ? 'none' : '#F5A623';
-          fbBtn.style.color = '#1C3A6E';
-          fbBtn.style.borderColor = on ? '#1C3A6E' : '#F5A623';
-        };
-        bbBtn.onclick = function(){
-          const on = betonagePanel.dataset.active==='1';
-          betonagePanel.dataset.active = on ? '' : '1';
-          // Auch freigabePanel schließen
-          freigabePanel.dataset.active = '';
-          freigabePanel.style.display = 'none';
-          fbBtn.style.background = 'none'; fbBtn.style.borderColor = '#1C3A6E';
-          betonagePanel.style.display = on ? 'none' : 'block';
-          bbBtn.style.background = on ? 'none' : '#F5A623';
-          bbBtn.style.color = '#1C3A6E';
-          bbBtn.style.borderColor = on ? '#1C3A6E' : '#F5A623';
-        };
+        fbBtn.setAttribute('onclick', 'toggleGateBtn(this)');
+        bbBtn.setAttribute('onclick', 'toggleGateBtn(this)');
+        fbBtn.dataset.phase = 'freigabe';
+        bbBtn.dataset.phase = 'betonage';
 
         panel.insertBefore(gateDiv, freigabePanel);
         inhalt.appendChild(panel);
@@ -1866,8 +2041,8 @@ function onBereichGewerkChange(){
           +'</div>'
           +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-family:\'Barlow Condensed\',sans-serif;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
           +'<div style="display:flex;gap:8px">'
-          +'<button class="abn-fg-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':  \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'freigegeben\'" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
-          +'<button class="abn-abl-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\':  \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\':  \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
+          +'<button class="abn-fg-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'freigegeben\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'freigegeben\';var rb2=this.parentElement.nextElementSibling;if(rb2&&rb2.classList&&rb2.classList.contains(\'abn-reason-box\'))rb2.style.display=\'none\';" class="abn-fg-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
+          +'<button class="abn-abl-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
           +'</div>'
           +'</div>';
 
@@ -1897,12 +2072,12 @@ function onBereichGewerkChange(){
         jaBtn.onclick = function(){
           const active = panel.dataset.zfs==='ja';
           resetZfs();
-          if(!active){ jaBtn.style.background='var(--gruen)'; jaBtn.style.color='#fff'; if(infoBox) infoBox.style.display=''; abnDiv.style.display=''; panel.dataset.zfs='ja'; }
+          if(!active){ jaBtn.classList.add('on'); jaBtn.style.background='var(--gruen)'; jaBtn.style.color='#fff'; if(infoBox) infoBox.style.display=''; abnDiv.style.display=''; panel.dataset.zfs='ja'; }
         };
         neinBtn2.onclick = function(){
           const active = panel.dataset.zfs==='nein';
           resetZfs();
-          if(!active){ neinBtn2.style.background='var(--rot)'; neinBtn2.style.color='#fff'; neinHint.style.display=''; panel.dataset.zfs='nein'; }
+          if(!active){ neinBtn2.classList.add('on'); neinBtn2.style.background='var(--rot)'; neinBtn2.style.color='#fff'; neinHint.style.display=''; panel.dataset.zfs='nein'; }
         };
         panel.appendChild(zfsDiv);
         if(infoBox) panel.appendChild(infoBox); // nach Gate einfügen
@@ -1953,11 +2128,8 @@ function onBereichGewerkChange(){
 
     inhalt.insertBefore(btnRow, inhalt.firstChild);
     if(!btnRow.querySelector('.sub-sel-btn')) btnRow.style.display = 'none';
-    // showAlways: bt/hw sofort einblenden
-    if(cfg.subs.some(s=>s.showAlways)){
-      const btS=inhalt.querySelector('#bereich-bt-section'), hwS=inhalt.querySelector('#bereich-hw-section'), ftS=inhalt.querySelector('#bereich-foto-section');
-      if(btS) btS.style.display=''; if(hwS) hwS.style.display=''; if(ftS) ftS.style.display='';
-    }
+    // showAlways: bt/hw sofort einblenden (wird nach btDiv/hwDiv/fotoDiv Erstellung nochmal geprüft)
+    inhalt._showAlways = cfg.subs.some(s=>s.showAlways);
   }
 
   // Bautätigkeit
@@ -2000,8 +2172,12 @@ function onBereichGewerkChange(){
     hwDiv.style.display = anyOn ? '' : 'none';
     fotoDiv.style.display = anyOn ? '' : 'none';
   }
-  // updateBtHwVisibility wird direkt im Sub-Button onclick aufgerufen (siehe oben)
   inhalt._updateBtHw = updateBtHwVisibility;
+
+  // showAlways: sofort einblenden (jetzt wo btDiv/hwDiv/fotoDiv existieren)
+  if(inhalt._showAlways){
+    btDiv.style.display=''; hwDiv.style.display=''; fotoDiv.style.display='';
+  }
 }
 
 function addHinweisLokal(btn){
@@ -2047,16 +2223,37 @@ function bereichHinzufuegen(){
     if(key) data[key] = el.value;
   });
 
+  // Ablehnungsgründe speichern (abn-reason-text pro Panel)
+  inhaltEl.querySelectorAll('.abn-reason-box').forEach((rb,i)=>{
+    const ta = rb.querySelector('.abn-reason-text');
+    if(ta && ta.value.trim()){
+      const reason = ta.value.trim();
+      const panel = rb.closest('[data-subgrp]') || rb.closest('[data-subphase]');
+      const grpKey = panel ? (panel.dataset.subgrp||panel.dataset.subphase) : i;
+      data['__abn_reason__'+grpKey] = reason;
+      // NICHT als __abwtext__ oder __verstoss_text__ — das sind Abweichungsfelder
+    }
+  });
+
   // Abweichungen-States aus vstossData lesen (Buttons haben prefix = grp + timestamp-suffix)
   // Den prefix aus dem Abweichungen-Button im inhaltEl lesen
   inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
     const grp = panel.dataset.subgrp;
-    // Abweichung aus vstossData (über nein-btn ID)
+    // Abweichung aus vstossData — zuerst über abwPrefix, dann über nein-btn ID
+    const abwDiv = panel.querySelector('[data-abw-prefix]');
     const neinBtn = panel.querySelector('[id$="-nein-btn"]');
-    if(neinBtn){
-      const prefix = neinBtn.id.replace('-nein-btn','');
+    const prefix = abwDiv ? abwDiv.dataset.abwPrefix : (neinBtn ? neinBtn.id.replace('-nein-btn','') : null);
+    // Auch direkt aus subphase-Panels (z.B. uwbs-beton-betonage)
+    panel.querySelectorAll('[data-subphase]').forEach(function(ph){
+      const abwDivPh = ph.querySelector('[data-abw-prefix]');
+      if(abwDivPh){
+        const vPh = vstossData[abwDivPh.dataset.abwPrefix] || {};
+        if(vPh.verstoss) data['__verstoss__'+grp] = vPh.verstoss;
+      }
+    });
+    if(prefix){
       const v = vstossData[prefix] || {};
-      data['__verstoss__'+grp] = v.verstoss || 'offen';
+      data['__verstoss__'+grp] = v.verstoss || data['__verstoss__'+grp] || 'offen';
       const detailTa = panel.querySelector('[id$="-text"]');
       if(detailTa && detailTa.value) data['__verstoss_text__'+grp] = detailTa.value;
       if(v.polier) data['__polier__'+grp] = v.polier;
@@ -2078,7 +2275,14 @@ function bereichHinzufuegen(){
           }
         }
     }
-    // Fallback: Abweichung direkt aus DOM-Button-Styles lesen
+    // Fallback: Abweichung direkt aus DOM-Button-Styles lesen (auch in Subphasen)
+    const _abwNeinAny = panel.querySelector('.abw-nein-btn');
+    const _abwJaAny = panel.querySelector('.abw-ja-btn');
+    if(_abwNeinAny && _abwNeinAny.style.background && _abwNeinAny.style.background!=='none' && _abwNeinAny.style.background!==''){
+      data['__verstoss__'+grp] = 'nein';
+    } else if(_abwJaAny && _abwJaAny.style.background && _abwJaAny.style.background!=='none' && _abwJaAny.style.background!==''){
+      data['__verstoss__'+grp] = 'ja';
+    }
     if(!neinBtn || !data['__verstoss__'+grp] || data['__verstoss__'+grp]==='offen'){
       const abwNein = panel.querySelector('.abw-nein-btn');
       const abwJa   = panel.querySelector('.abw-ja-btn');
@@ -2095,19 +2299,25 @@ function bereichHinzufuegen(){
       }
     }
     // Sichtbarkeit
-    data['__vis__'+grp] = panel.style.display !== 'none';
+    // Sichtbarkeit: Panel muss sichtbar sein UND (kein Gate-Sub ODER Gate-Button aktiv)
+    var _hasGate = !!(panel.querySelector('.gate-freigabe-btn') || panel.querySelector('.gate-betonage-btn'));
+    var _gateActive = _hasGate && !!(panel.querySelector('.gate-freigabe-btn.on') || panel.querySelector('.gate-betonage-btn.on'));
+    data['__vis__'+grp] = panel.style.display !== 'none' && (!_hasGate || _gateActive);
+    // Gate-Subphasen (Betonierfreigabe/Betonage) wie sub-sel-btn speichern
+    panel.querySelectorAll('[data-subphase]').forEach(ph=>{
+      if(ph.style.display !== 'none') data['__vis_phase__'+grp+'__'+ph.dataset.subphase] = '1';
+    });
   });
 
   // Alle Button-Zustände pro subgrp speichern
   inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
     const grp = panel.dataset.subgrp;
-    // ZFS
-    if(panel.dataset.zfs) data['__zfs__'+grp] = panel.dataset.zfs;
-    // Panel-Sichtbarkeit
-    data['__vis__'+grp] = (panel.style.display !== 'none');
-    // Gate-Phasen: aktives Panel speichern
+    // ZFS — entweder direkt auf Panel oder auf freigabe-Subphase
     const freigabePh = panel.querySelector('[data-subphase="freigabe"]');
     const betonagePh = panel.querySelector('[data-subphase="betonage"]');
+    // ZFS vom richtigen Element lesen (onclick setzt es auf freigabePh, Fallback auf panel)
+    const zfsVal = (freigabePh && freigabePh.dataset.zfs) || panel.dataset.zfs || '';
+    if(zfsVal) data['__zfs__'+grp] = zfsVal;
     // Globalen Status sichern (aus window._betStatus, gesetzt beim Button-Klick)
     const savedBetStatus = (window._betStatus && window._betStatus[grp]) || '';
     // Fallback: abnStatus direkt aus dem Panel lesen unabhängig von isActive
@@ -2119,11 +2329,22 @@ function bereichHinzufuegen(){
       const st = freigabePh.dataset.abnStatus.trim();
       if(st) data['__abn_status__'+grp] = st;
     }
+    // Gate-Buttons: genauso wie sub-sel-btn speichern
+    ['freigabe','betonage'].forEach(ph=>{
+      const gateBtn = panel.querySelector('.gate-'+ph+'-btn');
+      if(gateBtn && gateBtn.classList.contains('on')){
+        data['__vis_gate__'+grp+'__'+ph] = '1';
+        data['__phase__'+grp+'__'+ph] = '1';
+      } else {
+        data['__phase__'+grp+'__'+ph] = '';
+      }
+    });
     [freigabePh, betonagePh].forEach(ph=>{
       if(!ph) return;
-      const isActive = ph.dataset.active==='1';
       const phName = ph.dataset.subphase;
       const cls = phName==='freigabe' ? 'gate-freigabe-btn' : 'gate-betonage-btn';
+      const gateBtn = panel.querySelector('.'+cls);
+      const isActive = gateBtn && gateBtn.classList.contains('on');
       if(isActive){
         data['__btn__'+grp+'__'+cls] = '1';
         data['__phase__'+grp+'__'+phName] = '1';
@@ -2137,10 +2358,17 @@ function bereichHinzufuegen(){
         // Abweichungstext
         const betAbwTa = ph.querySelector('.bet-abw-text');
         if(betAbwTa && betAbwTa.value) data['__abwtext__'+grp] = betAbwTa.value;
-        // Felder aus aktivem Panel
-        const bez3 = ph.querySelector('.abn-bezeichnung'); if(bez3&&bez3.value) data['__abn_bez__'+grp]=bez3.value;
-        const uhr3 = ph.querySelector('.abn-uhrzeit');    if(uhr3&&uhr3.value) data['__abn_uhr__'+grp]=uhr3.value;
-        const kom3 = ph.querySelector('.abn-kommentar');  if(kom3&&kom3.value) data['__abn_kom__'+grp]=kom3.value;
+        // Felder aus aktivem Panel — phasenspezifisch speichern
+        const phName2 = ph.dataset.subphase || 'default';
+        const bez3 = ph.querySelector('.abn-bezeichnung');
+        const uhr3 = ph.querySelector('.abn-uhrzeit');
+        const kom3 = ph.querySelector('.abn-kommentar');
+        if(bez3&&bez3.value){ data['__abn_bez__'+grp+'__'+phName2]=bez3.value; data['__abn_bez__'+grp]=bez3.value; }
+        else { data['__abn_bez__'+grp+'__'+phName2]=''; }
+        if(uhr3&&uhr3.value){ data['__abn_uhr__'+grp+'__'+phName2]=uhr3.value; data['__abn_uhr__'+grp]=uhr3.value; }
+        else { data['__abn_uhr__'+grp+'__'+phName2]=''; }
+        if(kom3&&kom3.value){ data['__abn_kom__'+grp+'__'+phName2]=kom3.value; data['__abn_kom__'+grp]=kom3.value; }
+        else { data['__abn_kom__'+grp+'__'+phName2]=''; }
         // Fotos aus aktivem Panel
         const fphotos=[]; ph.querySelectorAll('.foto-previews img').forEach(img=>{if(img.src)fphotos.push(img.src);});
         if(fphotos.length) data['__fotos_abn__'+grp]=fphotos;
@@ -2149,37 +2377,141 @@ function bereichHinzufuegen(){
         delete data['__phase__'+grp+'__'+phName];
       }
     });
+    // Abnahme-Status pro Phase separat speichern
+    // Erst alle ig-Panels durchgehen und deren Button-Status speichern
+    ['ig-freigabe','ig-betonage'].forEach(function(igCls){
+      const igBtn = panel.querySelector('.'+igCls);
+      if(!igBtn || !igBtn.classList.contains('on')) return;
+      const phase = igCls==='ig-freigabe' ? 'freigabe' : 'betonage';
+      // Suche abn-fg-btn/abn-abl-btn im zugehörigen Panel
+      const igPanels = panel.querySelectorAll('[data-on="1"]');
+      igPanels.forEach(function(igP){
+        const fgB = igP.querySelector('.abn-fg-btn');
+        const ablB = igP.querySelector('.abn-abl-btn');
+        const activeB = (fgB&&(fgB.dataset.on||'').trim()) ? fgB : (ablB&&(ablB.dataset.on||'').trim()) ? ablB : null;
+        if(activeB){
+          const st = activeB.classList.contains('abn-fg-btn') ? 'freigegeben' : 'abgelehnt';
+          data['__abn_status__'+grp+'__'+phase] = st;
+          data['__abn_status__'+grp] = st;
+          const rb = activeB.parentElement && activeB.parentElement.nextElementSibling;
+          if(rb && rb.classList && rb.classList.contains('abn-reason-box')){
+            const ta = rb.querySelector('.abn-reason-text');
+            if(ta && ta.value.trim()){
+              const reason = ta.value.trim();
+              data['__abn_reason__'+grp+'__'+phase] = reason;
+            }
+          }
+        }
+      });
+    });
+    // Fallback: alle abn-fg/abl Buttons direkt lesen
+    panel.querySelectorAll('.abn-fg-btn, .abn-abl-btn').forEach(el=>{
+      if(el.dataset.on==='1'){
+        const st = el.classList.contains('abn-fg-btn') ? 'freigegeben' : 'abgelehnt';
+        if(!data['__abn_status__'+grp]) data['__abn_status__'+grp] = st;
+        const rb = el.parentElement && el.parentElement.nextElementSibling;
+        if(rb && rb.classList && rb.classList.contains('abn-reason-box')){
+          const ta = rb.querySelector('.abn-reason-text');
+          if(ta && ta.value.trim()){
+            const reason = ta.value.trim();
+            data['__abn_reason__'+grp] = reason;
+            // NICHT als __abwtext__ speichern - das ist ein anderes Feld
+          }
+        }
+      }
+    });
     // Inner Gate (ig-freigabe/ig-betonage etc.)
-    panel.querySelectorAll('[data-on="1"]').forEach(el=>{
-      const cls = el.className.split(' ').find(c=>c.startsWith('ig-')||c.startsWith('rg-'));
-      if(cls) data['__btn__'+grp+'__'+cls] = '1';
+    panel.querySelectorAll('.ig-freigabe, .ig-betonage, .rg-freigabe, .rg-betonage').forEach(el=>{
+      const cls = [...el.classList].find(c=>c.startsWith('ig-')||c.startsWith('rg-'));
+      if(!cls) return;
+      const key = '__btn__'+grp+'__'+cls;
+      if(el.classList.contains('on')){
+        data[key] = '1';
+        // ig_gate_state direkt aus ig-Button ableiten (separater Key von äußerem gate_state)
+        const phase = cls.includes('freigabe') ? 'freigabe' : 'betonage';
+        data['ig_gate_state_'+grp] = phase;
+      } else {
+        delete data[key];
+        delete data['ig_gate_state_'+grp];
+      }
     });
   });
 
   // Abweichungs-Texte mit stabilem Key speichern
   inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
     const grp = panel.dataset.subgrp;
+    // Abweichungstext — auch unter Betonage-Sub-Key speichern für PDF
     const abwTa = panel.querySelector('.abw-text');
-    if(abwTa && abwTa.value.trim()) data['__abwtext__'+grp] = abwTa.value.trim();
-    // Abnahme-Felder
-    const abn = panel.querySelector('.abn-bezeichnung');
-    const abnU = panel.querySelector('.abn-uhrzeit');
-    const abnK = panel.querySelector('.abn-kommentar');
-    if(abn && abn.value) data['__abn_bez__'+grp] = abn.value;
-    if(abnU && abnU.value) data['__abn_uhr__'+grp] = abnU.value;
-    if(abnK && abnK.value) data['__abn_kom__'+grp] = abnK.value;
+    // Verstoss-Status + Text für Gate-Subs auch unter betonageGrp speichern
+    const _cfg2 = (typeof GW_CONFIG!=='undefined') ? GW_CONFIG[gw] : null;
+    const _gateSub2 = _cfg2 && _cfg2.subs ? _cfg2.subs.find(function(s){ return s.grp===grp && s.betonageGrp; }) : null;
+    if(_gateSub2){
+      // Verstoss-Status direkt aus Button-Style
+      const _abwN = panel.querySelector('.abw-nein-btn');
+      const _abwJ = panel.querySelector('.abw-ja-btn');
+      if(_abwN && _abwN.style.background && _abwN.style.background!=='none' && _abwN.style.background!==''){
+        data['__verstoss__'+_gateSub2.betonageGrp] = 'nein';
+      } else if(_abwJ && _abwJ.style.background && _abwJ.style.background!=='none' && _abwJ.style.background!==''){
+        data['__verstoss__'+_gateSub2.betonageGrp] = 'ja';
+      } else {
+        data['__verstoss__'+_gateSub2.betonageGrp] = data['__verstoss__'+grp] || 'offen';
+      }
+    }
+    if(abwTa && abwTa.value.trim()){
+      data['__abwtext__'+grp] = abwTa.value.trim();
+      data['__verstoss_text__'+grp] = abwTa.value.trim();
+      if(_gateSub2){
+        data['__verstoss_text__'+_gateSub2.betonageGrp] = abwTa.value.trim();
+        data['__abwtext__'+_gateSub2.betonageGrp] = abwTa.value.trim();
+      }
+    }
+    // Abnahme-Felder — nur aus aktiven Sub-Phasen lesen
+    // Panel muss aktiv sein (gate-button.on) UND subphase muss sichtbar sein
+    var _panelActive = panel.style.display !== 'none' && (
+      !panel.querySelector('.gate-freigabe-btn,.gate-betonage-btn') ||
+      !!(panel.querySelector('.gate-freigabe-btn.on') || panel.querySelector('.gate-betonage-btn.on'))
+    );
+    var _abnSource = null;
+    if(_panelActive){
+      panel.querySelectorAll('[data-subphase]').forEach(function(ph){
+        if((ph.dataset.active==='1' || ph.style.display!=='none') && ph.querySelector('.abn-bezeichnung')){
+          if(!_abnSource) _abnSource = ph;
+        }
+      });
+      if(!_abnSource && panel.querySelector('.abn-bezeichnung') && !panel.querySelector('[data-subphase]')) _abnSource = panel;
+    }
+    const abn = _abnSource ? _abnSource.querySelector('.abn-bezeichnung') : null;
+    const abnU = _abnSource ? _abnSource.querySelector('.abn-uhrzeit') : null;
+    const abnK = _abnSource ? _abnSource.querySelector('.abn-kommentar') : null;
+    // Immer setzen (auch leer) damit alte Werte überschrieben werden
+    // Phase-spezifischen Key bestimmen
+    var _abnPhase = _abnSource ? (_abnSource.dataset.subphase || 'default') : 'default';
+    var _abnBezKey = _abnPhase !== 'default' ? '__abn_bez__'+grp+'__'+_abnPhase : '__abn_bez__'+grp;
+    var _abnUhrKey = _abnPhase !== 'default' ? '__abn_uhr__'+grp+'__'+_abnPhase : '__abn_uhr__'+grp;
+    var _abnKomKey = _abnPhase !== 'default' ? '__abn_kom__'+grp+'__'+_abnPhase : '__abn_kom__'+grp;
+    data[_abnBezKey] = (abn && abn.value) ? abn.value : '';
+    data[_abnUhrKey] = (abnU && abnU.value) ? abnU.value : '';
+    data[_abnKomKey] = (abnK && abnK.value) ? abnK.value : '';
+    // Generischen Key auch setzen/leeren
+    data['__abn_bez__'+grp] = (abn && abn.value) ? abn.value : '';
+    data['__abn_uhr__'+grp] = (abnU && abnU.value) ? abnU.value : '';
+    data['__abn_kom__'+grp] = (abnK && abnK.value) ? abnK.value : '';
   });
 
-  // Alle Textfelder/Inputs speichern (generell)
+  // Alle Textfelder/Inputs speichern — nur mit expliziter ID/Name, keine anonymen Felder
   inhaltEl.querySelectorAll('input[type="text"],input[type="time"],input[type="number"],textarea').forEach((el,i)=>{
     if(!el.value) return;
-    const key = el.id || el.name || ('__field__'+i);
+    if(el.classList.contains('abn-bezeichnung')||el.classList.contains('abn-uhrzeit')||el.classList.contains('abn-kommentar')||el.classList.contains('abn-reason-text')) return;
+    const key = el.id || el.name;
+    if(!key) return; // Keine anonymen Felder speichern
     if(!key.startsWith('__bautaet__')) data[key] = el.value;
   });
 
   // Panel-Sichtbarkeit speichern
   inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
-    data['__vis__'+panel.dataset.subgrp] = panel.style.display !== 'none';
+    var _hg = !!(panel.querySelector('.gate-freigabe-btn') || panel.querySelector('.gate-betonage-btn'));
+    var _ga = _hg && !!(panel.querySelector('.gate-freigabe-btn.on') || panel.querySelector('.gate-betonage-btn.on'));
+    data['__vis__'+panel.dataset.subgrp] = panel.style.display !== 'none' && (!_hg || _ga);
     // Nassaushub: lokalen Flutungsstatus speichern
     const flutD = panel.querySelector('.flut-ja-btn, .flut-nein-btn');
     if(flutD){
@@ -2201,10 +2533,22 @@ function bereichHinzufuegen(){
 
   // Sonstiges: eigene Punkte speichern
   const sonst = [];
-  inhaltEl.querySelectorAll('.sonstiges-text').forEach(el=>sonst.push(el.textContent.trim()));
+  inhaltEl.querySelectorAll('.sonstiges-item').forEach(function(item){
+    const txt = item.querySelector('.sonstiges-text');
+    if(!txt || !txt.textContent.trim()) return;
+    const fotos = [];
+    item.querySelectorAll('.sonstiges-foto').forEach(function(img){ if(img.src) fotos.push(img.src); });
+    sonst.push({text: txt.textContent.trim(), fotos: fotos});
+  });
   if(sonst.length) data['__sonstiges__'] = sonst;
   const btTa = inhaltEl.querySelector('#bereich-bautaetigkeit-ta');
   if(btTa && btTa.value.trim()) data['__bautaet__'] = btTa.value.trim();
+  // UWBS Typ speichern (taucher / gewi / beton)
+  if(inhaltEl.dataset.uwbsTyp) data['__uwbsTyp__'] = inhaltEl.dataset.uwbsTyp;
+  // Bei UWBS: __vis__ für aktive Typ-Subs setzen (kommagetrennt)
+  const _uwbsTypen = (inhaltEl.dataset.uwbsTyp||'').split(',').map(t=>t.trim());
+  if(_uwbsTypen.includes('taucher')) data['__vis__uwbs-taucher'] = true;
+  if(_uwbsTypen.includes('gewi')) ['uwbs-gewi-bohren','uwbs-gewi-verpressen','uwbs-gewi-pruefung'].forEach(g=>{ if(data['__vis__'+g]) data['__vis__'+g]=true; });
 
   // Hinweise
   const hwTexts = [];
@@ -2234,6 +2578,44 @@ function bereichHinzufuegen(){
   const cfg4 = GW_CONFIG[gw];
   if(cfg4) cfg4.subs.forEach(sub=>{
     if(sub.showAlways || data['__vis__'+sub.grp]) activeSubs.push(sub.label);
+  });
+
+  // ZFS-Status direkt aus Live-DOM lesen (überschreibt alten Wert)
+  inhaltEl.querySelectorAll('[data-subgrp]').forEach(function(panel){
+    const sg = panel.dataset.subgrp;
+    // ZFS-Buttons: aktiver Button hat background != none
+    const zJa = panel.querySelector('.zfs-ja-btn,.zfs2-ja,.zfs3-ja');
+    const zNein = panel.querySelector('.zfs-nein-btn,.zfs2-nein,.zfs3-nein');
+    const zfp = panel.querySelector('[data-subphase="freigabe"]');
+    const zJaBt = zJa || (zfp && zfp.querySelector('.zfs-ja-btn,.zfs2-ja'));
+    const zNeinBt = zNein || (zfp && zfp.querySelector('.zfs-nein-btn,.zfs2-nein'));
+    const _aktZja = zJaBt && zJaBt.style && zJaBt.style.background && zJaBt.style.background!=='' && zJaBt.style.background!=='none' && zJaBt.style.background!=='transparent';
+    const _aktZnein = zNeinBt && zNeinBt.style && zNeinBt.style.background && zNeinBt.style.background!=='' && zNeinBt.style.background!=='none' && zNeinBt.style.background!=='transparent';
+    if(_aktZja)  { data['__zfs__'+sg] = 'ja'; }
+    else if(_aktZnein) { data['__zfs__'+sg] = 'nein'; data['__abn_status__'+sg] = ''; }
+    else {
+      // dataset.zfs als Fallback
+      const ds = panel.dataset.zfs || (zfp && zfp.dataset.zfs) || '';
+      if(ds) data['__zfs__'+sg] = ds;
+    }
+  });
+
+  // Status aus Live-DOM — Hintergrundfarbe ist zuverlässigste Quelle
+  inhaltEl.querySelectorAll('[data-subgrp], [data-subphase]').forEach(function(el){
+    const sg = el.dataset.subgrp || (el.closest('[data-subgrp]') && el.closest('[data-subgrp]').dataset.subgrp);
+    if(!sg) return;
+    const phName = el.dataset.subphase || null;
+    const fgBtn = el.querySelector('.abn-fg-btn');
+    const ablBtn = el.querySelector('.abn-abl-btn');
+    var newSt = null;
+    if(fgBtn && fgBtn.style.background && fgBtn.style.background !== 'none' && fgBtn.style.background !== '') newSt = 'freigegeben';
+    else if(ablBtn && ablBtn.style.background && ablBtn.style.background !== 'none' && ablBtn.style.background !== '') newSt = 'abgelehnt';
+    if(newSt !== null){
+      data['__abn_status__'+sg] = newSt;
+      if(phName) data['__abn_status__'+sg+'__'+phName] = newSt;
+      // Auch alle Phasen-Keys überschreiben
+      ['freigabe','betonage'].forEach(function(ph){ data['__abn_status__'+sg+'__'+ph] = newSt; });
+    }
   });
 
   const bereich = {id, name, gw, data, fotos, activeSubs, inhaltHTML: inhaltEl.innerHTML, collapsed: true};
@@ -2306,7 +2688,7 @@ function buildBereichSummary(b){
   // Sonstiges
   if(d['__sonstiges__']&&d['__sonstiges__'].length){
     html += `<div style="${labelStyle}">Eigene Punkte</div>`;
-    html += `<div style="${style}">` + d['__sonstiges__'].map(s=>`▸ ${s}`).join('<br>') + `</div>`;
+    html += `<div style="${style}">` + d['__sonstiges__'].map(s=>typeof s==='string'?`▸ ${s}`:`▸ ${s.text||s}`).join('<br>') + `</div>`;
   }
 
   // Fotos — 4 pro Reihe
@@ -2393,26 +2775,127 @@ function bearbeitenBereich(id){
 
   // Frisches DOM rendern (mit funktionierenden Event-Handlern)
   onBereichGewerkChange();
+
+  // Sonstiges-Punkte wiederherstellen
+  if(b.gw === 'sonstiges' && b.data && b.data['__sonstiges__']){
+    setTimeout(function(){
+      if(inhaltEl._sonstItems && inhaltEl._renderSonst){
+        inhaltEl._sonstItems.length = 0;
+        b.data['__sonstiges__'].forEach(function(s){
+          if(typeof s==='string') inhaltEl._sonstItems.push({text:s, fotos:[]});
+          else inhaltEl._sonstItems.push({text:s.text||'', fotos:s.fotos||[]});
+        });
+        inhaltEl._renderSonst();
+      }
+    }, 50);
+  }
+
+
   const inhaltEl = document.getElementById('bereichGewerkInhalt');
+
+  // UWBS Typ wiederherstellen
+  if(b.gw === 'uwbs' && b.data && b.data['__uwbsTyp__']){
+    inhaltEl.dataset.uwbsTyp = b.data['__uwbsTyp__'];
+    setTimeout(()=>{
+      const aT = inhaltEl._activateTyp || (function(typ){
+        const tb=document.getElementById('uwbs-typ-taucher');
+        const gb=document.getElementById('uwbs-typ-gewi');
+        const bb=document.getElementById('uwbs-typ-beton');
+        const ts=document.getElementById('uwbs-taucher-section');
+        const gs=document.getElementById('uwbs-gewi-section');
+        const bts=document.getElementById('uwbs-beton-section');
+        [tb,gb,bb].forEach(b2=>{ if(b2){b2.style.background='none';b2.style.color='#1C3A6E';b2.style.borderColor='#1C3A6E';} });
+        if(typ==='taucher'&&tb){tb.style.background='#F5A623';tb.style.color='#1C3A6E';tb.style.borderColor='#F5A623';if(ts)ts.style.display='';if(gs)gs.style.display='none';if(bts)bts.style.display='none';}
+        else if(typ==='gewi'&&gb){gb.style.background='#F5A623';gb.style.color='#1C3A6E';gb.style.borderColor='#F5A623';if(gs)gs.style.display='';if(ts)ts.style.display='none';if(bts)bts.style.display='none';}
+        else if(typ==='beton'&&bb){bb.style.background='#F5A623';bb.style.color='#1C3A6E';bb.style.borderColor='#F5A623';if(bts)bts.style.display='';if(ts)ts.style.display='none';if(gs)gs.style.display='none';}
+        const btD=inhaltEl.querySelector('#bereich-bt-section'),hwD=inhaltEl.querySelector('#bereich-hw-section'),ftD=inhaltEl.querySelector('#bereich-foto-section');
+        if(btD)btD.style.display='';if(hwD)hwD.style.display='';if(ftD)ftD.style.display='';
+      });
+      // Mehrere Typen möglich (kommagetrennt)
+      (b.data['__uwbsTyp__']||'').split(',').forEach(function(t){ if(t.trim()) aT(t.trim()); });
+      // Abweichung für Taucher nach Typ-Restore wiederherstellen
+      const ts2 = document.getElementById('uwbs-taucher-section');
+      if(ts2 && (b.data['__uwbsTyp__']||'').split(',').map(t=>t.trim()).includes('taucher')){
+        const vstoss = b.data['__verstoss__uwbs-taucher'];
+        const nBtn = ts2.querySelector('.abw-nein-btn'), jBtn = ts2.querySelector('.abw-ja-btn'), det = ts2.querySelector('.abw-details');
+        if(vstoss==='nein'&&nBtn){ nBtn.style.background='var(--gruen)'; nBtn.style.color='#fff'; if(jBtn){jBtn.style.background='none';jBtn.style.color='var(--rot)';} if(det) det.style.display='none'; vstossData['uwbs-taucher']={verstoss:'nein'}; }
+        else if(vstoss==='ja'&&jBtn){ jBtn.style.background='var(--rot)'; jBtn.style.color='#fff'; if(nBtn){nBtn.style.background='none';nBtn.style.color='var(--gruen)';} if(det) det.style.display='block'; const ta=ts2.querySelector('.abw-text'); if(ta&&b.data['__verstoss_text__uwbs-taucher']) ta.value=b.data['__verstoss_text__uwbs-taucher']; vstossData['uwbs-taucher']={verstoss:'ja'}; }
+        const polier = b.data['__polier__uwbs-taucher'];
+        if(polier){ const pJa=ts2.querySelector('.abw-polier-ja'),pNein=ts2.querySelector('.abw-polier-nein'); if(polier==='ja'&&pJa){pJa.style.background='var(--gruen)';pJa.style.color='#fff';} if(polier==='nein'&&pNein){pNein.style.background='var(--rot)';pNein.style.color='#fff';} }
+      }
+    },50);
+  }
 
   if(b.data){
     // Sub-Panel-Buttons aktivieren (per Index zu GW_CONFIG.subs)
     const cfg3 = GW_CONFIG[b.gw];
     if(cfg3){
-      const btnEls = inhaltEl.querySelectorAll('.sub-sel-btn');
       // Zuerst alle schließen
-      btnEls.forEach(btn=>btn.classList.remove('on'));
+      cfg3.subs.forEach(sub=>{
+        const btn = document.querySelector('.sub-sel-btn[data-grp="'+sub.grp+'"]');
+        if(btn) btn.classList.remove('on');
+      });
       inhaltEl.querySelectorAll('[data-subgrp]').forEach(p=>p.style.display='none');
-      // Dann nur den gespeicherten öffnen (max. einen)
-      let activated = false;
+      // Alle gespeicherten öffnen (Mehrfachauswahl)
       cfg3.subs.forEach((sub, i)=>{
         if(!b.data['__vis__'+sub.grp]) return;
-        if(activated) return; // nur einen aktivieren
-        const btn = btnEls[i];
+        const btn = document.querySelector('.sub-sel-btn[data-grp="'+sub.grp+'"]');
         if(btn) btn.classList.add('on');
         const panel = inhaltEl.querySelector('[data-subgrp="'+sub.grp+'"]');
-        if(panel) panel.style.display = 'block';
-        activated = true;
+        if(panel){
+          panel.style.display = 'block';
+          // Gate-Phase aus __phase__ lesen (gate_state_ wird nicht gespeichert)
+          // Wenn betonage aktiv, hat es Vorrang über freigabe
+          const gateVal = b.data['__phase__'+sub.grp+'__betonage']==='1' ? 'betonage' :
+                          b.data['__phase__'+sub.grp+'__freigabe']==='1' ? 'freigabe' :
+                          b.data['gate_state_'+sub.grp] || '';
+          // Immer alle Gate-Buttons zuerst resetten
+          panel.querySelectorAll('.gate-freigabe-btn,.gate-betonage-btn').forEach(function(b2){
+            b2.classList.remove('on'); b2.style.background='none'; b2.style.borderColor='#1C3A6E';
+          });
+          panel.querySelectorAll('[data-subphase]').forEach(function(ph){ ph.style.display='none'; delete ph.dataset.active; });
+          if(gateVal){
+            panel.style.display='block';
+            const gateBtn = panel.querySelector('.gate-'+gateVal+'-btn');
+            const gatePanel = panel.querySelector('[data-subphase="'+gateVal+'"]');
+            if(gateBtn){ gateBtn.classList.add('on'); gateBtn.style.background='#F5A623'; gateBtn.style.color='#1C3A6E'; gateBtn.style.borderColor='#F5A623'; }
+            if(gatePanel){ gatePanel.style.display='block'; gatePanel.dataset.active='1';
+              // Inner gate (ig-freigabe/ig-betonage) im betonagePanel
+              ['ig-freigabe','ig-betonage'].forEach(function(cls){
+                const igKey='__btn__'+sub.grp+'__'+cls;
+                if(!b.data[igKey]) return;
+                const igBtn=gatePanel.querySelector('.'+cls);
+                if(!igBtn) return;
+                igBtn.classList.add('on'); igBtn.style.background='#F5A623'; igBtn.style.color='#1C3A6E'; igBtn.style.borderColor='#F5A623';
+                // igFP/igBP sind die divs direkt nach innerGate in gatePanel
+                const igDivs = [...gatePanel.querySelectorAll('div')].filter(d=>d.style&&d.style.display==='none'&&d!==gatePanel);
+                const igIdx = cls==='ig-freigabe'?0:1;
+                if(igDivs[igIdx]){igDivs[igIdx].style.display='block'; igDivs[igIdx].dataset.on='1';
+                // Freigegeben/Abgelehnt Button
+                const abnSt = b.data['__abn_status__'+sub.grp] || '';
+                if(abnSt){
+                  const fgB2=igDivs[igIdx].querySelector('.abn-fg-btn');
+                  const ablB2=igDivs[igIdx].querySelector('.abn-abl-btn');
+                  if(abnSt==='freigegeben'&&fgB2){fgB2.dataset.on='1';fgB2.style.background='#1a7a3a';fgB2.style.color='#fff';if(ablB2){ablB2.dataset.on='';ablB2.style.background='none';ablB2.style.color='var(--rot)';}}
+                  if(abnSt==='abgelehnt'&&ablB2){
+                    ablB2.dataset.on='1';ablB2.style.background='#cc2020';ablB2.style.color='#fff';if(fgB2){fgB2.dataset.on='';fgB2.style.background='none';fgB2.style.color='var(--gruen)';}
+                    // Ablehnungsgrund anzeigen
+                    const reasonKey='__abn_reason__'+sub.grp;
+                    let rb=ablB2.parentElement.nextElementSibling;
+                    if(!rb||!rb.classList.contains('abn-reason-box')){
+                      rb=document.createElement('div'); rb.className='abn-reason-box'; rb.style.marginTop='8px';
+                      rb.innerHTML="<div style=\"font-size:.7rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px\">Ablehnungsgrund *</div>"
+                        +"<textarea class=\"abn-reason-text\" placeholder=\"Grund der Ablehnung …\" rows=\"2\" style=\"width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none\"></textarea>";
+                      ablB2.parentElement.insertAdjacentElement('afterend',rb);
+                    }
+                    if(b.data[reasonKey]){const ta=rb.querySelector('.abn-reason-text');if(ta)ta.value=b.data[reasonKey];}
+                  }
+                }
+              }
+              });
+            }
+          }
+        }
       });
     }
 
@@ -2459,7 +2942,7 @@ function bearbeitenBereich(id){
     const hwSection = inhaltEl.querySelector('#bereich-hw-section');
     const fotoSection = inhaltEl.querySelector('#bereich-foto-section');
     if(btSection && hwSection){
-      const anyOn = inhaltEl.querySelector('.sub-sel-btn.on');
+      const anyOn = inhaltEl.querySelector('.sub-sel-btn.on') || [...inhaltEl.querySelectorAll('[data-subgrp]')].some(p=>p.style.display!=='none');
       btSection.style.display = anyOn ? '' : 'none';
       hwSection.style.display = anyOn ? '' : 'none';
       if(fotoSection) fotoSection.style.display = anyOn ? '' : 'none';
@@ -2512,9 +2995,11 @@ function bearbeitenBereich(id){
 
     // Alle Felder + Button-Zustände wiederherstellen (ein einziger Timeout)
     setTimeout(()=>{
-      // Textfelder
+      // Textfelder — nur Felder mit expliziter ID oder Name
       inhaltEl.querySelectorAll('input[type="text"],input[type="time"],input[type="number"],textarea').forEach((el,i)=>{
-        const key = el.id || el.name || ('__field__'+i);
+        if(el.classList.contains('abn-bezeichnung')||el.classList.contains('abn-uhrzeit')||el.classList.contains('abn-kommentar')||el.classList.contains('abn-reason-text')) return;
+        const key = el.id || el.name;
+        if(!key) return; // Keine anonymen Felder restoren
         if(b.data[key] !== undefined && b.data[key] !== '') el.value = b.data[key];
       });
 
@@ -2526,33 +3011,28 @@ function bearbeitenBereich(id){
         const abn = panel.querySelector('.abn-bezeichnung');
         const abnU = panel.querySelector('.abn-uhrzeit');
         const abnK = panel.querySelector('.abn-kommentar');
-        if(abn && b.data['__abn_bez__'+grp]) abn.value = b.data['__abn_bez__'+grp];
-        if(abnU && b.data['__abn_uhr__'+grp]) abnU.value = b.data['__abn_uhr__'+grp];
-        if(abnK && b.data['__abn_kom__'+grp]) abnK.value = b.data['__abn_kom__'+grp];
+        // Restore: Felder phasenspezifisch setzen
+        if(abn || abnU || abnK){
+          // Aktive Subphase bestimmen
+          var _activePhSrc = null;
+          panel.querySelectorAll('[data-subphase]').forEach(function(ph){
+            if((ph.dataset.active==='1'||ph.style.display!=='none') && !_activePhSrc) _activePhSrc = ph;
+          });
+          var _phKey = _activePhSrc ? ('__'+_activePhSrc.dataset.subphase) : '';
+          var _bezVal = b.data['__abn_bez__'+grp+_phKey] || b.data['__abn_bez__'+grp] || '';
+          var _uhrVal = b.data['__abn_uhr__'+grp+_phKey] || b.data['__abn_uhr__'+grp] || '';
+          var _komVal = b.data['__abn_kom__'+grp+_phKey] || b.data['__abn_kom__'+grp] || '';
+          // In aktive Subphase eintragen, nicht in erste
+          var _targetEl = _activePhSrc || panel;
+          var _abn2 = _targetEl.querySelector('.abn-bezeichnung');
+          var _abnU2 = _targetEl.querySelector('.abn-uhrzeit');
+          var _abnK2 = _targetEl.querySelector('.abn-kommentar');
+          if(_abn2 && _bezVal) _abn2.value = _bezVal;
+          if(_abnU2 && _uhrVal) _abnU2.value = _uhrVal;
+          if(_abnK2 && _komVal) _abnK2.value = _komVal;
+        }
 
-        // Gate-Panel öffnen + Felder/Status/Fotos wiederherstellen
-        ['gate-freigabe-btn','gate-betonage-btn'].forEach(cls=>{
-          if(b.data['__btn__'+grp+'__'+cls]==='1'){
-            const phase = cls.includes('freigabe') ? 'freigabe' : 'betonage';
-            const pp = panel.querySelector('[data-subphase="'+phase+'"]');
-            const btn = panel.querySelector('.'+cls);
-            if(pp){ pp.dataset.active='1'; pp.style.display='block'; pp.dataset.abnStatus = b.data['__abn_status__'+grp]||''; }
-            if(btn){ btn.style.background='#F5A623'; btn.style.color='#1C3A6E'; btn.style.borderColor='#F5A623'; }
-            // Felder im Panel wiederherstellen
-            if(pp){
-              const bez4=pp.querySelector('.abn-bezeichnung'); if(bez4&&b.data['__abn_bez__'+grp]) bez4.value=b.data['__abn_bez__'+grp];
-              const uhr4=pp.querySelector('.abn-uhrzeit');    if(uhr4&&b.data['__abn_uhr__'+grp]) uhr4.value=b.data['__abn_uhr__'+grp];
-              const kom4=pp.querySelector('.abn-kommentar');  if(kom4&&b.data['__abn_kom__'+grp]) kom4.value=b.data['__abn_kom__'+grp];
-              // Status-Button setzen
-              const st4 = b.data['__abn_status__'+grp];
-              if(st4){
-                const fg4=pp.querySelector('.abn-fg-btn'); const abl4=pp.querySelector('.abn-abl-btn');
-                if(st4==='freigegeben'&&fg4){fg4.dataset.on='1';fg4.style.background='#1a7a3a';fg4.style.color='#fff';if(abl4){abl4.dataset.on='';abl4.style.background='none';abl4.style.color='var(--rot)';}}
-                else if(st4==='abgelehnt'&&abl4){abl4.dataset.on='1';abl4.style.background='#cc2020';abl4.style.color='#fff';if(fg4){fg4.dataset.on='';fg4.style.background='none';fg4.style.color='var(--gruen)';}}
-              }
-            }
-          }
-        });
+        // Gate-Buttons: wird in separatem setTimeout weiter unten wiederhergestellt
 
         // Abnahme-Status Freigegeben/Abgelehnt
         const status2 = b.data['__abn_status__'+grp];
@@ -2568,10 +3048,83 @@ function bearbeitenBereich(id){
           } else if(status2==='abgelehnt' && ablB){
             ablB.dataset.on='1'; ablB.style.background='#cc2020'; ablB.style.color='#fff';
             if(fgB){ fgB.dataset.on=''; fgB.style.background='none'; fgB.style.color='var(--gruen)'; }
+            // Ablehnungsgrund wiederherstellen
+            const reasonKey = '__abn_reason__'+grp;
+            if(b.data[reasonKey]){
+              let rb = ablB.parentElement.nextElementSibling;
+              if(!rb || !rb.classList.contains('abn-reason-box')){
+                rb = document.createElement('div');
+                rb.className = 'abn-reason-box';
+                rb.style.marginTop = '8px';
+                rb.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
+                  +'<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+                ablB.parentElement.insertAdjacentElement('afterend', rb);
+              }
+              const ta2 = rb.querySelector('.abn-reason-text');
+              if(ta2) ta2.value = b.data[reasonKey];
+              rb.style.display = '';
+            }
           }
         }
       });
     }, 50);
+
+    // Gate-Buttons (Betonierfreigabe/Betonage) wiederherstellen
+    setTimeout(()=>{
+      inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
+        const grp = panel.dataset.subgrp;
+        // Immer alle Gate-Buttons resetten
+        panel.querySelectorAll('.gate-freigabe-btn,.gate-betonage-btn').forEach(function(b2){
+          b2.classList.remove('on'); b2.style.background='none'; b2.style.borderColor='#1C3A6E';
+        });
+        panel.querySelectorAll('[data-subphase]').forEach(function(ph){ ph.style.display='none'; delete ph.dataset.active; });
+        // Aus __phase__ lesen (hat Vorrang vor gate_state_)
+        const gateVal = b.data['__phase__'+grp+'__betonage']==='1' ? 'betonage' :
+                        b.data['__phase__'+grp+'__freigabe']==='1' ? 'freigabe' :
+                        b.data['gate_state_'+grp] || '';
+        if(!gateVal) return;
+        panel.style.display = 'block';
+        const subSelBtn = inhaltEl.querySelector('.sub-sel-btn[data-grp="'+grp+'"]');
+        if(subSelBtn) subSelBtn.classList.add('on');
+        const gateBtn = panel.querySelector('.gate-'+gateVal+'-btn');
+        const gatePanel = panel.querySelector('[data-subphase="'+gateVal+'"]');
+        if(gateBtn){ gateBtn.classList.add('on'); gateBtn.style.background='#F5A623'; gateBtn.style.color='#1C3A6E'; gateBtn.style.borderColor='#F5A623'; }
+        if(gatePanel){ gatePanel.style.display='block'; gatePanel.dataset.active='1'; }
+        // Abnahme-Status wiederherstellen (in gatePanel ODER direkt im panel)
+        var _abnStEl = gatePanel || panel;
+        var abnSt2 = b.data['__abn_status__'+grp+'__'+gateVal] || b.data['__abn_status__'+grp] || '';
+        if(gatePanel){
+          // igDivs: direkte div-Kinder die kein Button-Element sind (igFP und igBP)
+          const allIgDivs2 = [...gatePanel.querySelectorAll(':scope > div')].filter(function(d){
+            return !d.querySelector('.ig-freigabe') && !d.querySelector('.ig-betonage') && !d.querySelector('.gate-freigabe-btn') && !d.querySelector('.gate-betonage-btn');
+          });
+          // Erst alle resetten
+          allIgDivs2.forEach(function(d){ d.style.display='none'; delete d.dataset.on; });
+          ['ig-freigabe','ig-betonage'].forEach(function(cls){
+            if(!b.data['__btn__'+grp+'__'+cls]) return;
+            const igBtn = gatePanel.querySelector('.'+cls);
+            if(igBtn){ igBtn.classList.add('on'); igBtn.style.background='#F5A623'; igBtn.style.color='#1C3A6E'; igBtn.style.borderColor='#F5A623'; }
+            const igIdx = cls==='ig-freigabe'?0:1;
+            if(allIgDivs2[igIdx]){ allIgDivs2[igIdx].style.display='block'; allIgDivs2[igIdx].dataset.on='1'; }
+          });
+          const _abnBez = b.data['__abn_bez__'+grp+'__'+gateVal] || '';
+          const _abnUhr = b.data['__abn_uhr__'+grp+'__'+gateVal] || '';
+          const _abnKom = b.data['__abn_kom__'+grp+'__'+gateVal] || '';
+          const _bezInp = gatePanel.querySelector('.abn-bezeichnung');
+          const _uhrInp = gatePanel.querySelector('.abn-uhrzeit');
+          const _komInp = gatePanel.querySelector('.abn-kommentar');
+          if(_bezInp) _bezInp.value = _abnBez;
+          if(_uhrInp) _uhrInp.value = _abnUhr;
+          if(_komInp) _komInp.value = _abnKom;
+        }
+        if(abnSt2){
+          const fgB = _abnStEl.querySelector('.abn-fg-btn');
+          const ablB = _abnStEl.querySelector('.abn-abl-btn');
+          if(abnSt2==='freigegeben'&&fgB){fgB.dataset.on='1';fgB.style.background='#1a7a3a';fgB.style.color='#fff';if(ablB){ablB.dataset.on='';ablB.style.background='none';ablB.style.color='var(--rot)';}}
+          if(abnSt2==='abgelehnt'&&ablB){ablB.dataset.on='1';ablB.style.background='#cc2020';ablB.style.color='#fff';if(fgB){fgB.dataset.on='';fgB.style.background='none';fgB.style.color='var(--gruen)';}}
+        }
+      });
+    }, 100);
 
     // ZFS-Zustände separat später
     setTimeout(()=>{
@@ -2591,17 +3144,42 @@ function bearbeitenBereich(id){
           if(infoBox) infoBox.style.display='';
           if(abnDiv)  abnDiv.style.display='';
           panel.dataset.zfs='ja';
+          const fp=panel.querySelector('[data-subphase="freigabe"]'); if(fp) fp.dataset.zfs='ja';
+          // Infobox und Abnahme einblenden
+          const ib2=panel.querySelector('.zfs-infobox'); if(ib2) ib2.style.display='';
+          const ab2=panel.querySelector('.zfs-abnahme'); if(ab2) ab2.style.display='';
         } else if(val==='nein'){
           if(zfsNein){ zfsNein.style.background='var(--rot)'; zfsNein.style.color='#fff'; }
           if(zfsJa){ zfsJa.style.background='none'; zfsJa.style.color='var(--gruen)'; }
           if(neinHint) neinHint.style.display='';
           panel.dataset.zfs='nein';
+          const fp2=panel.querySelector('[data-subphase="freigabe"]'); if(fp2) fp2.dataset.zfs='nein';
         }
       });
     }, 200);
 
-    // Autosave nach Restore wieder aktivieren
-    setTimeout(()=>{ window._pauseAutosave = false; }, 300);
+    // Inner-Gate Buttons (Rohbau Betonierfreigabe/Betonage innerhalb Betonage-Panel)
+    setTimeout(()=>{
+      inhaltEl.querySelectorAll('[data-subgrp]').forEach(panel=>{
+        const grp = panel.dataset.subgrp;
+        [['ig-freigabe','igFP'],['ig-betonage','igBP']].forEach(function(pair){
+          const cls=pair[0];
+          const key='__btn__'+grp+'__'+cls;
+          if(b.data[key]==='1'){
+            const btn=panel.querySelector('.'+cls);
+            // Das zugehörige Panel ist das nth div-child nach innerGate
+            const innerGate=btn?btn.closest('div[style*="display:flex"]'):null;
+            if(innerGate){
+              const panels=innerGate.parentElement?innerGate.parentElement.querySelectorAll('div[style*="display:none"]'):[];
+              const idx=cls==='ig-freigabe'?0:1;
+              const pp=panels[idx];
+              if(pp){pp.dataset.on='1';pp.style.display='block';}
+            }
+            if(btn){btn.classList.add('on');btn.style.background='#F5A623';btn.style.color='#1C3A6E';btn.style.borderColor='#F5A623';}
+          }
+        });
+      });
+    }, 300);
 
     // vstoss-Buttons visuell wiederherstellen (für Betonage und andere setVerstoss-Buttons)
     setTimeout(()=>{
@@ -2995,7 +3573,7 @@ function getAppState(){
   };
 
   // Felder
-  ['fBaustelle','fDatum','fBauleiter','fPolier','fWetter','fTemp'].forEach(id=>{
+  ['fBaustelle','fDatum','fBauleiter','fWetter','fTemp'].forEach(id=>{
     const el=document.getElementById(id); if(el) state.fields[id]=el.value;
   });
   ['schlitzwand','aushub','uwbs','verfuellen','wiederaushub','rohbau','mikropfahl','sonstiges'].forEach(k=>{
@@ -3044,6 +3622,13 @@ function getAppState(){
     abn.querySelectorAll('.abn-fi input, .abn-fi select, .abn-fi textarea').forEach(el=>{
       if(el.id && el.value) fields[el.id] = el.value;
     });
+    // Ablehnungsgrund — unter allen relevanten Keys speichern
+    const reasonTa = abn.querySelector('.abn-reason-text');
+    if(reasonTa && reasonTa.value.trim()){
+      fields['__abn_reason__'] = reasonTa.value.trim();
+      fields['__abwtext__'] = reasonTa.value.trim();
+      fields['__verstoss_text__'] = reasonTa.value.trim();
+    }
     if(Object.keys(fields).length) state.abnahmeFields[id] = fields;
   });
 
@@ -3110,11 +3695,34 @@ function restoreAppState(s){
     const abn = document.getElementById(id) || document.querySelector(`.abnahme-block[data-grpid="${id}"]`);
     if(!abn) return;
     abn.querySelectorAll('.abn-status-btn').forEach(btn=>{
+      btn.classList.remove('active');
       if(btn.textContent.trim()===txt) btn.classList.add('active');
     });
+    // Ablehnungsgrund-Box einblenden wenn Abgelehnt aktiv
+    if(txt==='Abgelehnt'){
+      const ablBtn = abn.querySelector('.abn-status-btn.abgelehnt.active');
+      if(ablBtn){
+        let rb = ablBtn.parentElement.nextElementSibling;
+        if(!rb || !rb.classList.contains('abn-reason-box')){
+          rb = document.createElement('div');
+          rb.className = 'abn-reason-box';
+          rb.style.marginTop = '8px';
+          rb.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
+            +'<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:var(--grau1);border:1px solid var(--rot);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+          ablBtn.parentElement.insertAdjacentElement('afterend', rb);
+        }
+        // Grund einfügen wenn vorhanden (aus abnahmeFields)
+        const fields = s.abnahmeFields && s.abnahmeFields[id];
+        if(fields && fields['__abn_reason__']){
+          const ta = rb.querySelector('.abn-reason-text');
+          if(ta) ta.value = fields['__abn_reason__'];
+        }
+      }
+    }
   });
   if(s.abnahmeFields) Object.entries(s.abnahmeFields).forEach(([,fields])=>{
     Object.entries(fields).forEach(([fid,val])=>{
+      if(fid==='__abn_reason__') return; // bereits oben verarbeitet
       const el=document.getElementById(fid); if(el) el.value=val;
     });
   });
@@ -3219,6 +3827,24 @@ function restoreAppState(s){
           if(v.polier==='ja'){ const pj=document.getElementById(prefix+'-polier-ja'); if(pj){pj.style.background='var(--gruen)';pj.style.color='#fff';} }
           if(v.polier==='nein'){ const pn=document.getElementById(prefix+'-polier-nein'); if(pn){pn.style.background='var(--rot)';pn.style.color='#fff';} }
         }
+        // Fotos wiederherstellen
+        if(v.fotos && v.fotos.length){
+          const prev = document.getElementById(prefix+'-foto-preview');
+          if(prev){
+            prev.innerHTML = '';
+            v.fotos.forEach(function(src, idx){
+              const wrap = document.createElement('div');
+              wrap.style.cssText = 'position:relative;width:80px;height:80px';
+              const img = document.createElement('img');
+              img.src = src; img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:4px';
+              const del = document.createElement('button');
+              del.textContent = '✕';
+              del.style.cssText = 'position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer';
+              (function(i){ del.onclick = function(){ wrap.remove(); vstossData[prefix].fotos.splice(i,1); }; })(idx);
+              wrap.appendChild(img); wrap.appendChild(del); prev.appendChild(wrap);
+            });
+          }
+        }
       });
     }
 
@@ -3258,6 +3884,7 @@ function saveState(manual){
   try{
     const key = getSaveKey(manual);
     const state = getAppState();
+    window._lastAppState = state; // für PDF-Export
     state._savedAt = new Date().toISOString();
     state._key = key;
     openDB(db => {
@@ -3463,7 +4090,7 @@ document.getElementById('btnReset')?.addEventListener('click', () => {
   if(!confirm('Wirklich alles leeren? Alle Eingaben, Fotos und Unterschriften werden gelöscht.')) return;
 
   // Fields
-  ['fBaustelle','fBauleiter','fPolier'].forEach(id => {
+  ['fBaustelle','fBauleiter'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
   document.getElementById('fWetter').value = 'Bewoelkt';
@@ -3519,12 +4146,18 @@ document.getElementById('btnReset')?.addEventListener('click', () => {
 
   // Alle Verstoss/Abweichungs-Buttons zurücksetzen
   Object.keys(vstossData).forEach(k => delete vstossData[k]);
-  document.querySelectorAll('[id$="-nein-btn"],[id$="-ja-btn"],[id$="-polier-ja"],[id$="-polier-nein"]').forEach(btn=>{
-    btn.style.background='none'; btn.style.color='';
+  document.querySelectorAll('[id$="-nein-btn"],[id$="-polier-ja"]').forEach(btn=>{
+    btn.style.background='none'; btn.style.color='var(--gruen)';
+  });
+  document.querySelectorAll('[id$="-ja-btn"],[id$="-polier-nein"]').forEach(btn=>{
+    btn.style.background='none'; btn.style.color='var(--rot)';
   });
   document.querySelectorAll('[id$="-details"]').forEach(el=>el.style.display='none');
-  document.querySelectorAll('.vstoss-nein-btn,.vstoss-ja-btn,.abw-nein-btn,.abw-ja-btn').forEach(btn=>{
-    btn.style.background='none'; btn.style.color='';
+  document.querySelectorAll('.vstoss-nein-btn,.abw-nein-btn').forEach(btn=>{
+    btn.style.background='none'; btn.style.color='var(--gruen)';
+  });
+  document.querySelectorAll('.vstoss-ja-btn,.abw-ja-btn').forEach(btn=>{
+    btn.style.background='none'; btn.style.color='var(--rot)';
   });
 
   // Alle vstoss-detail Boxen schließen
@@ -3715,6 +4348,7 @@ const subGrpMap = {
   'aushub-beton-freigabe': ['ci-grp-aushub-beton-freigabe'],
   'aushub-beton-betonage': ['ci-grp-aushub-beton-betonage'],
   'aushub-steife':        ['ci-grp-aushub-bewehrung','ci-grp-aushub-beton'],
+  'uwbs-taucher':         ['ci-grp-uwbs-taucher'],
   'uwbs-gewi-bohren':     ['ci-grp-uwbs-gewi-bohren'],
   'uwbs-gewi-verpressen': ['ci-grp-uwbs-gewi-verpressen'],
   'uwbs-gewi-pruefung':   ['ci-grp-uwbs-gewi-pruefung'],
@@ -3929,6 +4563,31 @@ function toggleSubGrp(btn){
   setSubGrpVisible(grp, on);
 }
 
+function toggleGateBtn(btn){
+  const phase = btn.dataset.phase;
+  const panel = btn.closest('[data-subgrp]');
+  if(!panel) return;
+  const grp = panel.dataset.subgrp;
+  const otherPhase = phase==='freigabe' ? 'betonage' : 'freigabe';
+  const otherBtn = panel.querySelector('.gate-'+otherPhase+'-btn');
+  const thisPanel = panel.querySelector('[data-subphase="'+phase+'"]');
+  const otherPanel = panel.querySelector('[data-subphase="'+otherPhase+'"]');
+  const on = btn.classList.contains('on');
+  btn.classList.toggle('on', !on);
+  btn.style.background = on ? 'none' : '#F5A623';
+  btn.style.color = '#1C3A6E';
+  btn.style.borderColor = on ? '#1C3A6E' : '#F5A623';
+  if(thisPanel){ thisPanel.style.display = on ? 'none' : 'block'; thisPanel.dataset.active = on ? '' : '1'; }
+  if(otherBtn){ otherBtn.classList.remove('on'); otherBtn.style.background='none'; otherBtn.style.borderColor='#1C3A6E'; }
+  if(otherPanel){ otherPanel.style.display='none'; otherPanel.dataset.active=''; }
+  // Zustand in hidden input speichern (wird von allgemeinem input-Speicher erfasst)
+  const hiddenId = 'gate_state_'+grp;
+  let hidden = panel.querySelector('#'+hiddenId);
+  if(!hidden){ hidden=document.createElement('input'); hidden.type='hidden'; hidden.id=hiddenId; panel.appendChild(hidden); }
+  hidden.value = on ? '' : phase;
+  scheduleAutosave();
+}
+
 // On gewerk activation: hide all sub-groups until selected
 function initSubGrpSelection(gw){
   const selGrid = document.getElementById('subsel-' + gw);
@@ -3973,7 +4632,7 @@ window.toggleGW = function(btn){
 const sonstigesItems = [];
 let sonstigesFotoData = null;
 
-document.getElementById('sonstigesFoto').addEventListener('change', function(){
+const _sonstFotoEl = document.getElementById('sonstigesFoto'); if(_sonstFotoEl) _sonstFotoEl.addEventListener('change', function(){
   if(!this.files || !this.files[0]) return;
   const reader = new FileReader();
   reader.onload = e => {
@@ -4086,7 +4745,7 @@ function initCollapsible(){
 }
 
 // Render UWBS GEWI check groups
-['gewi-bohren','gewi-verpressen','gewi-pruefung'].forEach(t=>{
+['taucher','gewi-bohren','gewi-verpressen','gewi-pruefung'].forEach(t=>{
   const key = 'uwbs-'+t;
   if(CHECKS[key]) renderGroup('ci-grp-'+key, CHECKS[key]);
 });
@@ -4176,6 +4835,38 @@ function addFotoAbw(input){
     };
     reader.readAsDataURL(file);
   });
+}
+
+function addFotoPrefix(input, prefix){
+  if(!input.files || !input.files.length) return;
+  // Suche Preview-Div: zuerst nächstes Geschwister, dann per ID
+  const label = input.closest('label');
+  let previews = label && label.nextElementSibling;
+  if(!previews || !previews.id) previews = document.getElementById(prefix+'-foto-preview') || document.getElementById(prefix+'-foto-preview-always');
+  if(!previews) return;
+  Array.from(input.files).forEach(function(file){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const wrap = document.createElement('div');
+      wrap.className = 'foto-preview';
+      wrap.style.cssText = 'position:relative;width:80px;height:80px';
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:4px';
+      const del = document.createElement('button');
+      del.textContent = '✕';
+      del.style.cssText = 'position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0';
+      del.onclick = function(){ wrap.remove(); };
+      wrap.appendChild(img); wrap.appendChild(del);
+      previews.appendChild(wrap);
+      // In vstossData speichern
+      vstossData[prefix] = vstossData[prefix] || {};
+      vstossData[prefix].fotos = vstossData[prefix].fotos || [];
+      vstossData[prefix].fotos.push(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
 }
 
 function addFoto(input){
@@ -4451,6 +5142,7 @@ function printFotos(containerEl, titleLabel, doc, y, M, W, BG1, BLUE, np, pdfStr
 }
 
 function exportPDF(){
+  saveState();
   // Alle input-* Felder (auch in Containern) in window.inputValues synchronisieren
   document.querySelectorAll('input[id^="input-"]').forEach(function(el){ if(el.value.trim()) window.inputValues[el.id]=el.value.trim(); });
   if(!window.jspdf || !window.jspdf.jsPDF){
@@ -4608,13 +5300,12 @@ function exportPDF(){
   const bwLabel=(bw.options[bw.selectedIndex]?.text||'-').replace('– bitte wählen –','-');
   const datum=document.getElementById('fDatum').value||'-';
   const bl=document.getElementById('fBauleiter').value||'-';
-  const po=document.getElementById('fPolier').value||'-';
   const wt=document.getElementById('fWetter').value||'-';
   const tp=document.getElementById('fTemp').value||'-';
 
   const gwNames=[...document.querySelectorAll('.gw-btn.on')].map(b=>b.querySelector('.gw-name').textContent).join(', ')||'-';
-  y=infoRow([['Baufeld',bwLabel.slice(0,28)],['Datum',datum],['Bauüberwacher',bl],['Polier / AN',po]],y);
-  y=infoRow([['Witterung',pdfStr(wt)],['Temperatur',pdfStr(tp)],['Aktive Bauaktivitäten',pdfStr(gwNames).slice(0,60)]],y);
+  y=infoRow([['Baufeld',bwLabel.slice(0,28)],['Datum',datum],['Bauüberwacher',bl]],y);
+  y=infoRow([['Witterung',pdfStr(wt)],['Temperatur',pdfStr(tp)]],y);
   y+=2;
 
   // Helper: render a CHECKS group to PDF
@@ -4696,6 +5387,7 @@ function exportPDF(){
       ['Betonage','aushub-beton-betonage'],
     ]},
     uwbs:{label:'UWBS – Unterwasser-Betonsohle', groups:[
+      ['Taucherarbeiten','uwbs-taucher'],
       ['GEWI-Pfähle – Bohren','uwbs-gewi-bohren'],
       ['GEWI-Pfähle – Verpressen','uwbs-gewi-verpressen'],
       ['GEWI-Pfähle – Prüfung','uwbs-gewi-pruefung'],
@@ -4794,6 +5486,11 @@ function exportPDF(){
             else if(aIsAbgelehnt) doc.setTextColor(204,48,48);
             else doc.setTextColor(160,140,50);
             doc.text('=> '+aStLabel,M+4,y+4.8); doc.setTextColor(0,0,0); y+=7;
+            // Ablehnungsgrund
+            if(aIsAbgelehnt){
+              const aReason = (function(){ const rb=abnBew&&abnBew.querySelector('.abn-reason-text'); return rb?rb.value.trim():''; })();
+              if(aReason){ const arl=doc.splitTextToSize(pdfStr('Grund: '+aReason),W-2*M-8); const arh=Math.max(7,arl.length*4.5+3); y=np(y,arh); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,arh,'F'); doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(204,48,48); doc.text(arl,M+4,y+4.8); doc.setTextColor(0,0,0); y+=arh; }
+            }
           }
         }
         // Betonierfreigabe: Abnahme-Box drucken
@@ -4828,6 +5525,10 @@ function exportPDF(){
             else if(aIsAblg2) doc.setTextColor(204,48,48);
             else doc.setTextColor(160,140,50);
             doc.text('=> '+aStLabel2,M+4,y+4.8); doc.setTextColor(0,0,0); y+=7;
+            if(aIsAblg2){
+              const aReason2=(function(){ const rb=abnEl2&&abnEl2.querySelector('.abn-reason-text'); return rb?rb.value.trim():''; })();
+              if(aReason2){ const arl2=doc.splitTextToSize(pdfStr('Grund: '+aReason2),W-2*M-8); const arh2=Math.max(7,arl2.length*4.5+3); y=np(y,arh2); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,arh2,'F'); doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(204,48,48); doc.text(arl2,M+4,y+4.8); doc.setTextColor(0,0,0); y+=arh2; }
+            }
           }
         }
         // Betonage
@@ -4948,7 +5649,11 @@ function exportPDF(){
           const activeBtn=abnEl.querySelector('.abn-status-btn.active');
           const isFreig=activeBtn&&activeBtn.classList.contains('freigegeben');
           const isAblg=activeBtn&&activeBtn.classList.contains('abgelehnt');
-          const statusLabel=isFreig?'Betonage freigegeben':isAblg?'Betonage nicht freigegeben':'Nicht bewertet';
+          // Fallback: aus gespeichertem abnahmeStatus lesen
+          const _savedStatus = (window._lastAppState&&window._lastAppState.abnahmeStatus&&(window._lastAppState.abnahmeStatus[abnEl.id]||window._lastAppState.abnahmeStatus[abnEl.dataset.grpid]))||'';
+          const isFreigF = isFreig || _savedStatus==='Freigegeben';
+          const isAblgF = isAblg || _savedStatus==='Abgelehnt';
+          const statusLabel=isFreigF?'Betonage freigegeben':isAblgF?'Betonage nicht freigegeben':'Nicht bewertet';
           y=np(y,7); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,7,'F');
           doc.setFont('helvetica','bold'); doc.setFontSize(7);
           if(isFreig) doc.setTextColor(46,158,80);
@@ -4956,6 +5661,18 @@ function exportPDF(){
           else doc.setTextColor(160,140,50);
           doc.text('=> '+statusLabel,M+4,y+4.8);
           doc.setTextColor(0,0,0); y+=7;
+          // Ablehnungsgrund
+          if(isAblgF){
+            const reasonTa = abnEl.querySelector('.abn-reason-text');
+            const reasonVal = (reasonTa && reasonTa.value.trim()) || '';
+            if(reasonVal){
+              const reasonLines = doc.splitTextToSize(pdfStr('Grund: '+reasonVal), W-2*M-8);
+              const reasonH = reasonLines.length*4.5+3;
+              y=np(y,reasonH); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,reasonH,'F');
+              doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(204,48,48);
+              doc.text(reasonLines,M+4,y+4.8); doc.setTextColor(0,0,0); y+=reasonH;
+            }
+          }
         }
         return;
       }
@@ -5219,13 +5936,115 @@ function exportPDF(){
 
       const d = b.data || {};
 
+      // Immer frisch aus inhaltHTML lesen — überschreibt gespeicherte Daten
+      if(b.inhaltHTML){
+        const tmpDiv = document.createElement('div');
+        tmpDiv.innerHTML = b.inhaltHTML;
+        tmpDiv.querySelectorAll('[data-subgrp]').forEach(function(p){
+          const sg = p.dataset.subgrp;
+          // Inner-gate buttons
+          const igFp = p.querySelector('.ig-freigabe.on');
+          const igBp = p.querySelector('.ig-betonage.on');
+          if(igFp){ d['ig_gate_state_'+sg] = 'freigabe'; d['__btn__'+sg+'__ig-freigabe'] = '1'; }
+          if(igBp){ d['ig_gate_state_'+sg] = 'betonage'; d['__btn__'+sg+'__ig-betonage'] = '1'; }
+          // Outer gate buttons — immer überschreiben (auch wenn nicht aktiv)
+          const gfBtn = p.querySelector('.gate-freigabe-btn');
+          const gbBtn = p.querySelector('.gate-betonage-btn');
+          if(gfBtn || gbBtn){
+            d['__phase__'+sg+'__freigabe'] = (gfBtn && gfBtn.classList.contains('on')) ? '1' : '';
+            d['__phase__'+sg+'__betonage'] = (gbBtn && gbBtn.classList.contains('on')) ? '1' : '';
+          }
+          // ZFS status — aus inhaltHTML lesen (Button-Styles sind zuverlässig)
+          const zfp = p.querySelector('[data-subphase="freigabe"]');
+          const zJaBtn = p.querySelector('.zfs-ja-btn,.zfs2-ja,.zfs3-ja') || (zfp && zfp.querySelector('.zfs-ja-btn,.zfs2-ja'));
+          const zNeinBtn = p.querySelector('.zfs-nein-btn,.zfs2-nein,.zfs3-nein') || (zfp && zfp.querySelector('.zfs-nein-btn,.zfs2-nein'));
+          if(zNeinBtn && zNeinBtn.style && zNeinBtn.style.background && zNeinBtn.style.background!=='' && zNeinBtn.style.background!=='none' && zNeinBtn.style.background!=='transparent') { d['__zfs__'+sg] = 'nein'; d['__abn_status__'+sg] = ''; }
+          else if(zJaBtn && zJaBtn.style && zJaBtn.style.background && zJaBtn.style.background!=='' && zJaBtn.style.background!=='none' && zJaBtn.style.background!=='transparent') { d['__zfs__'+sg] = 'ja'; }
+          else {
+            const zDs2 = p.dataset.zfs || (zfp && zfp.dataset.zfs) || '';
+            if(zDs2) d['__zfs__'+sg] = zDs2;
+          }
+          // Abnahme status - für alle Phasen (direkt im Panel UND in Subphasen)
+          const _zfsVal = d['__zfs__'+sg] || '';
+          if(_zfsVal !== 'nein'){
+            // Direkt im Panel (ZFS-System)
+            var fg=false, abl=false;
+            p.querySelectorAll('.abn-fg-btn').forEach(function(b2){ if(b2.dataset.on&&b2.dataset.on.trim()) fg=true; });
+            p.querySelectorAll('.abn-abl-btn').forEach(function(b2){ if(b2.dataset.on&&b2.dataset.on.trim()) abl=true; });
+            // Nur Button-Status verwenden (zuverlässiger als dataset.abnStatus das veraltet sein kann)
+            // pSt nur als Fallback wenn kein Button aktiv
+            if(!fg && !abl){
+              const pSt = (p.dataset.abnStatus||'').trim() || (zfp && (zfp.dataset.abnStatus||'').trim()) || '';
+              if(pSt) d['__abn_status__'+sg] = pSt;
+            }
+            else if(fg) d['__abn_status__'+sg] = 'freigegeben';
+            else if(abl) d['__abn_status__'+sg] = 'abgelehnt';
+            // Nicht mit leer überschreiben
+            // abn-status-btn system
+            const actBtn = p.querySelector('.abn-status-btn.active');
+            if(actBtn) d['__abn_status__'+sg] = actBtn.classList.contains('freigegeben') ? 'Freigegeben' : 'Abgelehnt';
+            // Gate-Sub Phasen — Status aus Hintergrundfarbe lesen (zuverlässigste Quelle)
+            p.querySelectorAll('[data-subphase]').forEach(function(ph){
+              const phName = ph.dataset.subphase;
+              const isActive = ph.dataset.active==='1' || ph.style.display !== 'none';
+              var phFg=false, phAbl=false;
+              ph.querySelectorAll('.abn-fg-btn').forEach(function(b2){
+                const bg = b2.style.background||b2.style.backgroundColor||'';
+                if(bg && bg!=='none' && bg!=='transparent') phFg=true;
+              });
+              ph.querySelectorAll('.abn-abl-btn').forEach(function(b2){
+                const bg = b2.style.background||b2.style.backgroundColor||'';
+                if(bg && bg!=='none' && bg!=='transparent') phAbl=true;
+              });
+              // dataset.abnStatus nur nutzen wenn Button auch wirklich aktiv (background gesetzt)
+              const phSt = (phFg||phAbl) ? ((ph.dataset.abnStatus||'').trim()) : '';
+              const status = phFg?'freigegeben': phAbl?'abgelehnt': phSt||'';
+              if(status) {
+                d['__abn_status__'+sg+'__'+phName] = status;
+                if(isActive) d['__abn_status__'+sg] = status;
+              }
+              // Nie mit leer überschreiben — live-DOM-gespeicherter Wert bleibt
+            });
+          } else {
+            d['__abn_status__'+sg] = '';
+          }
+          // abn_status aus Buttons
+          p.querySelectorAll('.abn-fg-btn, .abn-abl-btn').forEach(function(btn){
+            if(btn.dataset.on==='1'){
+              const st = btn.classList.contains('abn-fg-btn') ? 'freigegeben' : 'abgelehnt';
+              const phase = d['ig_gate_state_'+sg] || 'freigabe';
+              if(!d['__abn_status__'+sg+'__'+phase]) d['__abn_status__'+sg+'__'+phase] = st;
+              if(!d['__abn_status__'+sg]) d['__abn_status__'+sg] = st;
+            }
+          });
+        });
+        // Sonstiges-Items aus inhaltHTML lesen
+        if(b.gw === 'sonstiges' || !d['__sonstiges__'] || !d['__sonstiges__'].length){
+          const sonstItems2 = [];
+          tmpDiv.querySelectorAll('.sonstiges-item').forEach(function(item){
+            const txt = item.querySelector('.sonstiges-text');
+            if(!txt || !txt.textContent.trim()) return;
+            const fotos = [];
+            item.querySelectorAll('.sonstiges-foto, img').forEach(function(img){ if(img.src && img.src.startsWith('data:')) fotos.push(img.src); });
+            sonstItems2.push({text: txt.textContent.trim(), fotos: fotos});
+          });
+          if(sonstItems2.length) d['__sonstiges__'] = sonstItems2;
+        }
+      }
+
       // Sub-Gruppen aus GW_CONFIG
       const cfg = (typeof GW_CONFIG!=='undefined') ? GW_CONFIG[b.gw] : null;
       const subs = cfg ? cfg.subs : [];
 
       subs.forEach(function(sub){
         // Nur anzeigen wenn sichtbar
-        if(!d['__vis__'+sub.grp]) return;
+        if(sub.showAlways){
+          // Bei UWBS: Betonierfreigabe nur wenn uwbsTyp==='beton'
+          if(b.gw === 'uwbs' && sub.uwbsTyp === 'beton' && !(d['__uwbsTyp__']||'').split(',').map(t=>t.trim()).includes('beton')) return;
+          // Alle anderen showAlways-Subs immer anzeigen
+        } else {
+          if(!d['__vis__'+sub.grp]) return;
+        }
 
         // Sub-Label als gestrichelte goldene Linie — bei ZFS=nein überspringen
         var isZfsSub = d['__zfs__'+sub.grp] !== undefined;
@@ -5247,21 +6066,60 @@ function exportPDF(){
         // Abweichungen-Ergebnis — nicht für ZFS-Subs, Gate-Subs nutzen __abn_status__
         // isZfsSub already declared above = d['__zfs__'+sub.grp] !== undefined;
         var isGateSub = !!(sub.gate && sub.freigabeGrp);
+        // activePhase VOR vstossGrp bestimmen
+        var activePhase = isGateSub ? (
+          // Inner gate (Betonierfreigabe vs Betonage) hat Vorrang
+          d['__btn__'+sub.grp+'__ig-freigabe']==='1' ? 'freigabe' :
+          d['__btn__'+sub.grp+'__ig-betonage']==='1' ? 'betonage' :
+          d['ig_gate_state_'+sub.grp]==='freigabe' ? 'freigabe' :
+          d['ig_gate_state_'+sub.grp]==='betonage' ? 'betonage' :
+          // Outer gate (Bewehrung vs Beton tab) — nur wenn kein inner gate
+          d['__phase__'+sub.grp+'__freigabe']==='1' ? 'freigabe' :
+          d['__phase__'+sub.grp+'__betonage']==='1' ? 'betonage' :
+          null
+        ) : null;
         const vstoss = isZfsSub ? null : isGateSub ? null : (d['__verstoss__'+sub.grp] || 'offen');
-        const vstossGrp = isGateSub && activePhase==='betonage' ? (sub.betonageGrp||sub.grp) : sub.grp;
+        const _phFreigabe = isGateSub && (d['__phase__'+sub.grp+'__freigabe']==='1' || d['__btn__'+sub.grp+'__ig-freigabe']==='1' || d['ig_gate_state_'+sub.grp]==='freigabe');
+        const _phBetonage = isGateSub && (d['__phase__'+sub.grp+'__betonage']==='1' || d['__btn__'+sub.grp+'__ig-betonage']==='1' || d['ig_gate_state_'+sub.grp]==='betonage');
+        const vstossGrp = isGateSub && _phBetonage ? (sub.betonageGrp||sub.grp) : sub.grp;
         const vstossKey = isGateSub ? vstossGrp : sub.grp;
         // Für Betonage-Phase: Status aus __abn_status__ (neue Buttons) oder __verstoss__
         var vstossVal;
-        if(isGateSub && activePhase==='betonage'){
-          const st = (d['__abn_status__'+sub.grp]||'').trim();
-          vstossVal = st==='freigegeben' ? 'nein' : st==='abgelehnt' ? 'ja' : (d['__verstoss__'+vstossGrp] || 'offen');
+        const _zfsForSub = d['__zfs__'+sub.grp] || d['__zfs__'+(sub.freigabeGrp||'')] || '';
+        const _abnSt = (_zfsForSub==='nein') ? '' : (d['__abn_status__'+sub.grp+'__'+(activePhase||'freigabe')]||d['__abn_status__'+sub.grp]||d['__abn_status__'+(sub.freigabeGrp||'')]||'').trim();
+        if(isGateSub && _phBetonage){
+          vstossVal = _abnSt==='freigegeben' ? 'nein' : _abnSt==='abgelehnt' ? 'ja' : (d['__verstoss__'+vstossGrp] || d['__verstoss__'+sub.grp] || 'offen');
+        } else if(isGateSub && activePhase==='freigabe'){
+          vstossVal = _abnSt==='abgelehnt' ? 'ja' : _abnSt==='freigegeben' ? 'nein' : (d['__verstoss__'+sub.grp] || 'offen');
         } else {
           vstossVal = d['__verstoss__'+sub.grp] || 'offen';
         }
-        const vstossText = d['__abwtext__'+vstossKey] || d['__abwtext__'+sub.grp] || d['__verstoss_text__'+sub.grp] || d['__abn_kom__'+sub.grp] || '';
-        // Aktive Phase ermitteln
-        var activePhase = isGateSub ? (d['__phase__'+sub.grp+'__freigabe']==='1' ? 'freigabe' : d['__phase__'+sub.grp+'__betonage']==='1' ? 'betonage' : 'freigabe') : null;
-        var phaseLbl = isGateSub ? (activePhase==='betonage' ? (sub.betonageLabel||'Betonage') : (sub.freigabeLabel||'Betonierfreigabe')) : null;
+        const vstossText = d['__abn_reason__'+sub.grp+'__'+(activePhase||'freigabe')] || d['__abwtext__'+sub.grp+'__'+(activePhase||'freigabe')] || d['__abwtext__'+vstossKey] || d['__abwtext__'+sub.grp] || d['__verstoss_text__'+sub.grp] || d['__abn_reason__'+sub.grp] || '';
+
+        // activePhase already set above
+
+        // Label: outer gate (Bewehrung/Beton) + inner gate (Betonierfreigabe/Betonage)
+        var phaseLbl = null;
+        if(isGateSub){
+          // Outer gate: welcher Tab war aktiv?
+          const _outerFreigabe = d['__phase__'+sub.grp+'__freigabe']==='1';
+          const _outerBetonage = d['__phase__'+sub.grp+'__betonage']==='1';
+          // Inner gate: Betonierfreigabe oder Betonage?
+          const _innerFreigabe = d['__btn__'+sub.grp+'__ig-freigabe']==='1' || d['ig_gate_state_'+sub.grp]==='freigabe';
+          const _innerBetonage = d['__btn__'+sub.grp+'__ig-betonage']==='1' || d['ig_gate_state_'+sub.grp]==='betonage';
+          if(_outerBetonage && (_innerFreigabe || _innerBetonage)){
+            // Beton-Tab mit innerem Gate: "Beton - Betonierfreigabe" oder "Beton - Betonage"
+            const _outerLbl = sub.betonageLabel || 'Beton';
+            const _innerLbl = _innerFreigabe ? 'Betonierfreigabe' : 'Betonage';
+            phaseLbl = _outerLbl + ' - ' + _innerLbl;
+          } else if(_outerFreigabe){
+            phaseLbl = sub.freigabeLabel || 'Bewehrung';
+          } else if(_outerBetonage){
+            phaseLbl = sub.betonageLabel || 'Beton';
+          } else {
+            phaseLbl = activePhase==='betonage' ? (sub.betonageLabel||'Betonage') : (sub.freigabeLabel||'Betonierfreigabe');
+          }
+        }
         var _lbl2 = safeUpper(pdfStr(sub.label + (phaseLbl ? ' - ' + phaseLbl : '')));
         // Gestrichelte Linie mit Label jetzt zeichnen (nach activePhase)
         if(!skipLabel){
@@ -5277,7 +6135,16 @@ function exportPDF(){
           doc.setTextColor(0,0,0);
         }
         // Prüfpunkte: aus der aktiven Phase
-        var checksGrp = isGateSub ? (activePhase==='betonage' ? (sub.betonageGrp||sub.grp) : (sub.freigabeGrp||sub.grp)) : sub.grp;
+        // checksGrp: bei Betonage+Betonierfreigabe -> innerFreigabeGrp; bei Betonage+Betonage -> betonageGrp
+        // ig-buttons nur relevant wenn outer-gate Betonage aktiv ist
+        var _igFreigabe = _phBetonage && (d['__btn__'+sub.grp+'__ig-freigabe']==='1' || d['ig_gate_state_'+sub.grp]==='freigabe');
+        var _igBetonage = _phBetonage && (d['__btn__'+sub.grp+'__ig-betonage']==='1' || d['ig_gate_state_'+sub.grp]==='betonage');
+        var checksGrp = isGateSub ? (
+          _phBetonage && _igFreigabe ? (sub.innerFreigabeGrp||sub.freigabeGrp||sub.grp) :
+          _phBetonage && _igBetonage ? (sub.betonageGrp||sub.grp) :
+          _phBetonage ? (sub.betonageGrp||sub.grp) :
+          (sub.freigabeGrp||sub.grp)
+        ) : sub.grp;
         const items2 = (typeof CHECKS!=='undefined') ? (CHECKS[checksGrp]||[]) : [];
         if(items2.length && (!isZfsSub || d['__zfs__'+sub.grp]==='ja') && sub.grp!=='aushub-nass'){
           items2.forEach(function(item){
@@ -5293,10 +6160,32 @@ function exportPDF(){
             doc.text(lines, M+4, y+4); doc.setTextColor(0,0,0); y+=rh;
           });
         }
-        // Gate-Sub: Betonierfreigabe-Abnahme oder Betonage-Abweichung
-        if(isGateSub && activePhase==='freigabe'){
-          var abnSt2 = d['__abn_status__'+sub.grp] || d['__abn_status__'+(sub.freigabeGrp||'')] || '';
-          var bez2 = d['__abn_bez__'+sub.grp] || d['__abn_bez__'+(sub.freigabeGrp||'')] || '';
+        // Gate-Sub: alle aktiven Phasen rendern
+        if(isGateSub && _phFreigabe){
+          // Status aus inhaltHTML: suche im richtigen Sub-Panel
+          var abnSt2 = '';
+          if(b.inhaltHTML){
+            const _tmpD = document.createElement('div');
+            _tmpD.innerHTML = b.inhaltHTML;
+            // Zuerst im [data-subgrp] Panel suchen (für direkte abn-buttons)
+            const _sgPanel = _tmpD.querySelector('[data-subgrp="'+sub.grp+'"]');
+            const _searchEl = _sgPanel || _tmpD;
+            // dataset.abnStatus ist direkt gesetzt beim Klick
+            const _pAbnSt = (_sgPanel && (_sgPanel.dataset.abnStatus||'').trim()) || '';
+            if(_pAbnSt) {
+              abnSt2 = _pAbnSt;
+            } else {
+              _searchEl.querySelectorAll('.abn-fg-btn,.abn-abl-btn').forEach(function(btn){
+                if(abnSt2) return;
+                const bg = btn.style.background || '';
+                if(bg && bg !== 'none' && bg !== '' && bg !== 'transparent'){
+                  abnSt2 = btn.classList.contains('abn-fg-btn') ? 'freigegeben' : 'abgelehnt';
+                }
+              });
+            }
+          }
+          if(!abnSt2) abnSt2 = b.data['__abn_status__'+sub.grp+'__freigabe'] || b.data['__abn_status__'+sub.grp] || d['__abn_status__'+sub.grp+'__freigabe'] || d['__abn_status__'+(sub.freigabeGrp||'')] || '';
+          var bez2 = b.data['__abn_bez__'+sub.grp+'__freigabe'] || b.data['__abn_bez__'+sub.grp] || d['__abn_bez__'+sub.grp] || d['__abn_bez__'+(sub.freigabeGrp||'')] || '';
           var uhr2 = d['__abn_uhr__'+sub.grp] || d['__abn_uhr__'+(sub.freigabeGrp||'')] || '';
           var kom2 = d['__abn_kom__'+sub.grp] || d['__abn_kom__'+(sub.freigabeGrp||'')] || '';
           var abnFG = d['__fotos_abn__'+sub.grp] || d['__fotos_abn__'+(sub.freigabeGrp||'')] || [];
@@ -5305,7 +6194,14 @@ function exportPDF(){
             if(bez2) rows2.push({l:'Lamelle / Bezeichnung:', v:pdfStr(bez2)});
             if(uhr2) rows2.push({l:'Uhrzeit Abnahme:', v:uhr2});
             if(kom2) rows2.push({l:'Kommentar:', v:pdfStr(kom2)});
-            var gah=Math.max(7,rows2.length*6+4+(abnSt2?7:0));
+            var c6=4,g6=1.5,fw6=(W-2*M-(c6-1)*g6)/c6,fh6=fw6*0.65;
+            var fotoRows6 = abnFG.length ? Math.ceil(abnFG.length/c6) : 0;
+            var fotoH6 = fotoRows6>0 ? fotoRows6*(fh6+g6)+3 : 0;
+            var reasonKey2=d['__abn_reason__'+sub.grp+'__freigabe']?'__abn_reason__'+sub.grp+'__freigabe':d['__abn_reason__'+sub.grp]?'__abn_reason__'+sub.grp:'__abn_reason__'+(sub.freigabeGrp||sub.grp);
+            var aReason3=abnSt2==='abgelehnt'?(d[reasonKey2]||''):'';
+            var reasonLines3=aReason3?doc.splitTextToSize(pdfStr('Grund: '+aReason3),W-2*M-8):[];
+            var reasonH3=reasonLines3.length?reasonLines3.length*4.5+3:0;
+            var gah=Math.max(7,rows2.length*6+4+(abnSt2?7:0)+reasonH3+fotoH6);
             y=np(y,gah); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,gah,'F');
             var ry2=y+5;
             doc.setFontSize(7);
@@ -5315,18 +6211,17 @@ function exportPDF(){
             });
             if(abnSt2){
               var stC2=abnSt2==='freigegeben'?[46,158,80]:[204,48,48];
+              var phaseLabel2 = sub.freigabeLabel || 'Betonierfreigabe';
               doc.setFont('helvetica','bold'); doc.setTextColor(...stC2);
-              doc.text('=> Betonage '+(abnSt2==='freigegeben'?'freigegeben':'abgelehnt'),M+4,ry2);
+              // Label: outer Betonage-Tab aktiv -> "Betonage", sonst freigabeLabel (Bewehrung)
+              var _outerBeton = d['__phase__'+sub.grp+'__betonage']==='1';
+              var _phaseLbl2 = _outerBeton ? (sub.betonageLabel||'Betonage') : (sub.freigabeLabel||'Bewehrung');
+              doc.text('=> '+_phaseLbl2+' '+(abnSt2==='freigegeben'?'freigegeben':'abgelehnt'),M+4,ry2);
+              ry2+=7;
+              if(reasonLines3.length){ doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(204,48,48); doc.text(reasonLines3,M+4,ry2,{maxWidth:W-2*M-8}); ry2+=reasonH3; }
             }
+            if(abnFG.length){ var ci6=0; abnFG.forEach(function(src){ try{ doc.addImage(src,'JPEG',M+4+ci6*(fw6+g6),ry2,fw6,fh6,'','FAST'); ci6++; if(ci6>=c6){ci6=0;ry2+=fh6+g6;} }catch(e){} }); }
             doc.setTextColor(0,0,0); y+=gah+2;
-            if(abnFG.length){
-              var c6=4,g6=1.5,fw6=(W-2*M-(c6-1)*g6)/c6,fh6=fw6*0.65; var ci6=0;
-              abnFG.forEach(function(src){
-                try{ y=np(y,fh6+2); doc.addImage(src,'JPEG',M+ci6*(fw6+g6),y,fw6,fh6,'','FAST');
-                  ci6++; if(ci6>=c6){ci6=0;y+=fh6+g6;} }catch(e){}
-              });
-              if(ci6>0) y+=fh6+g6+2;
-            }
           }
         }
         // Bei ZFS=nein: nichts anzeigen (kein Hinweis)
@@ -5375,11 +6270,12 @@ function exportPDF(){
           }
           return;
         }
-        const showVstoss = (!isZfsSub && !isGateSub) || (isGateSub && activePhase==='betonage');
+        // Abweichung nur zeigen wenn: kein ZFS/Gate-Sub, ODER Gate-Sub mit Betonage (nicht Betonierfreigabe)
+        const showVstoss = (!isZfsSub && !isGateSub) || (isGateSub && _phBetonage && !_igFreigabe);
         if(showVstoss){
         var vstossRender = isGateSub ? vstossVal : vstoss;
         // Für Betonage-Phase: vollständiges Layout
-        if(isGateSub && activePhase==='betonage'){
+        if(isGateSub && _phBetonage){
           var betBez = d['__abn_bez__'+sub.grp]||''; var betUhr = d['__abn_uhr__'+sub.grp]||'';
           var betText = d['__verstoss_text__'+sub.grp]||'';
           var betPolier = d['__polier__'+sub.grp]||'';
@@ -5402,8 +6298,8 @@ function exportPDF(){
           if(hauptFotos.length){ var ci4=0; hauptFotos.forEach(function(src){ try{ doc.addImage(src,'JPEG',M+4+ci4*(fW4+fGap),ry,fW4,fHH4,'','FAST'); ci4++; if(ci4>=fCols){ci4=0;ry+=fHH4+fGap;} }catch(e){} }); if(ci4>0) ry+=fHH4+fGap+3; }
           // Status
           doc.setFont('helvetica','bold'); doc.setFontSize(7);
-          if(vstossRender==='nein')      { doc.setTextColor(...GRUEN); doc.text('=> Keine Abweichung',M+4,ry); }
-          else if(vstossRender==='ja')   { doc.setTextColor(...ROT);   doc.text('=> Ja - Abweichung', M+4,ry); }
+          if(vstossRender==='nein')      { doc.setTextColor(...GRUEN); doc.text('=> Keine Abweichung bei der Betonage',M+4,ry); }
+          else if(vstossRender==='ja')   { doc.setTextColor(...ROT);   doc.text('=> Ja - Abweichung bei der Betonage', M+4,ry); }
           else                           { doc.setTextColor(160,140,50); doc.text('=> Nicht bewertet',M+4,ry); }
           ry+=6;
           if(vstossRender==='ja'){
@@ -5458,12 +6354,14 @@ function exportPDF(){
         } // end else (non-betonage gate)
         } // end if(showVstoss)
 
-        // ZFS-Abnahme direkt nach Abweichungs-Block (wenn ZFS=ja)
-        if(d['__zfs__'+sub.grp]==='ja'){
+        // ZFS-Abnahme direkt nach Abweichungs-Block (wenn ZFS=ja) — nur für Nicht-Gate-Subs
+        if(!isGateSub && d['__zfs__'+sub.grp]==='ja'){
           const bez    = d['__abn_bez__'+sub.grp]||'';
           const uhr    = d['__abn_uhr__'+sub.grp]||'';
           const kom    = d['__abn_kom__'+sub.grp]||'';
-          const abnSt  = d['__abn_status__'+sub.grp]||'';
+          // Für UWBS/Gate-Subs: Buttons sitzen im freigabePanel, daher freigabe-Status als primäre Quelle
+          // b.data hat den vom Live-DOM-Save gesetzten Wert
+          const abnSt = b.data['__abn_status__'+sub.grp+'__betonage'] || b.data['__abn_status__'+sub.grp+'__freigabe'] || b.data['__abn_status__'+sub.grp] || d['__abn_status__'+sub.grp+'__freigabe']||d['__abn_status__'+sub.grp+'__betonage']||d['__abn_status__'+sub.grp]||d['__abn_status__'+(sub.betonageGrp||'')]||'';
           const abnFotos2 = d['__fotos_abn__'+sub.grp]||[];
           if(bez||uhr||kom||abnSt||abnFotos2.length){
             // Zeilen berechnen
@@ -5472,6 +6370,12 @@ function exportPDF(){
             if(uhr) rows.push({l:'Uhrzeit Abnahme:', v:uhr});
             if(kom) rows.push({l:'Kommentar:', v:pdfStr(kom)});
             var ah=Math.max(7, rows.length*6+4 + (abnSt?7:0));
+            // Ablehnungsgrund in Boxhöhe einrechnen
+            const reasonKey3='__abn_reason__'+sub.grp;
+            const aReason4=abnSt==='abgelehnt'?(d[reasonKey3]||d['__abn_reason__'+(sub.freigabeGrp||'')]||''):'';
+            const reasonLines4=aReason4?doc.splitTextToSize(pdfStr('Grund: '+aReason4),W-2*M-8):[];
+            const reasonH4=reasonLines4.length?reasonLines4.length*4.5+3:0;
+            ah=Math.max(7, rows.length*6+4 + (abnSt?7:0) + reasonH4);
             y=np(y,ah); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,ah,'F');
             var ry=y+5;
             doc.setFontSize(7);
@@ -5485,7 +6389,9 @@ function exportPDF(){
             if(abnSt){
               var stColor = abnSt==='freigegeben' ? [46,158,80] : [204,48,48];
               doc.setFont('helvetica','bold'); doc.setTextColor(...stColor);
-              doc.text('=> Betonage '+(abnSt==='freigegeben'?'freigegeben':'abgelehnt'), M+4, ry);
+              doc.text('=> '+(sub.betonageLabel||'Betonage')+' '+(abnSt==='freigegeben'?'freigegeben':'abgelehnt'), M+4, ry);
+              ry+=7;
+              if(reasonLines4.length){ doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(204,48,48); doc.text(reasonLines4,M+4,ry,{maxWidth:W-2*M-8}); }
             }
             doc.setTextColor(0,0,0); y+=ah+2;
             // Fotos
@@ -5521,6 +6427,35 @@ function exportPDF(){
         doc.text(btL, M+4, y+4.5); doc.setTextColor(0,0,0); y+=btH;
       }
 
+      // Sonstiges-Punkte
+      var sonstArr = d['__sonstiges__'];
+      if(sonstArr && sonstArr.length){
+        y=np(y,10); y+=2;
+        var _lblS='EIGENE PUNKTE'; var _lwS=doc.getTextWidth(_lblS); var _mxS=W/2; var _lyS=y+2;
+        doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(245,166,35);
+        doc.setDrawColor(245,166,35); doc.setLineWidth(0.25); doc.setLineDashPattern([1,1.2],0);
+        doc.line(M,_lyS,_mxS-_lwS/2-3,_lyS); doc.line(_mxS+_lwS/2+3,_lyS,W-M,_lyS);
+        doc.setLineDashPattern([],0); doc.text(_lblS,_mxS,_lyS+1,{align:'center'});
+        doc.setTextColor(0,0,0); y+=6;
+        sonstArr.forEach(function(s){
+          var txt = typeof s==='string' ? s : (s.text||'');
+          if(!txt) return;
+          var sL = doc.splitTextToSize('- '+pdfStr(txt), W-2*M-6);
+          var sH = Math.max(6, sL.length*4.5+3);
+          y=np(y,sH); doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,sH,'F');
+          doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(30,45,80);
+          doc.text(sL, M+4, y+4); doc.setTextColor(0,0,0); y+=sH;
+          // Fotos
+          if(s.fotos && s.fotos.length){
+            var fC=4,fG=1.5,fW2=(W-2*M-(fC-1)*fG)/fC,fH2=fW2*0.6; var fi=0;
+            s.fotos.forEach(function(src){
+              try{ y=np(y,fH2+2); doc.addImage(src,'JPEG',M+4+fi*(fW2+fG),y,fW2,fH2,'','FAST'); fi++; if(fi>=fC){fi=0;y+=fH2+fG;} }catch(e){}
+            });
+            if(fi>0) y+=fH2+fG+2;
+          }
+        });
+      }
+
       // Hinweise
       var hwArr = d['__hinweise__'];
       if(hwArr && hwArr.length){
@@ -5554,7 +6489,8 @@ function exportPDF(){
       // Fotos
       if(b.fotos&&b.fotos.length){
         y+=1; // Abstand vor Fotos
-        y=np(y,10);
+        var cols=4,gap=1.5,fW2=(W-2*M-(cols-1)*gap)/cols,fHH2=fW2*0.65; var col=0;
+        y=np(y, 6+fHH2+4); // Label + erste Fotoreihe zusammen auf gleicher Seite
         y+=2;
         var _lbl='FOTODOKUMENTATION'; var _lw=doc.getTextWidth(_lbl); var _mx=W/2; var _ly=y+2;
         doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(245,166,35);
@@ -5597,8 +6533,8 @@ function exportPDF(){
   doc.setFillColor(...BG1); doc.rect(M,y,W-2*M,1,'F');
   y+=3;
   const sw=(W-2*M-8)/2;
-  const sigIds=['sig1','sig2'];
-  const sigLabels=['Bauüberwacher (BÜ)','Bauleiter AN (Kenntnisnahme)'];
+  const sigIds=['sig1'];
+  const sigLabels=['Bauüberwacher (BÜ)'];
   [0,1].forEach(i=>{
     const ox=i*(sw+8);
     const x=M+ox;
@@ -5862,12 +6798,15 @@ function exportPDF(){
   <div class="sec"><span class="sec-lbl">🌊 UWBS – Unterwasser-Betonsohle</span><span class="sec-line"></span></div>
 
   <div class="sub-sel-grid" id="subsel-uwbs-gewi" style="margin-bottom:6px">
+    <button class="sub-sel-btn" data-gw="uwbs" data-grp="uwbs-taucher"         onclick="toggleSubGrp(this)">Taucherarbeiten</button>
     <button class="sub-sel-btn" data-gw="uwbs" data-grp="uwbs-gewi-bohren"     onclick="toggleSubGrp(this)">GEWI – Bohren</button>
     <button class="sub-sel-btn" data-gw="uwbs" data-grp="uwbs-gewi-verpressen" onclick="toggleSubGrp(this)">GEWI – Verpressen</button>
     <button class="sub-sel-btn" data-gw="uwbs" data-grp="uwbs-gewi-pruefung"   onclick="toggleSubGrp(this)">GEWI – Prüfung</button>
   </div>
   <div class="cl">
-    <div class="cl-sub cl-sub-major" data-grpid="uwbs-gewi-bohren"     style="display:none">GEWI-Pfähle – Bohren</div>
+    <div class="cl-sub cl-sub-major" data-grpid="uwbs-taucher"         style="display:none">Taucherarbeiten</div>
+    <div id="phase-sep-uwbs-taucher" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">Taucherarbeiten</span><hr class="phase-sep-line"></div>
+    <div id="ci-grp-uwbs-taucher"         data-grpid="uwbs-taucher"         style="display:none"></div>
     <div id="phase-sep-uwbs-gewi-bohren" class="phase-sep"><hr class="phase-sep-line"><span class="phase-sep-lbl">GEWI-Pfähle – Bohren</span><hr class="phase-sep-line"></div>
     <div id="ci-grp-uwbs-gewi-bohren"     data-grpid="uwbs-gewi-bohren"     style="display:none"></div>
     <div class="cl-sub cl-sub-major" data-grpid="uwbs-gewi-verpressen" style="display:none">GEWI-Pfähle – Verpressen</div>
