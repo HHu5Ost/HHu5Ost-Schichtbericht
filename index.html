@@ -60,6 +60,10 @@ body.dark {
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--body-bg);color:var(--body-color);font-weight:600;font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px;transition:background .3s,color .3s}
 
+/* ── BUTTON TIMESTAMPS ── */
+.btn-ts{font-size:.62rem;color:#94a3b8;text-align:left;margin-top:2px;display:none;font-family:'Barlow Condensed',sans-serif;width:fit-content}
+body.dark .btn-ts{color:var(--hell)}
+
 /* ── DARK MODE OVERRIDES ── */
 body.dark .cl, body.dark .pinfo, body.dark .wetter-grid, body.dark .sonstiges-item,
 body.dark .bereich-card, body.dark #bereichFormCard, body.dark .abnahme-block {
@@ -380,8 +384,7 @@ function checkPW(){
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') checkPW(); });
 document.getElementById('pw-name').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('pw-input').focus(); });
 if(sessionStorage.getItem('u5auth')==='1') document.getElementById('pw-overlay').style.display='none';
-// TEMPORÄR DEAKTIVIERT: Passwort-Abfrage übersprungen
-document.getElementById('pw-overlay').style.display='none';
+// Login aktiv
 </script>
 <script>
 // iOS scroll-to-top fix
@@ -404,6 +407,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       <div class="hdr-sub">Los 2 · Bauüberwachung</div>
     </div>
     <div class="hdr-date" id="hdrDate"></div>
+    <div id="lastEditDisplay" style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;color:rgba(255,255,255,.6);letter-spacing:.3px;margin-top:2px"></div>
     <div class="pbar-wrap">
       <div class="pbar-bg"><div class="pbar-fill" id="pbarFill" style="width:0%"></div></div>
       <div class="pbar-lbl" id="pbarLbl">0 / 0</div>
@@ -413,6 +417,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <button class="hdr-pdf" id="btnReset" style="background:#ffffff;color:#cc2020;border:1px solid #cc2020;margin-right:6px" title="Alles leeren">🗑</button>
     <button class="hdr-pdf" id="btnSave" style="background:#ffffff;color:#1C3A6E;border:1px solid #1C3A6E;margin-right:6px" title="Speichern">💾 <span id="autosaveIndicator" style="font-size:.6rem;opacity:.6"></span></button>
     <button class="hdr-pdf" id="btnLoad" style="background:#ffffff;color:#1C3A6E;border:1px solid #1C3A6E;margin-right:6px" title="Berichte laden">📂 Berichte</button>
+    <button onclick="detectLocation()" id="btnGPS" style="background:none;border:1px solid rgba(255,255,255,.3);color:#fff;height:34px;padding:0 10px;border-radius:3px;cursor:pointer;font-size:.85rem;margin-right:6px" title="Standort erkennen">📍 GPS</button>
     <button onclick="toggleDarkMode()" id="btnDark" style="background:none;border:1px solid rgba(255,255,255,.3);color:#fff;height:34px;padding:0 10px;border-radius:3px;cursor:pointer;font-size:.85rem;margin-right:6px" title="Hell/Dunkel">🌙</button>
     <button class="hdr-pdf" id="btnPDF" style="background:#ffffff;color:#1C3A6E;border:1px solid #F5A623">🖨 PDF</button>
   </div>
@@ -451,7 +456,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     </select><button id="btnWetter" style="background:none;border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--hell);font-size:.7rem;padding:0 8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;white-space:nowrap;min-height:40px">⛅ Auto</button></div>
   </div>
   <div class="fi"><label>Temperatur Min - Max <span id="wetterStatus" style="font-size:.6rem;color:var(--hell)"></span></label>
-    <input type="text" id="fTemp" placeholder="z.B. 12 °C">
+    <input type="text" id="fTemp" placeholder="">
   </div>
 
 
@@ -494,7 +499,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:.72rem;color:var(--hell);opacity:0.7;margin:4px 0 2px;padding:2px 6px;border:1px solid rgba(255,255,255,.15);border-radius:3px;width:fit-content"><span>📷</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'arb')">Foto</label>
     <div id="arb-foto-preview-always" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px"></div>
     <div id="arb-details" style="display:none">
-      <textarea id="arb-text" placeholder="Was wurde festgestellt …" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
+      <textarea id="arb-text" placeholder="" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
 
       <label class="foto-btn" style="margin-bottom:8px;display:inline-flex"><span>📷 Foto hinzufügen</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'arb')"></label>
       <div id="arb-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
@@ -502,6 +507,12 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       <div style="display:flex;gap:8px">
         <button id="arb-polier-ja" onclick="setPolier('arb','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>
         <button id="arb-polier-nein" onclick="setPolier('arb','nein')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button>
+      </div>
+      <div id="arb-polier-details" style="display:none;margin-top:8px">
+        <input type="text" id="arb-polier-wen" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;margin-bottom:6px">
+        <textarea id="arb-polier-was" placeholder="" rows="2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;resize:none;outline:none"></textarea>
+      </div>
+      <div style="display:none">
       </div>
     </div>
   </div>
@@ -527,7 +538,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <label style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:.72rem;color:var(--hell);opacity:0.7;margin:4px 0 2px;padding:2px 6px;border:1px solid rgba(255,255,255,.15);border-radius:3px;width:fit-content"><span>📷</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'sau')">Foto</label>
     <div id="sau-foto-preview-always" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:2px"></div>
     <div id="sau-details" style="display:none">
-      <textarea id="sau-text" placeholder="Was wurde festgestellt …" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
+      <textarea id="sau-text" placeholder="" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:8px"></textarea>
 
       <label class="foto-btn" style="margin-bottom:8px;display:inline-flex"><span>📷 Foto hinzufügen</span><input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFotoPrefix(this,'sau')"></label>
       <div id="sau-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
@@ -535,6 +546,12 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
       <div style="display:flex;gap:8px">
         <button id="sau-polier-ja" onclick="setPolier('sau','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>
         <button id="sau-polier-nein" onclick="setPolier('sau','nein')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button>
+      </div>
+      <div id="sau-polier-details" style="display:none;margin-top:8px">
+        <input type="text" id="sau-polier-wen" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;margin-bottom:6px">
+        <textarea id="sau-polier-was" placeholder="" rows="2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;resize:none;outline:none"></textarea>
+      </div>
+      <div style="display:none">
       </div>
     </div>
   </div>
@@ -556,7 +573,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
       <div class="fi">
         <label>Bereichsbezeichnung</label>
-        <input type="text" id="bereichName" placeholder="z.B. Dock 1, Achse A–B …" list="bereichNameList" autocomplete="off">
+        <input type="text" id="bereichName" placeholder="" list="bereichNameList" autocomplete="off">
         <datalist id="bereichNameList"></datalist>
       </div>
       <div class="fi">
@@ -591,23 +608,7 @@ window.addEventListener('pageshow', () => { setTimeout(() => window.scrollTo(0, 
 <div id="bereicheSection" class="sec" style="margin-top:8px;display:none"><span class="sec-lbl no-collapse">📁 Erfasste Bereiche</span><span class="sec-line"></span></div>
 <div id="bereicheList" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px"></div>
 
-<!-- ABSCHLUSS -->
-<div class="sec" style="margin-top:22px"><span class="sec-lbl no-collapse">📋 Abschluss</span><span class="sec-line"></span></div>
-<div class="cl">
-  <div class="cl-sub cl-sub-major no-collapse abschluss-doku-lbl">Dokumentation</div>
-  <div id="ci-grp-abschluss-doku"></div>
-</div>
 
-<!-- UNTERSCHRIFTEN -->
-<div class="sec" style="margin-top:18px"><span class="sec-lbl no-collapse">✍️ Unterschriften</span><span class="sec-line"></span></div>
-<div class="sig-block">
-  <div class="sig-field">
-    <div class="sig-label">Bauüberwacher (BÜ)</div>
-    <button class="sig-clear" onclick="clearSig('sig1')">✕ Löschen</button>
-    <canvas class="sig-canvas" id="sig1" width="320" height="60"></canvas>
-    <div style="font-size:.65rem;color:var(--hell);margin-top:4px" id="sigDate1"></div>
-  </div>
-</div>
 
 </main>
 
@@ -946,7 +947,7 @@ function renderGroup(containerId, items){
 
   const bullets = items.map(item => {
     const inputField = item.input
-      ? `<span style="display:inline-flex;align-items:center;gap:5px;margin-left:8px"><input type="number" step="0.1" id="input-${item.id}" placeholder="0.0" value="${window.inputValues['input-'+item.id]||''}" style="background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.85rem;padding:4px 8px;width:72px;outline:none;text-align:right" oninput="window.inputValues[this.id]=this.value"><span style="font-size:.82rem;color:var(--hell)">${item.input}</span></span>` : '';
+      ? `<span style="display:inline-flex;align-items:center;gap:5px;margin-left:8px"><input type="number" step="0.1" id="input-${item.id}" placeholder="" value="${window.inputValues['input-'+item.id]||''}" style="background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.85rem;padding:4px 8px;width:72px;outline:none;text-align:right" oninput="window.inputValues[this.id]=this.value"><span style="font-size:.82rem;color:var(--hell)">${item.input}</span></span>` : '';
     return `<li style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--weiss);line-height:1.4"><span style="color:var(--gelb);flex-shrink:0">▸</span>${item.text}${inputField}</li>`;
   }).join('');
   const infoBox = `<div style="background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:11px 14px;margin-bottom:6px"><ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px">${bullets}</ul></div>`;
@@ -962,7 +963,7 @@ function renderGroup(containerId, items){
     return;
   }
 
-  container.innerHTML = infoBox + `<div style="background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:12px 14px;margin-bottom:6px"><div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:8px">Abweichung festgestellt?</div><div style="display:flex;gap:8px;margin-bottom:8px"><button id="${prefix}-nein-btn" onclick="setVerstoss('${prefix}','nein')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button><button id="${prefix}-ja-btn" onclick="setVerstoss('${prefix}','ja')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja – Abweichung</button></div><div id="${prefix}-details" style="display:none"><textarea id="${prefix}-text" placeholder="Was wurde festgestellt …" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:6px"></textarea><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 0 0 2px rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange=\"addFoto(this)\"${prefix}')"></label><div id="${prefix}-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px"></div></div><div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div><div style="display:flex;gap:8px"><button id="${prefix}-polier-ja" onclick="setPolier('${prefix}','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button><button id="${prefix}-polier-nein" onclick="setPolier('${prefix}','nein')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button></div></div></div>`;
+  container.innerHTML = infoBox + `<div style="background:var(--blau2);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:12px 14px;margin-bottom:6px"><div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:8px">Abweichung festgestellt?</div><div style="display:flex;gap:8px;margin-bottom:8px"><button id="${prefix}-nein-btn" onclick="setVerstoss('${prefix}','nein')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✓ Keine Abweichung</button><button id="${prefix}-ja-btn" onclick="setVerstoss('${prefix}','ja')" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">✗ Ja – Abweichung</button></div><div id="${prefix}-details" style="display:none"><textarea id="${prefix}-text" placeholder="" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:6px"></textarea><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid rgba(255,255,255,.7);box-shadow:0 0 0 2px rgba(255,255,255,.25);color:var(--hell);font-family:'Barlow Condensed',sans-serif;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange=\"addFoto(this)\"${prefix}')"></label><div id="${prefix}-foto-preview" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px"></div></div><div style="font-size:.75rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div><div style="display:flex;gap:8px"><button id="${prefix}-polier-ja" onclick="setPolier('${prefix}','ja')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button><button id="${prefix}-polier-nein" onclick="setPolier('${prefix}','nein')" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button></div><div id="${prefix}-polier-details" style="display:none;margin-top:8px"><input type="text" id="${prefix}-polier-wen" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;margin-bottom:6px"><textarea id="${prefix}-polier-was" placeholder="" rows="2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.85rem;padding:6px 10px;resize:none;outline:none"></textarea></div></div>`;
 }
 
 
@@ -1071,6 +1072,105 @@ function vstossFoto(input, prefix){
 // ── VERSTOSS / POLIER HANDLER ─────────────────────────────────
 const vstossData = {};
 
+function updateLastEdit(){
+  const now = new Date();
+  const str = now.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const el = document.getElementById('lastEditDisplay');
+  if(el) el.textContent = '🕐 ' + str;
+  // In localStorage speichern
+  try{ localStorage.setItem('lastEdit', now.toISOString()); }catch(e){}
+}
+// Beim Laden wiederherstellen
+document.addEventListener('DOMContentLoaded', function(){
+  try{
+    const saved = localStorage.getItem('lastEdit');
+    if(saved){
+      const d = new Date(saved);
+      const el = document.getElementById('lastEditDisplay');
+      if(el) el.textContent = '🕐 ' + d.toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    }
+  }catch(e){}
+});
+
+
+// ─── GPS STANDORTE ───────────────────────────────────────────────
+const GPS_LOCATIONS = [
+  { baufeld: '15 TTOSE', bereich: 'Dock 4', lat: 53.615439, lon: 10.027660, radius: 100 },
+  { baufeld: '15 TTOSE', bereich: 'Dock 5', lat: 53.615441, lon: 10.028544, radius: 100 },
+  { baufeld: '20 STS', bereich: 'Startschacht', lat: 53.615428, lon: 10.028838, radius: 30 },
+  { baufeld: '30 NARK', bereich: 'NARK', lat: 53.613998, lon: 10.032371, radius: 80 },
+  { baufeld: '35 BY', bereich: 'Dock 1', lat: 53.612274, lon: 10.037864, radius: 80 },
+  { baufeld: '35 BY', bereich: 'Dock 2', lat: 53.612191, lon: 10.038749, radius: 80 },
+  { baufeld: '35 BY', bereich: 'Dock 3', lat: 53.612088, lon: 10.039680, radius: 80 },
+  { baufeld: '40 NASH', bereich: 'NASH', lat: 53.612339, lon: 10.047199, radius: 80 },
+  { baufeld: '45 SH', bereich: 'Dock 1',      lat: 53.614071, lon: 10.055459, radius: 80 },
+  { baufeld: '45 SH', bereich: 'Dock 2 West', lat: 53.614004, lon: 10.056568, radius: 80 },
+  { baufeld: '45 SH', bereich: 'Dock 2 Ost',  lat: 53.614074, lon: 10.057200, radius: 80 },
+  { baufeld: '45 SH', bereich: 'Dock 3',      lat: 53.614220, lon: 10.057582, radius: 80 },
+  { baufeld: '50 NAGS', bereich: 'NAGS', lat: 53.617148, lon: 10.064321, radius: 80 },
+  { baufeld: '55 NAFS', bereich: 'NAFS', lat: 53.619237, lon: 10.071228, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 1', lat: 53.618153, lon: 10.075979, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 2', lat: 53.617686, lon: 10.076575, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 3', lat: 53.617606, lon: 10.076724, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 4', lat: 53.617426, lon: 10.077281, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 5', lat: 53.617205, lon: 10.077878, radius: 80 },
+  { baufeld: '60 BD', bereich: 'Dock 6', lat: 53.616913, lon: 10.078700, radius: 80 },
+  { baufeld: '65 NAHK', bereich: 'NAHK', lat: 53.615155, lon: 10.082481, radius: 80 },
+];
+
+function haversineDistance(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+            Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+            Math.sin(dLon/2)*Math.sin(dLon/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function detectLocation(){
+  if(!navigator.geolocation){
+    alert('GPS wird von diesem Gerät nicht unterstützt.');
+    return;
+  }
+  const btn = document.getElementById('btnGPS');
+  if(btn){ btn.textContent = '📡 Suche...'; btn.disabled = true; }
+  navigator.geolocation.getCurrentPosition(function(pos){
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+    const acc = pos.coords.accuracy;
+    // Nächsten Standort finden
+    let best = null, bestDist = Infinity;
+    GPS_LOCATIONS.forEach(function(loc){
+      const d = haversineDistance(lat, lon, loc.lat, loc.lon);
+      if(d < bestDist){ bestDist = d; best = loc; }
+    });
+    if(btn){ btn.textContent = '📍 GPS'; btn.disabled = false; }
+    if(best && bestDist < 500){
+      const msg = 'GPS-Vorschlag (±'+Math.round(acc)+'m):\n\nBaufeld: '+best.baufeld+'\nBereich: '+best.bereich+'\n(Entfernung: '+Math.round(bestDist)+'m)\n\nÜbernehmen?';
+      if(confirm(msg)){
+        const bfEl = document.getElementById('fBaustelle');
+        const bnEl = document.getElementById('bereichName');
+        if(bfEl && bfEl.value !== best.baufeld){
+          bfEl.value = best.baufeld;
+          bfEl.dispatchEvent(new Event('change'));
+        }
+        if(bnEl && !bnEl.dataset.gpsLocked){
+          bnEl.value = best.bereich;
+          bnEl.dataset.gpsLocked = '1';
+          updateBereichNameList();
+        }
+      }
+    } else {
+      alert('Kein bekannter Standort in der Nähe gefunden.\n(Nächster: '+(best?best.baufeld+' '+best.bereich+' – '+Math.round(bestDist)+'m':'unbekannt')+')');
+    }
+    updateLastEdit();
+  }, function(err){
+    if(btn){ btn.textContent = '📍 GPS'; btn.disabled = false; }
+    alert('GPS-Fehler: '+err.message);
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
 function toggleDarkMode(){
   const isDark = document.body.classList.toggle('dark');
   const btn = document.getElementById('btnDark');
@@ -1089,6 +1189,7 @@ function toggleDarkMode(){
 })();
 window.inputValues = {};
 function setVerstoss(prefix, val){
+  updateLastEdit();
   const prev = (vstossData[prefix]||{}).verstoss;
   const newVal = prev === val ? null : val;
   vstossData[prefix] = vstossData[prefix] || {};
@@ -1101,6 +1202,7 @@ function setVerstoss(prefix, val){
   updateProgress();
 }
 function setPolier(prefix, val){
+  updateLastEdit();
   const prev = (vstossData[prefix]||{}).polier;
   const newVal = prev === val ? null : val;
   vstossData[prefix] = vstossData[prefix] || {};
@@ -1108,6 +1210,15 @@ function setPolier(prefix, val){
   const jb=document.getElementById(prefix+'-polier-ja'), nb=document.getElementById(prefix+'-polier-nein');
   if(jb){jb.style.background=newVal==='ja'?'var(--gruen)':'none';jb.style.color=newVal==='ja'?'#fff':'var(--gruen)';}
   if(nb){nb.style.background=newVal==='nein'?'var(--rot)':'none';nb.style.color=newVal==='nein'?'#fff':'var(--rot)';}
+  // Details-Box (Wen/Was) nur bei Ja anzeigen
+  const det = document.getElementById(prefix+'-polier-details');
+  if(det) det.style.display = newVal==='ja' ? 'block' : 'none';
+  // Auch in dynamischen Panels (abw-polier-details)
+  const jbDyn = document.querySelector('.abw-polier-ja[data-prefix="'+prefix+'"]');
+  if(jbDyn){
+    const detDyn = jbDyn.closest('[data-subgrp]')?.querySelector('.polier-details');
+    if(detDyn) detDyn.style.display = newVal==='ja' ? 'block' : 'none';
+  }
 }
 
 // ── FLUTUNGSNIVEAU ────────────────────────────────────────────
@@ -1267,7 +1378,16 @@ function updateGewerkeDisplay(){
 
 
 const BAUFELD_BEREICHE = {
-  '35 BY': ['Dock 1.1', 'Dock 1', 'Dock 1.2', 'Dock 2', 'Dock 3']
+  '35 BY': ['Dock 1.1', 'Dock 1', 'Dock 1.2', 'Dock 2', 'Dock 3'],
+  '15 TTOSE': ['Dock 4', 'Dock 5'],
+  '20 STS': ['Startschacht'],
+  '30 NARK': ['NARK'],
+  '40 NASH': ['NASH'],
+  '45 SH': ['Dock 1', 'Dock 2 West', 'Dock 2 Ost', 'Dock 3', 'ABW 1', 'ABW 2', 'ABW 3', 'ABW 4', 'ABW 5'],
+  '50 NAGS': ['NAGS'],
+  '55 NAFS': ['NAFS'],
+  '65 NAHK': ['NAHK'],
+  '60 BD': ['Dock 1', 'Dock 2', 'Dock 3', 'Dock 4', 'Dock 5', 'Dock 6']
 };
 
 function updateBereichNameList(){
@@ -1312,7 +1432,7 @@ function toggleAbn(btn){
     const bg = isDark ? 'var(--grau1)' : '#f8fafc';
     const col = isDark ? 'var(--weiss)' : '#0a0f1e';
     reasonDiv.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
-      + '<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:'+bg+';border:1px solid var(--rot);border-radius:var(--r);color:'+col+';font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+      + '<textarea class="abn-reason-text" placeholder="" rows="2" style="width:100%;background:'+bg+';border:1px solid var(--rot);border-radius:var(--r);color:'+col+';font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
     btn.parentElement.insertAdjacentElement('afterend', reasonDiv);
   }
   reasonDiv.style.display = isAbgelehnt ? '' : 'none';
@@ -1330,7 +1450,7 @@ document.addEventListener('click', function(e){
     const bg = ablBtn.style.color === 'var(--weiss)' ? 'var(--grau1)' : '#f8fafc';
     const col = bg === 'var(--grau1)' ? 'var(--weiss)' : '#0a0f1e';
     reasonDiv.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
-      + '<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+      + '<textarea class="abn-reason-text" placeholder="" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
     ablBtn.parentElement.insertAdjacentElement('afterend', reasonDiv);
   }
 }, true);
@@ -1377,7 +1497,7 @@ function renderGroupWithPrefix(container, items, grpId){
 
   const bullets = items.map(item => {
     const inputField = item.input
-      ? '<span style="display:inline-flex;align-items:center;gap:4px;margin-left:6px"><input type="number" step="0.1" id="input-'+item.id+'" placeholder="0.0" value="'+(window.inputValues['input-'+item.id]||'')+'\" style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#0a0f1e;font-size:.85rem;padding:3px 6px;width:64px;outline:none;text-align:right" oninput="window.inputValues[this.id]=this.value"><span style="font-size:.82rem;color:#64748b">' + item.input + '</span></span>'
+      ? '<span style="display:inline-flex;align-items:center;gap:4px;margin-left:6px"><input type="number" step="0.1" id="input-'+item.id+'" placeholder="" value="'+(window.inputValues['input-'+item.id]||'')+'\" style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#0a0f1e;font-size:.85rem;padding:3px 6px;width:64px;outline:none;text-align:right" oninput="window.inputValues[this.id]=this.value"><span style="font-size:.82rem;color:#64748b">' + item.input + '</span></span>'
       : '';
     return '<li style="display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--weiss);line-height:1.4"><span style="color:var(--gelb);flex-shrink:0">&#9658;</span>' + item.text + inputField + '</li>';
   }).join('');
@@ -1397,12 +1517,16 @@ function renderGroupWithPrefix(container, items, grpId){
     + '<button class="abw-ja-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">&#10007; Ja - Abweichung</button>'
     + '</div>'
     + '<div class="abw-details" style="display:none">'
-    + '<textarea class="abw-text" placeholder="Was wurde festgestellt ..." rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:6px"></textarea>'
+    + '<textarea class="abw-text" placeholder="" rows="3" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none;margin-bottom:6px"></textarea>'
     + '<div class="foto-area" style="margin-bottom:8px"><label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
     + '<div style="font-size:.75rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--weiss);margin-bottom:6px">AN informiert?</div>'
     + '<div style="display:flex;gap:8px">'
     + '<button class="abw-polier-ja" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Ja</button>'
     + '<button class="abw-polier-nein" style="flex:1;padding:7px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">Nein</button>'
+    + '</div><div class="polier-details" style="display:none;margin-top:8px">'
+    + '<input type="text" class="polier-wen" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.85rem;padding:6px 10px;outline:none;margin-bottom:6px">'
+    + '<textarea class="polier-was" placeholder="" rows="2" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.85rem;padding:6px 10px;resize:none;outline:none"></textarea>'
+    + '<div class="abw-ts" style="display:none;font-size:.68rem;color:var(--hell);background:var(--grau1);border:1px solid var(--grau3);border-radius:3px;padding:2px 7px;width:fit-content;margin-top:6px"></div>'
     + '</div></div>';
 
   const neinBtn = abwDiv.querySelector('.abw-nein-btn');
@@ -1435,13 +1559,15 @@ function renderGroupWithPrefix(container, items, grpId){
     polierNein.style.background='none'; polierNein.style.color='var(--rot)';
     vstossData[prefix] = vstossData[prefix]||{}; vstossData[prefix].polier=null;
   }
+  const polierDetails = abwDiv.querySelector('.polier-details');
   polierJa.onclick = function(){
     const active = polierJa.style.background==='var(--gruen)';
-    resetPolier(); if(!active){ polierJa.style.background='var(--gruen)'; polierJa.style.color='#fff'; vstossData[prefix].polier='ja'; }
+    resetPolier(); if(!active){ polierJa.style.background='var(--gruen)'; polierJa.style.color='#fff'; vstossData[prefix].polier='ja'; if(polierDetails) polierDetails.style.display='block'; }
+    else { if(polierDetails) polierDetails.style.display='none'; }
   };
   polierNein.onclick = function(){
     const active = polierNein.style.background==='var(--rot)';
-    resetPolier(); if(!active){ polierNein.style.background='var(--rot)'; polierNein.style.color='#fff'; vstossData[prefix].polier='nein'; }
+    resetPolier(); if(!active){ polierNein.style.background='var(--rot)'; polierNein.style.color='#fff'; vstossData[prefix].polier='nein'; if(polierDetails) polierDetails.style.display='none'; }
   };
 
   // Damit bereichHinzufuegen den Prefix findet:
@@ -1758,7 +1884,7 @@ function onBereichGewerkChange(){
             +'<div style="display:flex;gap:8px">'
             +'<button class="abn-fg-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\';var p2=this.closest(\'[data-subgrp]\');if(p2)p2.dataset.abnStatus=a?\'\':  \'freigegeben\';var fp2=this.closest(\'[data-subphase]\');if(fp2)fp2.dataset.abnStatus=a?\'\':  \'freigegeben\';var rb2=this.parentElement.nextElementSibling;if(rb2&&rb2.classList&&rb2.classList.contains(\'abn-reason-box\'))rb2.style.display=\'none\';" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Freigegeben</button>'
             +'<button class="abn-abl-btn" onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p2=this.closest(\'[data-subgrp]\');if(p2)p2.dataset.abnStatus=a?\'\':  \'abgelehnt\';var fp2=this.closest(\'[data-subphase]\');if(fp2)fp2.dataset.abnStatus=a?\'\':  \'abgelehnt\';var rb=this.parentElement.nextElementSibling;if(rb&&rb.classList.contains(\'abn-reason-box\'))rb.style.display=a?\'none\':\'\';" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer">Abgelehnt</button>'
-+'<div class="abn-reason-box" style="display:none;margin-top:8px"><div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div><textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea></div>'
++'<div class="abn-reason-box" style="display:none;margin-top:8px"><div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div><textarea class="abn-reason-text" placeholder="" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea></div>'
             +'</div>';
           freigabePanel.appendChild(abnFrei);
           const betonagePanel=document.createElement('div'); betonagePanel.dataset.subphase='betonage'; betonagePanel.style.display='none';
@@ -1791,10 +1917,10 @@ function onBereichGewerkChange(){
       // Bautätigkeit / Hinweise / Foto
       // Bautätigkeit
       const btDiv2=document.createElement('div'); btDiv2.id='bereich-bt-section'; btDiv2.style.display='none';
-      btDiv2.innerHTML='<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Bautätigkeit</div><div style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;padding:4px"><textarea id="bereich-bautaetigkeit-ta" placeholder="Was wurde heute geleistet …" rows="3" style="width:100%;background:transparent;border:none;color:#000;font-family:Barlow,sans-serif;font-size:.9rem;padding:8px;resize:none;outline:none"></textarea></div>';
+      btDiv2.innerHTML='<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Bautätigkeit</div><div style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;padding:4px"><textarea id="bereich-bautaetigkeit-ta" placeholder="" rows="3" style="width:100%;background:transparent;border:none;color:#000;font-family:Barlow,sans-serif;font-size:.9rem;padding:8px;resize:none;outline:none"></textarea></div>';
       inhalt.appendChild(btDiv2);
       const hwDiv2=document.createElement('div'); hwDiv2.id='bereich-hw-section'; hwDiv2.style.display='none';
-      hwDiv2.innerHTML='<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Hinweise</div><div style="margin-bottom:4px"></div><div style="display:flex;gap:7px;margin-top:4px"><input type="text" placeholder="Hinweis hinzufügen …" style="flex:1;background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#000;font-family:Barlow,sans-serif;font-size:.88rem;padding:8px 10px;outline:none"><button onclick="addHinweisLokal(this)" style="background:#F5A623;color:#1C3A6E;border:none;border-radius:4px;padding:8px 14px;font-family:Barlow Condensed,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">+ Hinzufügen</button></div>';
+      hwDiv2.innerHTML='<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Hinweise</div><div style="margin-bottom:4px"></div><div style="display:flex;gap:7px;margin-top:4px"><input type="text" placeholder="" style="flex:1;background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#000;font-family:Barlow,sans-serif;font-size:.88rem;padding:8px 10px;outline:none"><button onclick="addHinweisLokal(this)" style="background:#F5A623;color:#1C3A6E;border:none;border-radius:4px;padding:8px 14px;font-family:Barlow Condensed,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">+ Hinzufügen</button></div>';
       inhalt.appendChild(hwDiv2);
       const fotoDiv2=document.createElement('div'); fotoDiv2.id='bereich-foto-section'; fotoDiv2.style.display='none';
       fotoDiv2.innerHTML='<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Fotodokumentation</div><div class="foto-area" style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;padding:10px"><label class="foto-btn" style="border-color:#c8d4e8;color:#1C3A6E;outline:none">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:8px"></div></div>';
@@ -1883,9 +2009,9 @@ function onBereichGewerkChange(){
           abnBew.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin-top:6px">'
             +'<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--gelb);margin-bottom:10px">Abnahme Bewehrung</div>'
             +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
-            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle / Bezeichnung</label><input class="abn-bezeichnung" type="text" placeholder="z.B. ST-03" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle / Bezeichnung</label><input class="abn-bezeichnung" type="text" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
             +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit Abnahme</label><input class="abn-uhrzeit" type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
-            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
             +'</div>'
             +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
             +'<div style="display:flex;gap:8px">'
@@ -1901,7 +2027,7 @@ function onBereichGewerkChange(){
         } else {
           if(CHECKS[sub.freigabeGrp]&&CHECKS[sub.freigabeGrp].length){ const fp=document.createElement('div'); buildCheckGroup(sub.freigabeGrp,fp); freigabePanel.appendChild(fp); }
           const fa=document.createElement('div');
-          fa.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid #c8d4e8;border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:#F5A623;margin-bottom:10px">Betonierfreigabe</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #c8d4e8;color:#1C3A6E;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\'" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-fg-btn">Freigegeben</button><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-abl-btn">Abgelehnt</button></div></div>';
+          fa.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid #c8d4e8;border-radius:var(--r);padding:12px 14px;margin-top:8px"><div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:#F5A623;margin-bottom:10px">Betonierfreigabe</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;outline:none"></div><div><label style="font-size:.7rem;color:#64748b;display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="" style="width:100%;background:#f8fafc;border:1px solid #c8d4e8;border-radius:var(--r);color:#0a0f1e;font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div></div><div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid #c8d4e8;color:#1C3A6E;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div><div style="display:flex;gap:8px"><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#1a7a3a\';this.style.color=a?\'var(--gruen)\':\'#fff\';this.nextElementSibling.dataset.on=\'\';this.nextElementSibling.style.background=\'none\';this.nextElementSibling.style.color=\'var(--rot)\'" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--gruen);background:none;color:var(--gruen);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-fg-btn">Freigegeben</button><button onclick="var a=this.dataset.on===\'1\';this.dataset.on=a?\'\': \'1\';this.style.background=a?\'none\':\'#cc2020\';this.style.color=a?\'var(--rot)\':\'#fff\';this.previousElementSibling.dataset.on=\'\';this.previousElementSibling.style.background=\'none\';this.previousElementSibling.style.color=\'var(--gruen)\';var p=this.closest(\'[data-subgrp]\');if(p)p.dataset.abnStatus=a?\'\': \'abgelehnt\';var fp=this.closest(\'[data-subphase]\');if(fp)fp.dataset.abnStatus=a?\'\': \'abgelehnt\'" class="abn-abl-btn" style="flex:1;padding:8px;border-radius:var(--r);border:1.5px solid var(--rot);background:none;color:var(--rot);font-family:\'Barlow Condensed\',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer" class="abn-abl-btn">Abgelehnt</button></div></div>';
           freigabePanel.appendChild(fa);
         }
         panel.appendChild(freigabePanel);
@@ -1924,9 +2050,9 @@ function onBereichGewerkChange(){
           igFAbn.innerHTML='<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:12px 14px;margin-top:6px">'
             +'<div style="font-family:\'Barlow Condensed\',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;color:var(--gelb);margin-bottom:10px">Betonierfreigabe</div>'
             +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">'
-            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="z.B. ST-03" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle</label><input class="abn-bezeichnung" type="text" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
             +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit</label><input class="abn-uhrzeit" type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
-            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
+            +'<div><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
             +'</div>'
             +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
             +'<div style="display:flex;gap:8px">'
@@ -2037,7 +2163,7 @@ function onBereichGewerkChange(){
           +'<div class="abn-fi"><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Lamelle / Bezeichnung</label><input class="abn-bezeichnung" type="text" placeholder="z.B. L-07" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
           
           +'<div class="abn-fi"><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Uhrzeit Abnahme</label><input class="abn-uhrzeit" type="time" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;outline:none"></div>'
-          +'<div class="abn-fi"><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="Kommentar …" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
+          +'<div class="abn-fi"><label style="font-size:.7rem;color:var(--hell);display:block;margin-bottom:3px;text-transform:uppercase">Kommentar</label><textarea class="abn-kommentar" rows="2" placeholder="" style="width:100%;background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);color:var(--weiss);font-size:.88rem;padding:6px 8px;resize:none;outline:none"></textarea></div>'
           +'</div>'
           +'<div style="margin-bottom:8px"><label style="display:inline-flex;align-items:center;gap:6px;background:none;border:1.5px solid rgba(255,255,255,.4);color:var(--hell);font-family:\'Barlow Condensed\',sans-serif;font-size:.78rem;text-transform:uppercase;padding:5px 10px;border-radius:var(--r);cursor:pointer">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="addFoto(this)"></label><div class="foto-previews" style="margin-top:6px"></div></div>'
           +'<div style="display:flex;gap:8px">'
@@ -2138,7 +2264,7 @@ function onBereichGewerkChange(){
   btDiv.style.display = 'none';
   btDiv.innerHTML = '<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Bautätigkeit</div>'
     +'<div style="background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;padding:4px">'
-    +'<textarea id="bereich-bautaetigkeit-ta" placeholder="Was wurde heute geleistet …" rows="3" style="width:100%;background:transparent;border:none;color:#000;font-family:Barlow,sans-serif;font-size:.9rem;padding:8px;resize:none;outline:none"></textarea>'
+    +'<textarea id="bereich-bautaetigkeit-ta" placeholder="" rows="3" style="width:100%;background:transparent;border:none;color:#000;font-family:Barlow,sans-serif;font-size:.9rem;padding:8px;resize:none;outline:none"></textarea>'
     +'</div>';
   inhalt.appendChild(btDiv);
 
@@ -2149,7 +2275,7 @@ function onBereichGewerkChange(){
   hwDiv.innerHTML = '<div class="cl-sub cl-sub-major no-collapse" style="margin-top:8px">Hinweise</div>'
     +'<div id="bereich-hinweise-list-'+Date.now()+'" style="margin-bottom:4px"></div>'
     +'<div style="display:flex;gap:7px;margin-top:4px">'
-    +'<input type="text" placeholder="Hinweis hinzufügen …" style="flex:1;background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#000;font-family:Barlow,sans-serif;font-size:.88rem;padding:8px 10px;outline:none">'
+    +'<input type="text" placeholder="" style="flex:1;background:#f8fafc;border:1px solid #c8d4e8;border-radius:4px;color:#000;font-family:Barlow,sans-serif;font-size:.88rem;padding:8px 10px;outline:none">'
     +'<button onclick="addHinweisLokal(this)" style="background:#F5A623;color:#1C3A6E;border:none;border-radius:4px;padding:8px 14px;font-family:Barlow Condensed,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer">+ Hinzufügen</button>'
     +'</div>';
   inhalt.appendChild(hwDiv);
@@ -2193,6 +2319,83 @@ function addHinweisLokal(btn){
 }
 
 function bereichHinzufuegen(){
+  updateLastEdit();
+  // Pflichtfelder Bereich prüfen
+  const _name = document.getElementById('bereichName')?.value?.trim();
+  const _gw = document.getElementById('bereichGewerk')?.value;
+  if(!_name){ alert('Bitte Bereichsbezeichnung eingeben.'); return; }
+  if(!_gw){ alert('Bitte Bauaktivität auswählen.'); return; }
+  // Abweichung in allen sichtbaren Panels bewertet?
+  const inhaltElCheck = document.getElementById('bereichGewerkInhalt');
+  if(inhaltElCheck){
+    const unbewertet = [];
+    inhaltElCheck.querySelectorAll('[data-abw-prefix]').forEach(function(div){
+      const prefix = div.dataset.abwPrefix;
+      const v = vstossData[prefix];
+      if(!v || !v.verstoss) unbewertet.push(prefix);
+    });
+    // Auch statische abw-nein/ja Buttons prüfen (nur wenn kein ZFS-Abnahme-System vorhanden)
+    inhaltElCheck.querySelectorAll('[data-subgrp]').forEach(function(panel){
+      if(panel.style.display==='none') return;
+      // Wenn Panel ZFS-Abnahme (abn-fg-btn) hat, Abweichung nicht erzwingen
+      const hasAbnButtons = panel.querySelector('.abn-fg-btn,.abn-abl-btn');
+      if(hasAbnButtons) return;
+      const abwNein = panel.querySelector('.abw-nein-btn');
+      const abwJa = panel.querySelector('.abw-ja-btn');
+      if(abwNein && abwJa){
+        const nAkt = abwNein.style.background && abwNein.style.background!=='none' && abwNein.style.background!=='';
+        const jAkt = abwJa.style.background && abwJa.style.background!=='none' && abwJa.style.background!=='';
+        if(!nAkt && !jAkt) unbewertet.push(panel.dataset.subgrp);
+      }
+    });
+    if(unbewertet.length > 0){
+      alert('Bitte bei allen Bereichen die Abweichung bewerten (Keine Abweichung / Ja - Abweichung).');
+      return;
+    }
+    // Alle sichtbaren Button-Gruppen prüfen: mindestens ein Button aktiv?
+    const fehlend = [];
+    // ZFS-Buttons
+    inhaltElCheck.querySelectorAll('[data-subgrp]').forEach(function(panel){
+      if(panel.style.display==='none') return;
+      // ZFS: Ja/Nein Buttons
+      const zfsBtns = panel.querySelectorAll('.zfs-ja-btn,.zfs2-ja,.zfs3-ja,.zfs-nein-btn,.zfs2-nein,.zfs3-nein');
+      if(zfsBtns.length > 0){
+        const anyActive = [...zfsBtns].some(function(b){ return b.style.background && b.style.background!=='none' && b.style.background!==''; });
+        if(!anyActive) fehlend.push('Zustandsfeststellung muss bewertet werden');
+      }
+      // Abnahme: Freigegeben/Abgelehnt in sichtbaren Subphasen
+      panel.querySelectorAll('[data-subphase]').forEach(function(ph){
+        if(ph.style.display==='none' && ph.dataset.active!=='1') return;
+        const abnBtns = ph.querySelectorAll('.abn-fg-btn,.abn-abl-btn');
+        if(abnBtns.length > 0){
+          const anyActive = [...abnBtns].some(function(b){ return b.style.background && b.style.background!=='none' && b.style.background!==''; });
+          if(!anyActive) fehlend.push('Freigabe/Ablehnung muss bewertet werden');
+        }
+      });
+      // Abnahme direkt im Panel (nicht in Subphase)
+      const directAbn = panel.querySelectorAll(':scope > .abn-fg-btn, :scope > .abn-abl-btn');
+      if(directAbn.length > 0){
+        const anyActive = [...directAbn].some(function(b){ return b.style.background && b.style.background!=='none' && b.style.background!==''; });
+        if(!anyActive) fehlend.push('Freigabe/Ablehnung muss bewertet werden');
+      }
+      // Gate-Buttons: mindestens einer muss aktiv sein wenn Panel sichtbar
+      const gateBtns = panel.querySelectorAll('.gate-freigabe-btn,.gate-betonage-btn');
+      if(gateBtns.length > 0){
+        const anyActive = [...gateBtns].some(function(b){ return b.classList.contains('on'); });
+        if(!anyActive) fehlend.push('Bitte Bewehrungs- oder Betonage-Phase auswählen');
+      }
+    });
+    if(fehlend.length > 0){
+      alert('Bitte alle Pflichtfelder ausfüllen:\n\n' + [...new Set(fehlend)].map(function(e){ return '• '+e; }).join('\n'));
+      return;
+    }
+    // Bautätigkeit Pflichtfeld
+    const bautaetEl = inhaltElCheck.querySelector('#bereich-bautaetigkeit-ta, textarea[id*="bautaet"]') || inhaltElCheck.querySelector('textarea');
+    if(!bautaetEl || !bautaetEl.value.trim()){
+      alert('Bitte Bautätigkeit ausfüllen.');
+      return;
+    }
+  }
   const inhaltEl = document.getElementById('bereichGewerkInhalt');
   // Sofort alle betVstoss-Werte sichern bevor irgendwas anderes läuft
   inhaltEl.querySelectorAll('[data-subgrp]').forEach(p=>{
@@ -2618,7 +2821,7 @@ function bereichHinzufuegen(){
     }
   });
 
-  const bereich = {id, name, gw, data, fotos, activeSubs, inhaltHTML: inhaltEl.innerHTML, collapsed: true};
+  const bereich = {id, name, gw, data, fotos, activeSubs, inhaltHTML: inhaltEl.innerHTML, collapsed: true, updatedAt: new Date().toISOString()};
   // Ersetzen wenn Bearbeitung, sonst neu hinzufügen
   const editingId = parseInt(document.getElementById('bereichGewerkInhalt').dataset.editingId);
   if(editingId){
@@ -2733,6 +2936,7 @@ function renderBereiche(){
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;text-transform:uppercase;color:#1C3A6E">${b.name}</div>
           <div style="font-size:.75rem;color:#475569;margin-top:2px">${GW_LABELS[b.gw]||b.gw}${b.activeSubs&&b.activeSubs.length?' · '+b.activeSubs.join(', '):''}</div>
+          ${b.updatedAt ? `<div style="font-size:.68rem;color:#94a3b8;margin-top:3px;display:inline-flex;align-items:center;gap:3px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:3px;padding:1px 6px">🕐 ${new Date(b.updatedAt).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div>` : ''}
         </div>
         <div style="display:flex;gap:6px;align-items:center">
           ${editingId===b.id
@@ -2885,7 +3089,7 @@ function bearbeitenBereich(id){
                     if(!rb||!rb.classList.contains('abn-reason-box')){
                       rb=document.createElement('div'); rb.className='abn-reason-box'; rb.style.marginTop='8px';
                       rb.innerHTML="<div style=\"font-size:.7rem;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px\">Ablehnungsgrund *</div>"
-                        +"<textarea class=\"abn-reason-text\" placeholder=\"Grund der Ablehnung …\" rows=\"2\" style=\"width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none\"></textarea>";
+                        +"<textarea class=\"abn-reason-text\" placeholder=\"\" rows=\"2\" style=\"width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:'Barlow',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none\"></textarea>";
                       ablB2.parentElement.insertAdjacentElement('afterend',rb);
                     }
                     if(b.data[reasonKey]){const ta=rb.querySelector('.abn-reason-text');if(ta)ta.value=b.data[reasonKey];}
@@ -3057,7 +3261,7 @@ function bearbeitenBereich(id){
                 rb.className = 'abn-reason-box';
                 rb.style.marginTop = '8px';
                 rb.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
-                  +'<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+                  +'<textarea class="abn-reason-text" placeholder="" rows="2" style="width:100%;background:#f8fafc;border:1px solid var(--rot);border-radius:var(--r);color:#0a0f1e;font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
                 ablB.parentElement.insertAdjacentElement('afterend', rb);
               }
               const ta2 = rb.querySelector('.abn-reason-text');
@@ -3303,6 +3507,22 @@ updateProgress();
 // Registered AFTER all DOM is built so buttons exist
 document.addEventListener('click', function(e){
   const t = e.target;
+  updateLastEdit();
+  // Zeitstempel unter geklicktem Button anzeigen
+  const btn = t.tagName==='BUTTON' ? t : t.closest('button');
+  if(btn && !btn.closest('.hdr') && !btn.id?.includes('PDF') && !btn.id?.includes('Save') && !btn.id?.includes('Load')){
+    // Timestamp unter dem Button-Container (nicht daneben)
+    const btnContainer = btn.parentNode;
+    let ts = btnContainer.nextElementSibling;
+    if(!ts || !ts.classList.contains('btn-ts')){
+      ts = document.createElement('div');
+      ts.className = 'btn-ts';
+      btnContainer.parentNode.insertBefore(ts, btnContainer.nextSibling);
+    }
+    const now = new Date();
+    ts.textContent = '🕐 ' + now.toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    ts.style.display = 'block';
+  }
 
   // CI state buttons (Ja / Nein / N/A) – match any .cb inside .ci-btns
   const cbBtn = t.closest('.ci-btns .cb');
@@ -3646,6 +3866,17 @@ function getAppState(){
   // Erfasste Bereiche
   state.bereiche = typeof bereiche !== 'undefined' ? bereiche : [];
   state.bereichIdCounter = typeof bereichIdCounter !== 'undefined' ? bereichIdCounter : 0;
+  // Polier-Wen/Was für alle Panels mit polier-details
+  document.querySelectorAll('[id$="-polier-details"]').forEach(function(det){
+    const id = det.id.replace('-polier-details','');
+    const wenEl = document.getElementById(id+'-polier-wen');
+    const wasEl = document.getElementById(id+'-polier-was');
+    if(wenEl || wasEl){
+      vstossData[id] = vstossData[id] || {};
+      if(wenEl && wenEl.value) vstossData[id].polierWen = wenEl.value;
+      if(wasEl && wasEl.value) vstossData[id].polierWas = wasEl.value;
+    }
+  });
   state.vstossData = typeof vstossData !== 'undefined' ? {...vstossData} : {};
 
   // Aktuell in Bearbeitung befindlicher Bereich (noch nicht abgeschlossen)
@@ -3708,7 +3939,7 @@ function restoreAppState(s){
           rb.className = 'abn-reason-box';
           rb.style.marginTop = '8px';
           rb.innerHTML = '<div style="font-size:.7rem;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;letter-spacing:1px;color:var(--rot);margin-bottom:4px">Ablehnungsgrund *</div>'
-            +'<textarea class="abn-reason-text" placeholder="Grund der Ablehnung …" rows="2" style="width:100%;background:var(--grau1);border:1px solid var(--rot);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
+            +'<textarea class="abn-reason-text" placeholder="" rows="2" style="width:100%;background:var(--grau1);border:1px solid var(--rot);border-radius:var(--r);color:var(--weiss);font-family:\'Barlow\',sans-serif;font-size:.88rem;padding:8px 10px;resize:none;outline:none"></textarea>';
           ablBtn.parentElement.insertAdjacentElement('afterend', rb);
         }
         // Grund einfügen wenn vorhanden (aus abnahmeFields)
@@ -3824,7 +4055,12 @@ function restoreAppState(s){
           if(neinBtn){ neinBtn.style.background='none'; neinBtn.style.color='var(--gruen)'; }
           if(details) details.style.display='block';
           // AN informiert
-          if(v.polier==='ja'){ const pj=document.getElementById(prefix+'-polier-ja'); if(pj){pj.style.background='var(--gruen)';pj.style.color='#fff';} }
+          if(v.polier==='ja'){
+            const pj=document.getElementById(prefix+'-polier-ja'); if(pj){pj.style.background='var(--gruen)';pj.style.color='#fff';}
+            const det=document.getElementById(prefix+'-polier-details'); if(det) det.style.display='block';
+            const wenEl=document.getElementById(prefix+'-polier-wen'); if(wenEl&&v.polierWen) wenEl.value=v.polierWen;
+            const wasEl=document.getElementById(prefix+'-polier-was'); if(wasEl&&v.polierWas) wasEl.value=v.polierWas;
+          }
           if(v.polier==='nein'){ const pn=document.getElementById(prefix+'-polier-nein'); if(pn){pn.style.background='var(--rot)';pn.style.color='#fff';} }
         }
         // Fotos wiederherstellen
@@ -5141,7 +5377,32 @@ function printFotos(containerEl, titleLabel, doc, y, M, W, BG1, BLUE, np, pdfStr
   return y+2;
 }
 
+function validateForm(){
+  const errors = [];
+  // 1. Kopfbereich
+  const baufeld = document.getElementById('fBaustelle')?.value;
+  const datum = document.getElementById('fDatum')?.value;
+  const bauleiter = document.getElementById('fBauleiter')?.value?.trim();
+  if(!baufeld) errors.push('Baufeld muss ausgewählt sein');
+  if(!datum) errors.push('Datum muss ausgefüllt sein');
+  if(!bauleiter) errors.push('Bauüberwacher muss ausgefüllt sein');
+  // 2. Arbeitssicherheit bewertet
+  const arbVstoss = (vstossData['arb']||{}).verstoss;
+  if(!arbVstoss) errors.push('Arbeitssicherheit: Abweichung muss bewertet werden (Ja oder Nein)');
+  // 3. Sauberkeit bewertet
+  const sauVstoss = (vstossData['sau']||{}).verstoss;
+  if(!sauVstoss) errors.push('Sauberkeit & Ordnung: Abweichung muss bewertet werden (Ja oder Nein)');
+  // 4. Mindestens 1 Bauaktivität
+  if(!bereiche || bereiche.length === 0) errors.push('Mindestens 1 Bauaktivität muss erfasst sein');
+  return errors;
+}
+
 function exportPDF(){
+  const validErrors = validateForm();
+  if(validErrors.length > 0){
+    alert('Bitte folgende Pflichtfelder ausfüllen:\n\n' + validErrors.map(e => '• ' + e).join('\n'));
+    return;
+  }
   saveState();
   // Alle input-* Felder (auch in Containern) in window.inputValues synchronisieren
   document.querySelectorAll('input[id^="input-"]').forEach(function(el){ if(el.value.trim()) window.inputValues[el.id]=el.value.trim(); });
@@ -6305,7 +6566,13 @@ function exportPDF(){
           if(vstossRender==='ja'){
             if(betText){ doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(80,40,40); doc.text(textLines,M+4,ry); ry+=textLines.length*4.5+2; }
             if(abwDetailFotos.length){ var ci5=0; abwDetailFotos.forEach(function(src){ try{ doc.addImage(src,'JPEG',M+4+ci5*(fW4+fGap),ry,fW4,fHH4,'','FAST'); ci5++; if(ci5>=fCols){ci5=0;ry+=fHH4+fGap;} }catch(e){} }); if(ci5>0) ry+=fHH4+fGap+3; }
-            if(betPolier){ doc.setFont('helvetica','bold');if(betPolier==='ja'){doc.setTextColor(46,158,80);}else{doc.setTextColor(204,48,48);} doc.text('AN informiert: '+(betPolier==='ja'?'Ja':'Nein'),M+4,ry); }
+            if(betPolier){ doc.setFont('helvetica','bold');if(betPolier==='ja'){doc.setTextColor(46,158,80);}else{doc.setTextColor(204,48,48);} doc.text('AN informiert: '+(betPolier==='ja'?'Ja':'Nein'),M+4,ry); ry+=5;
+              if(betPolier==='ja'){
+                const _wen = (typeof vstossData!=='undefined'&&vstossData[checksGrp]) ? (vstossData[checksGrp].polierWen||'') : '';
+                const _was = (typeof vstossData!=='undefined'&&vstossData[checksGrp]) ? (vstossData[checksGrp].polierWas||'') : '';
+                if(_wen){ doc.setFont('helvetica','normal'); doc.setTextColor(30,45,80); doc.setFontSize(7); doc.text('Informiert: '+pdfStr(_wen),M+4,ry); ry+=5; }
+                if(_was){ doc.setFont('helvetica','normal'); doc.setTextColor(30,45,80); doc.setFontSize(7); const wL=doc.splitTextToSize('Veranlasst: '+pdfStr(_was),W-2*M-8); doc.text(wL,M+4,ry); ry+=wL.length*4.5; }
+              } else { ry-=5; } }
           }
           doc.setTextColor(0,0,0); y+=boxH+2;
         } else {
@@ -6347,7 +6614,13 @@ function exportPDF(){
         if(vstoss==='ja' && polier){
           doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
           doc.setTextColor(polier==='ja'?46:204, polier==='ja'?158:48, polier==='ja'?80:48);
-          doc.text('AN informiert: '+(polier==='ja'?'Ja':'Nein'), M+4, extraY);
+          doc.text('AN informiert: '+(polier==='ja'?'Ja':'Nein'), M+4, extraY); extraY+=5;
+          if(polier==='ja'){
+            const _wen2 = (vstossData[prefix]||{}).polierWen||'';
+            const _was2 = (vstossData[prefix]||{}).polierWas||'';
+            if(_wen2){ doc.setFont('helvetica','normal'); doc.setTextColor(30,45,80); doc.setFontSize(7); doc.text('Informiert: '+pdfStr(_wen2),M+4,extraY); extraY+=5; }
+            if(_was2){ doc.setFont('helvetica','normal'); doc.setTextColor(30,45,80); doc.setFontSize(7); const wL2=doc.splitTextToSize('Veranlasst: '+pdfStr(_was2),W-2*M-8); doc.text(wL2,M+4,extraY); extraY+=wL2.length*4.5; }
+          } else { extraY-=5; }
           extraY += 5;
         }
         doc.setTextColor(0,0,0); y+=statusH+2;
@@ -6623,7 +6896,7 @@ function exportPDF(){
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Lamelle / Bezeichnung</label><input type="text" placeholder="z.B. L-07"></div>
       <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
-      <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+      <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
     </div>
     <div class="foto-area">
       <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6651,7 +6924,7 @@ function exportPDF(){
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Lamelle / Bezeichnung</label><input type="text" placeholder="z.B. L-07"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-      <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+      <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
     </div>
     <div class="foto-area">
       <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6670,13 +6943,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-schlitzwand" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-schlitzwand" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-schlitzwand" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-schlitzwand">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-schlitzwand" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-schlitzwand" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-schlitzwand" style="display:none"></label>
     <button class="h-add-btn" data-key="schlitzwand" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -6733,7 +7006,7 @@ function exportPDF(){
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Steife 3"></div>
       <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
-      <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+      <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
     </div>
     <div class="foto-area">
       <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6760,7 +7033,7 @@ function exportPDF(){
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Steife 3"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-      <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+      <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
     </div>
     <div class="foto-area">
       <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6777,13 +7050,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-aushub" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-aushub" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-aushub" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-aushub">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-aushub" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-aushub" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-aushub" style="display:none"></label>
     <button class="h-add-btn" data-key="aushub" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -6834,7 +7107,7 @@ function exportPDF(){
     <div class="abnahme-fields">
       <div class="abn-fi"><label>Abschnitt / Bezeichnung</label><input type="text" placeholder="z.B. Dock 2"></div>
       <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-      <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+      <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
     </div>
     <div class="foto-area">
       <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6848,13 +7121,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-uwbs" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-uwbs" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-uwbs" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-uwbs">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-uwbs" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-uwbs" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-uwbs" style="display:none"></label>
     <button class="h-add-btn" data-key="uwbs" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -6874,13 +7147,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-verfuellen" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-verfuellen" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-verfuellen" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-verfuellen">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-verfuellen" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-verfuellen" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-verfuellen" style="display:none"></label>
     <button class="h-add-btn" data-key="verfuellen" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -6900,13 +7173,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-wiederaushub" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-wiederaushub" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-wiederaushub" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-wiederaushub">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-wiederaushub" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-wiederaushub" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-wiederaushub" style="display:none"></label>
     <button class="h-add-btn" data-key="wiederaushub" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -6954,7 +7227,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -6983,7 +7256,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -7058,7 +7331,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -7087,7 +7360,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -7162,7 +7435,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit Abnahme</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -7227,7 +7500,7 @@ function exportPDF(){
         <div class="abnahme-fields">
           <div class="abn-fi"><label>Abschnitt / Block</label><input type="text" placeholder="z.B. R(009)01"></div>
               <div class="abn-fi"><label>Uhrzeit</label><input type="time"></div>
-          <div class="abn-fi"><label>Kommentar</label><textarea placeholder="Kommentar …"></textarea></div>
+          <div class="abn-fi"><label>Kommentar</label><textarea placeholder=""></textarea></div>
         </div>
         <div class="foto-area">
           <label class="foto-btn">📷 Foto hinzufügen<input type="file" accept="image/*" capture="environment" style="display:none" onchange="addFoto(this)"></label>
@@ -7243,13 +7516,13 @@ function exportPDF(){
 
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-rohbau" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-rohbau" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-rohbau" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-rohbau">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-rohbau" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-rohbau" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-rohbau" style="display:none"></label>
     <button class="h-add-btn" data-key="rohbau" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -7285,13 +7558,13 @@ function exportPDF(){
   </div>
 
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:12px">Bautätigkeit</div>
-  <textarea id="bautaetigkeit-mikropfahl" placeholder="Was wurde heute geleistet …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
+  <textarea id="bautaetigkeit-mikropfahl" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);border-left:3px solid var(--gelb);border-radius:var(--r);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 11px;width:100%;outline:none;resize:none;min-height:60px;line-height:1.6;margin-bottom:8px"></textarea>
   <div class="cl-sub cl-sub-major no-collapse" style="margin-top:4px;background:var(--blau);color:var(--weiss)">Hinweise</div>
   <div id="hContainer-mikropfahl" style="display:flex;flex-direction:column;gap:4px;margin-bottom:4px">
     <div class="vf-empty" id="hEmpty-mikropfahl">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-mikropfahl" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-mikropfahl" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-mikropfahl" style="display:none"></label>
     <button class="h-add-btn" data-key="mikropfahl" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -7308,7 +7581,7 @@ function exportPDF(){
     <div class="vf-empty" id="sonstigesEmpty">Noch keine Einträge.</div>
   </div>
   <div style="display:grid;grid-template-columns:1fr auto auto;gap:7px;margin-top:8px;margin-bottom:12px">
-    <input type="text" id="sonstigesText" placeholder="Eigener Punkt …" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 10px;border-radius:var(--r);outline:none;min-height:42px;-webkit-appearance:none">
+    <input type="text" id="sonstigesText" placeholder="" style="background:var(--grau1);border:1px solid rgba(255,255,255,.15);color:var(--weiss);font-family:'Barlow',sans-serif;font-size:.9rem;padding:9px 10px;border-radius:var(--r);outline:none;min-height:42px;-webkit-appearance:none">
     <label class="foto-btn" style="white-space:nowrap;margin:0">📷<input type="file" accept="image/*" capture="environment" id="sonstigesFoto" style="display:none"></label>
     <button id="sonstigesAdd" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
@@ -7318,7 +7591,7 @@ function exportPDF(){
     <div class="vf-empty" id="hEmpty-sonstiges">Keine Hinweise.</div>
   </div>
   <div class="vf-form" style="grid-template-columns:1fr auto auto">
-    <input type="text" id="hText-sonstiges" placeholder="Hinweis hinzufügen …">
+    <input type="text" id="hText-sonstiges" placeholder="">
     <label class="foto-btn" style="white-space:nowrap">📷<input type="file" accept="image/*" capture="environment" id="hFoto-sonstiges" style="display:none"></label>
     <button class="h-add-btn" data-key="sonstiges" style="background:var(--gelb);color:var(--blau2);border:none;padding:9px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;cursor:pointer;border-radius:var(--r);min-height:42px">+ Hinzufügen</button>
   </div>
